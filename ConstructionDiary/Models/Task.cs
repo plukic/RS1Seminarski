@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GradjevinskiDnevnik.Models
+namespace ConstructionDiary.Models
 {
     public class Task
     {

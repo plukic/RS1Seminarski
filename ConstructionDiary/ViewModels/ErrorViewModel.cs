@@ -1,6 +1,4 @@
-using System;
-
-namespace GradjevinskiDnevnik.Models
+namespace ConstructionDiary.ViewModels
 {
     public class ErrorViewModel
     {
