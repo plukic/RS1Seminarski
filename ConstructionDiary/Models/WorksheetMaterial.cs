@@ -1,4 +1,4 @@
-﻿namespace GradjevinskiDnevnik.Models
+﻿namespace ConstructionDiary.Models
 {
     public class WorksheetMaterial
     {

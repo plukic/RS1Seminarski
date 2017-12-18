@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ConstructionDiary.Models;
 
-namespace GradjevinskiDnevnik.Models
+namespace ConstructionDiary.DAL
 {
     public class ConstructionCompanyContext : DbContext
     {
