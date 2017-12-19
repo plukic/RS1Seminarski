@@ -1,11 +1,7 @@
 ﻿using ConstructionDiary.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
-using GradjevinskiDnevnik.Models;
 using ConstructionDiary.BR;
-=======
 using System.Diagnostics;
->>>>>>> c6c2264fed2c5d6624381982c00a3bb5fe273b9d
 
 namespace ConstructionDiary.Controllers
 {
@@ -16,26 +12,28 @@ namespace ConstructionDiary.Controllers
         {
             this.userManagment = userManagment;
         }
+
         public IActionResult Index()
         {
             return View();
         }
-
-        public IActionResult Login(UserLoginModel userLoginModel)
+        public IActionResult LogIn(UserLoginModel userLoginModel)
         {
-
             if (!ModelState.IsValid)
             {
-                return PartialView("LoginView",userLoginModel);
+                return BadRequest();
             }
-            userManagment.LoginUser(userLoginModel);
+
+            var user = userManagment.LoginUser(userLoginModel);
+            if (user == null)
+                return ViewComponent("Login");
+
             return RedirectToAction("Index");
         }
-        public IActionResult About()
+        public IActionResult LogOut()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+            userManagment.LogoutUser();
+            return RedirectToAction("Index");
         }
 
         public IActionResult Contact()
@@ -48,6 +46,13 @@ namespace ConstructionDiary.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
         }
     }
 }

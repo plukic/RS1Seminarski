@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GradjevinskiDnevnik.Models;
+using ConstructionDiary.Models;
 using Microsoft.AspNetCore.Http;
+using ConstructionDiary.DAL;
 
 namespace ConstructionDiary.BR
 {
@@ -27,7 +28,7 @@ namespace ConstructionDiary.BR
 
         public bool IsUserLogged()
         {
-            return session.GetInt32(KEY_LOGGED_USER_ID) ==0;
+            return session.GetInt32(KEY_LOGGED_USER_ID) !=0;
         }
 
         public void LogoutUser()

@@ -21,7 +21,7 @@ namespace ConstructionDiary.Models
         public int LocationId { get; set; }
         public Location Location { get; set; }
 
-        public int ManagerId { get; set; }
-        public Manager CreatedBy { get; set; }
+        public int UserId { get; set; }
+        public User CreatedBy { get; set; }
     }
 }
