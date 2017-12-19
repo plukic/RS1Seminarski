@@ -11,6 +11,7 @@ namespace ConstructionDiary.BR
         User LoginUser(UserLoginModel userLoginModel);
         void LogoutUser();
         bool IsUserLogged();
+       User GetLoggedUser();
     }
 
 }

@@ -8,11 +8,16 @@ namespace ConstructionDiary.BR
 {
     public class UserLoginModel
     {
-        [Required(AllowEmptyStrings =false,ErrorMessage ="Korisnicko ime je obavezno")]
-        [StringLength(6,ErrorMessage ="Korisnicko ime mora sadrzavati min 6 karaktera")]
+        /*
+         * the match must be alphanumeric with at least one number, one letter, and be between 6-15 character in length. 
+         */
+        [Required(AllowEmptyStrings = false)]
         public string Username { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Lozinka je obavezna")]
-        [StringLength(8, ErrorMessage = "Lozinka mora sadrzavati min 8 karaktera")]
-        public string Password{ get; set; }
+
+        /*
+         * the match must be alphanumeric with at least one number, one letter, and be between 6-15 character in length. 
+         */
+        [Required(AllowEmptyStrings = false)]
+        public string Password { get; set; }
     }
 }

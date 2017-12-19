@@ -14,6 +14,11 @@ namespace ConstructionDiary.BR
             this.userDA = _userDa;
         }
 
+        public User GetLoggedUser()
+        {
+            return userDA.GetLoggedUser();
+        }
+
         public bool IsUserLogged()
         {
             return userDA.IsUserLogged();
@@ -39,6 +44,7 @@ namespace ConstructionDiary.BR
             }
             return null;
         }
+        
 
         public void LogoutUser()
         {

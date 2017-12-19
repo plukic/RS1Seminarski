@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ConstructionDiary.Models;
 using Microsoft.AspNetCore.Http;
 using ConstructionDiary.DAL;
+using Newtonsoft.Json;
 
 namespace ConstructionDiary.BR
 {
@@ -28,17 +29,24 @@ namespace ConstructionDiary.BR
 
         public bool IsUserLogged()
         {
-            return session.GetInt32(KEY_LOGGED_USER_ID) !=0;
+            var user = session.GetString(KEY_LOGGED_USER_ID);
+            return !string.IsNullOrEmpty(user);
         }
 
         public void LogoutUser()
         {
-            session.SetInt32(KEY_LOGGED_USER_ID, 0);
+            session.SetString(KEY_LOGGED_USER_ID, string.Empty);
         }
 
         public void SaveCurrentUser(User user)
         {
-            session.SetInt32(KEY_LOGGED_USER_ID, user.Id);
+            session.SetString(KEY_LOGGED_USER_ID, JsonConvert.SerializeObject(user));
+        }
+
+        public User GetLoggedUser()
+        {
+            var user = session.GetString(KEY_LOGGED_USER_ID);
+            return string.IsNullOrEmpty(user)?null:JsonConvert.DeserializeObject<User>(user);
         }
     }
 }

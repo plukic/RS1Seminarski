@@ -39,17 +39,19 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     }
                 </ul>
-                @if (userManagment.IsUserLogged())
-                {
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="/home/logout" class="">Log out</a>
-                        </li>
-                    </ul>
-                }
-                else
-                {
-                    @await Component.InvokeAsync("Login")
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        @if (userManagment.IsUserLogged())
+                        {
+                            <a href="/login/logout" class="">Log out</a>
+                        }
+                        else
+                        {
+                            <a href="/login" class="">Login</a>
+                        }
+                    </li>
+                </ul>
                 }
 
 

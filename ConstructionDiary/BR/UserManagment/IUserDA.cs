@@ -12,5 +12,6 @@ namespace ConstructionDiary.BR
         void SaveCurrentUser(User user);
         void LogoutUser();
         bool IsUserLogged();
+        User GetLoggedUser();
     }
 }

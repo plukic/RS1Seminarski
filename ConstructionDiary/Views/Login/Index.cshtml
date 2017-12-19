@@ -1,0 +1,31 @@
+﻿@model ConstructionDiary.BR.UserLoginModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="~/css/login-screen.css" />
+</head>
+<body>
+    <div class="login-page">
+        <div class="form">
+            <form class="login-form" action="/login/login" method="post">
+                @Html.TextBoxFor(m => m.Username, new { @placeholder = "Korisničko ime" })
+                @Html.PasswordFor(m => m.Password, new { @placeholder = "Lozinka" })
+                <button>login</button>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                <p class="message" style="color:red">Podaci nisu validni</p>
+                }
+            </form>
+        </div>
+    
+    </div>
+</body>
+</html>
