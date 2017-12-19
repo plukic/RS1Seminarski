@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,12 +6,15 @@ using System.Threading.Tasks;
 using ConstructionDiary.BR;
 using GradjevinskiDnevnik.Models;
 using Microsoft.AspNetCore.Builder;
+=======
+﻿using Microsoft.AspNetCore.Builder;
+>>>>>>> c6c2264fed2c5d6624381982c00a3bb5fe273b9d
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GradjevinskiDnevnik
+namespace ConstructionDiary
 {
     public class Startup
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GradjevinskiDnevnik.Models
+namespace ConstructionDiary.Models
 {
     public class Machine
     {

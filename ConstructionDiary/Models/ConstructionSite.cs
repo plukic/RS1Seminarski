@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GradjevinskiDnevnik.Models
+namespace ConstructionDiary.Models
 {
     public class ConstructionSite
     {

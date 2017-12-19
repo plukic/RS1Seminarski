@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ConstructionDiary.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
 using GradjevinskiDnevnik.Models;
 using ConstructionDiary.BR;
+=======
+using System.Diagnostics;
+>>>>>>> c6c2264fed2c5d6624381982c00a3bb5fe273b9d
 
-namespace GradjevinskiDnevnik.Controllers
+namespace ConstructionDiary.Controllers
 {
     public class HomeController : Controller
     {
