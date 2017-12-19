@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ConstructionDiary.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -82,6 +82,20 @@ namespace ConstructionDiary.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: true),
+                    UserRole = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tools",
                 columns: table => new
                 {
@@ -99,22 +113,35 @@ namespace ConstructionDiary.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Email = table.Column<string>(nullable: true),
-                    Manager_Email = table.Column<string>(nullable: true),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     Hash = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Salt = table.Column<string>(nullable: true),
-                    Username = table.Column<string>(nullable: true),
-                    TelephoneNumber = table.Column<string>(nullable: true)
+                    Username = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(nullable: true),
+                    JobDescription = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    TelephoneNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,24 +166,46 @@ namespace ConstructionDiary.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Worksheets",
+                name: "ConstructionSiteManager",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(nullable: false),
-                    GetConstructionSiteManagerId = table.Column<int>(nullable: true),
-                    WeatherConditions = table.Column<string>(nullable: true)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Worksheets", x => x.Id);
+                    table.PrimaryKey("PK_ConstructionSiteManager", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Worksheets_Users_GetConstructionSiteManagerId",
-                        column: x => x.GetConstructionSiteManagerId,
+                        name: "FK_ConstructionSiteManager_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    RoleId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.RoleId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,9 +219,9 @@ namespace ConstructionDiary.Migrations
                     DateFinish = table.Column<DateTime>(nullable: false),
                     DateStart = table.Column<DateTime>(nullable: false),
                     LocationId = table.Column<int>(nullable: false),
-                    ManagerId = table.Column<int>(nullable: false),
                     ProjectWorth = table.Column<decimal>(nullable: false),
-                    Title = table.Column<string>(nullable: true)
+                    Title = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -196,11 +245,32 @@ namespace ConstructionDiary.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ConstructionSites_Users_ManagerId",
-                        column: x => x.ManagerId,
+                        name: "FK_ConstructionSites_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Worksheets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    GetConstructionSiteManagerId = table.Column<int>(nullable: true),
+                    WeatherConditions = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Worksheets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Worksheets_ConstructionSiteManager_GetConstructionSiteManagerId",
+                        column: x => x.GetConstructionSiteManagerId,
+                        principalTable: "ConstructionSiteManager",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -366,12 +436,17 @@ namespace ConstructionDiary.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_WorkerTask_Users_WorkerId",
+                        name: "FK_WorkerTask_Workers_WorkerId",
                         column: x => x.WorkerId,
-                        principalTable: "Users",
+                        principalTable: "Workers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConstructionSiteManager_UserId",
+                table: "ConstructionSiteManager",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ConstructionSites_CityId",
@@ -389,9 +464,9 @@ namespace ConstructionDiary.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConstructionSites_ManagerId",
+                name: "IX_ConstructionSites_UserId",
                 table: "ConstructionSites",
-                column: "ManagerId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contracts_DocumentId",
@@ -417,6 +492,11 @@ namespace ConstructionDiary.Migrations
                 name: "IX_Tasks_WorksheetId",
                 table: "Tasks",
                 column: "WorksheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_UserId",
+                table: "UserRoles",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkerTask_TaskId",
@@ -456,6 +536,9 @@ namespace ConstructionDiary.Migrations
                 name: "Remarks");
 
             migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
                 name: "WorkerTask");
 
             migrationBuilder.DropTable(
@@ -477,7 +560,13 @@ namespace ConstructionDiary.Migrations
                 name: "Locations");
 
             migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
                 name: "Tasks");
+
+            migrationBuilder.DropTable(
+                name: "Workers");
 
             migrationBuilder.DropTable(
                 name: "Machines");
@@ -493,6 +582,9 @@ namespace ConstructionDiary.Migrations
 
             migrationBuilder.DropTable(
                 name: "Worksheets");
+
+            migrationBuilder.DropTable(
+                name: "ConstructionSiteManager");
 
             migrationBuilder.DropTable(
                 name: "Users");
