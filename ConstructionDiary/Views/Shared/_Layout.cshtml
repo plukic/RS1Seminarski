@@ -33,7 +33,7 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Aktivni zadaci</a></li>
                     @if (Context.User.Identity.IsAuthenticated &&  Context.User.IsInRole("Manager"))
                     {
-                        <li><a asp-area="" asp-controller="Home" asp-action="About">Korisnički nalozi</a></li>
+                        <li><a asp-area="" asp-controller="UserAccounts" asp-action="Index">Korisnički nalozi</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Korisnici</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Gradilišta</a></li>
                     }

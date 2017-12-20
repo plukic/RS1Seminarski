@@ -1,0 +1,61 @@
+﻿@model IList<ConstructionDiary.ViewModels.UserAccountIndexViewModel>
+
+<h3>Korisnici</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Ime i prezime
+            </th>
+            <th>
+                Korisničko ime
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Broj telefona
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstNameLastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @if (string.IsNullOrEmpty(item.PhoneNumber))
+                    {
+                        <p>Ne postoji</p>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Poništi password", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+        <tr></tr>
+    </tbody>
+</table>
+<button type="button" class="btn btn-primary">Dodaj</button>
+
+
+
