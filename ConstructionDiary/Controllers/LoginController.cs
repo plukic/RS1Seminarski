@@ -27,7 +27,7 @@ namespace ConstructionDiary.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(UserLoginModel obj)
+        public IActionResult Login(UserLoginViewModel obj)
         {
             if (ModelState.IsValid)
             {
@@ -53,6 +53,7 @@ namespace ConstructionDiary.Controllers
         [Authorize]
         public IActionResult Register()
         {
+
             return View();
         }
         [HttpPost]

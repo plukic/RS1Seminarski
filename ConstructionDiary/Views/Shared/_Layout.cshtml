@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -31,18 +30,36 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Aktivni zadaci</a></li>
+                    @if (Context.User.Identity.IsAuthenticated &&  Context.User.IsInRole("Manager"))
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="About">Korisnički nalozi</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Korisnici</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Gradilišta</a></li>
+                    }
+                    @if (Context.User.Identity.IsAuthenticated && (Context.User.IsInRole("Manager") || Context.User.IsInRole("ConstructionSiteManager")))
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Radni listovi</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Alati i mašine</a></li>
+                    }
+
                 </ul>
+
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                            <a href="/login/logout" class="">Log out</a>
-                            <a href="/login" class="">Login</a>
+                        @if (Context.User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Login" asp-action="Logout">Logout</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Login" asp-action="Index">Login</a>
+
+                        }
                     </li>
                 </ul>
-                }
+
 
 
             </div>

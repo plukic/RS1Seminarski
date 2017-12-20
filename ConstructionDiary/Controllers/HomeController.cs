@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ConstructionDiary.Controllers
 {
-    [AllowAnonymous]
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
+        [Authorize(Roles = "Manager")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
@@ -22,7 +22,7 @@ namespace ConstructionDiary.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
+        [Authorize(Roles = "ConstructionSiteManager, Manager")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
