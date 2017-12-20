@@ -3,39 +3,101 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ConstructionDiary.BR;
+using ConstructionDiary.BR.UserManagment;
+using ConstructionDiary.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructionDiary.Controllers
 {
     public class LoginController : Controller
     {
-        IUserManagment userManagment;
-        public LoginController(IUserManagment userManagment)
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> loginManager;
+        private readonly RoleManager<Role> roleManager;
+
+        public LoginController(UserManager<User> userManager,
+                            SignInManager<User> loginManager,
+                            RoleManager<Role> roleManager)
         {
-            this.userManagment = userManagment;
+            this.userManager = userManager;
+            this.loginManager = loginManager;
+            this.roleManager = roleManager;
         }
-
-        public IActionResult LogIn(UserLoginModel userLoginModel)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(UserLoginModel obj)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                ModelState.Clear();
-                ModelState.AddModelError(string.Empty, "Podaci nisu validni");
-                return View("Index",userLoginModel);
+                var result = loginManager.PasswordSignInAsync
+                (obj.Username, obj.Password, false, false).Result;
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError("", "Invalid login!");
             }
 
-            var user = userManagment.LoginUser(userLoginModel);
-            if (user == null)
-            {
-                ModelState.AddModelError(string.Empty, "Podaci nisu validni");
-                return View("Index", userLoginModel);
-            }
-            return RedirectToAction("Index","Home");
+            return View("Index",obj);
         }
         public IActionResult LogOut()
         {
-            userManagment.LogoutUser();
+            loginManager.SignOutAsync().Wait();
             return RedirectToAction("Index","Home");
+        }
+
+        [Authorize]
+        public IActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterViewModel obj)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = new User
+                {
+                    UserName = obj.UserName,
+                    Email = obj.Email,
+                    FirstName = obj.FirstName,
+                    LastName = obj.LastName,
+                    DateOfBirth = obj.BirthDate
+                };
+
+                IdentityResult result = userManager.CreateAsync
+                (user, obj.Password).Result;
+
+                if (result.Succeeded)
+                {
+                    if (!roleManager.RoleExistsAsync("NormalUser").Result)
+                    {
+                        Role role = new Role
+                        {
+                            Name = "NormalUser",
+                            Description = "Perform normal operations."
+                        };
+                        IdentityResult roleResult = roleManager.
+                        CreateAsync(role).Result;
+                        if (!roleResult.Succeeded)
+                        {
+                            ModelState.AddModelError("",
+                             "Error while creating role!");
+                            return View(obj);
+                        }
+                    }
+
+                    userManager.AddToRoleAsync(user,
+                                 "NormalUser").Wait();
+                    return RedirectToAction("Login", "Account");
+                }
+            }
+            return View(obj);
         }
 
         public IActionResult Index()

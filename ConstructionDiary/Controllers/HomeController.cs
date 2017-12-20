@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using ConstructionDiary.BR;
 using System.Diagnostics;
-using ConstructionDiary.Helper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConstructionDiary.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -17,7 +18,6 @@ namespace ConstructionDiary.Controllers
             ViewData["Message"] = "Your contact page.";
             return View();
         }
-        [Authorization(false,false,false)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

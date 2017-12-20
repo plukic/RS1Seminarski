@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ConstructionDiary.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ConstructionDiary.DAL
 {
-    public class ConstructionCompanyContext : DbContext
+    public class ConstructionCompanyContext : IdentityDbContext<User,Role,string>
     {
         public DbSet<City> City { get; set; }
         public DbSet<ConstructionSite> ConstructionSites { get; set; }
@@ -15,12 +16,9 @@ namespace ConstructionDiary.DAL
         public DbSet<Remark> Remarks { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Tool> Tools { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Worksheet> Worksheets { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<UserRoles> UserRoles { get; set; }
-
+            
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=.;Database=GradjevinskiDnevnik;Trusted_Connection=True;MultipleActiveResultSets=true");
@@ -28,19 +26,7 @@ namespace ConstructionDiary.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<UserRoles>()
-              .HasOne(ur => ur.User)
-              .WithMany(u => u.Roles)
-              .HasForeignKey(ur => ur.UserId);
-
-            modelBuilder.Entity<UserRoles>()
-              .HasOne(ur => ur.Role)
-              .WithMany(r => r.Users)
-              .HasForeignKey(ur => ur.RoleId);
-            modelBuilder.Entity<UserRoles>()
-              .HasKey(ur => new { ur.RoleId, ur.UserId});
-
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<WorkerTask>()
                 .HasOne(wt => wt.Task)
