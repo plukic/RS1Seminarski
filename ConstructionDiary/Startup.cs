@@ -43,6 +43,7 @@ namespace ConstructionDiary
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         }
 
