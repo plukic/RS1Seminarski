@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConstructionDiary.BR
 {
-    public class UserLoginModel
+    public class UserLoginViewModel
     {
         /*
          * the match must be alphanumeric with at least one number, one letter, and be between 6-15 character in length. 

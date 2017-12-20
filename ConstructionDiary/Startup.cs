@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ConstructionDiary.BR;
-using ConstructionDiary.Models;
+﻿using ConstructionDiary.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ConstructionDiary.DAL;
+using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace ConstructionDiary
 {
@@ -25,20 +22,37 @@ namespace ConstructionDiary
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<ConstructionCompanyContext>();
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<ConstructionCompanyContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Expiration = TimeSpan.FromDays(150);
+                options.LoginPath = "/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
+                options.LogoutPath = "/Login/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
+                options.AccessDeniedPath = "/Home/Error"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
+                options.SlidingExpiration = true;
+            });
+
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddDbContext<ConstructionCompanyContext>();
-            services.AddTransient<IUserDA, UserDA>();
-            services.AddTransient<IUserManagment, UserManagment>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseSession();
+            AuthAppBuilderExtensions.UseAuthentication(app);
             app.UseMvcWithDefaultRoute();
-                
+
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();

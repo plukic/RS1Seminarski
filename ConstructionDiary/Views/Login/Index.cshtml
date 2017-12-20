@@ -1,4 +1,4 @@
-﻿@model ConstructionDiary.BR.UserLoginModel
+﻿@model ConstructionDiary.BR.UserLoginViewModel
 
 @{
     Layout = null;
@@ -15,17 +15,19 @@
 <body>
     <div class="login-page">
         <div class="form">
-            <form class="login-form" action="/login/login" method="post">
+            <form asp-controller="Login" asp-action="Login" method="post">
                 @Html.TextBoxFor(m => m.Username, new { @placeholder = "Korisničko ime" })
                 @Html.PasswordFor(m => m.Password, new { @placeholder = "Lozinka" })
                 <button>login</button>
                 @if (!ViewData.ModelState.IsValid)
                 {
-                <p class="message" style="color:red">Podaci nisu validni</p>
+                    <p class="message" style="color:red">Podaci nisu validni</p>
                 }
+                <a href="/home">Home</a>
+
             </form>
         </div>
-    
+
     </div>
 </body>
 </html>
