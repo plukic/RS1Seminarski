@@ -31,7 +31,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Aktivni zadaci</a></li>
-                    @if (Context.User.Identity.IsAuthenticated &&  Context.User.IsInRole("Manager"))
+                    @if (Context.User.Identity.IsAuthenticated && Context.User.IsInRole("Manager"))
                     {
                         <li><a asp-area="" asp-controller="UserAccounts" asp-action="Index">Korisnički nalozi</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Korisnici</a></li>
@@ -47,17 +47,20 @@
 
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        @if (Context.User.Identity.IsAuthenticated)
+                    @if (Context.User.Identity.IsAuthenticated)
                         {
+                        <li id="welcome">Dobrodošli @Context.User.Identity.Name</li>
+                        <li class="dropdown">
                             <a asp-controller="Login" asp-action="Logout">Logout</a>
-                        }
-                        else
-                        {
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="dropdown">
                             <a asp-controller="Login" asp-action="Index">Login</a>
+                        </li>
 
-                        }
-                    </li>
+                    }
                 </ul>
 
 
