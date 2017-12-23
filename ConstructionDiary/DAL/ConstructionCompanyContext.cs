@@ -1,11 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ConstructionDiary.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using ConstructionDiary.Models;
 
 namespace ConstructionDiary.DAL
 {
     public class ConstructionCompanyContext : IdentityDbContext<User,Role,string>
     {
+        public ConstructionCompanyContext(DbContextOptions<ConstructionCompanyContext> options):base(options)
+        {
+        }
+
         public DbSet<City> City { get; set; }
         public DbSet<ConstructionSite> ConstructionSites { get; set; }
         public DbSet<Contract> Contracts { get; set; }
@@ -18,12 +22,7 @@ namespace ConstructionDiary.DAL
         public DbSet<Tool> Tools { get; set; }
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Worksheet> Worksheets { get; set; }
-            
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=.;Database=GradjevinskiDnevnik;Trusted_Connection=True;MultipleActiveResultSets=true");
-        }
-
+    
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
