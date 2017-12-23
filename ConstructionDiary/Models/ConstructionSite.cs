@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConstructionDiary.Models
 {
@@ -7,11 +8,13 @@ namespace ConstructionDiary.Models
         public int Id { get; set; }
         public string Title { get; set; }
 
+        [Required]
         public decimal ProjectWorth { get; set; }
 
         public DateTime DateStart { get; set; }
         public DateTime DateFinish { get; set; }
 
+        [Required]
         public int CityId { get; set; }
         public City City { get; set; }
 
@@ -21,7 +24,7 @@ namespace ConstructionDiary.Models
         public int LocationId { get; set; }
         public Location Location { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User CreatedBy { get; set; }
     }
 }

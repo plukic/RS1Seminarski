@@ -31,17 +31,17 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Aktivni zadaci</a></li>
-                    @if (Context.User.Identity.IsAuthenticated &&  Context.User.IsInRole("Manager"))
-                    {
-                        <li><a asp-area="" asp-controller="Home" asp-action="About">Korisnički nalozi</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Korisnici</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Gradilišta</a></li>
-                    }
+                    @if (Context.User.Identity.IsAuthenticated && Context.User.IsInRole("Manager"))
+    {
+                <li><a asp-area="" asp-controller="Home" asp-action="About">Korisnički nalozi</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Korisnici</a></li>
+                <li><a asp-area="" asp-controller="ConstructionSites" asp-action="Index">Gradilišta</a></li>
+}
                     @if (Context.User.Identity.IsAuthenticated && (Context.User.IsInRole("Manager") || Context.User.IsInRole("ConstructionSiteManager")))
-                    {
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Radni listovi</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Alati i mašine</a></li>
-                    }
+    {
+                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Radni listovi</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Alati i mašine</a></li>
+}
 
                 </ul>
 
