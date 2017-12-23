@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using ConstructionDiary.BR.UserManagment.Implementation;
 using ConstructionDiary.BR.UserManagment;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConstructionDiary
 {
@@ -25,7 +26,8 @@ namespace ConstructionDiary
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<ConstructionCompanyContext>();
+            services.AddDbContext<ConstructionCompanyContext>(options =>
+       options.UseSqlServer(Configuration.GetConnectionString("fit-server")));
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ConstructionCompanyContext>()
                 .AddDefaultTokenProviders();
@@ -44,7 +46,7 @@ namespace ConstructionDiary
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IUserDA, UserDA>();
-            services.AddTransient<IUserManagment,UserManagment>();
+            services.AddTransient<IUserManagment, UserManagment>();
 
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
