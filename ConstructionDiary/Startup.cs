@@ -51,6 +51,7 @@ namespace ConstructionDiary
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddLogging();
 
         }
 

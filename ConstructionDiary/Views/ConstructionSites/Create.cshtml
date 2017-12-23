@@ -1,0 +1,57 @@
+﻿@model ConstructionDiary.ViewModels.CreateConstructionSiteViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    var citiesSelectList = Model.cities.Select(c => new SelectListItem() { Text = c.Name, Value = c.Id.ToString() }).ToList();
+}
+
+<h2>Create</h2>
+
+<h4>ConstructionSite</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="constructionSite.Title" class="control-label"></label>
+                <input asp-for="constructionSite.Title" class="form-control" />
+                <span asp-validation-for="constructionSite.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="constructionSite.ProjectWorth" class="control-label"></label>
+                <input asp-for="constructionSite.ProjectWorth" class="form-control" />
+                <span asp-validation-for="constructionSite.ProjectWorth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="constructionSite.DateStart" class="control-label"></label>
+                <input type="date" asp-for="constructionSite.DateStart" class="form-control" />
+                <span asp-validation-for="constructionSite.DateStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="constructionSite.DateFinish" class="control-label"></label>
+                <input type="date" asp-for="constructionSite.DateFinish" class="form-control" />
+                <span asp-validation-for="constructionSite.DateFinish" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="constructionSite.CityId" class="control-label"></label>
+                <select asp-for="constructionSite.CityId" class ="form-control" asp-items="citiesSelectList"></select>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="constructionSite.ContractId" class="control-label"></label>
+                <select asp-for="constructionSite.ContractId" class ="form-control" asp-items="citiesSelectList"></select>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
