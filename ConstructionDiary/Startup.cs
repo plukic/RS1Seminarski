@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using ConstructionDiary.DAL;
 using Microsoft.AspNetCore.Identity;
 using System;
+using ConstructionDiary.BR.UserManagment.Implementation;
+using ConstructionDiary.BR.UserManagment;
 
 namespace ConstructionDiary
 {
@@ -41,12 +43,16 @@ namespace ConstructionDiary
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IUserDA, UserDA>();
+            services.AddTransient<IUserManagment,UserManagment>();
+
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddLogging();
 
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
