@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ConstructionDiary.Models.ConstructionSite>
+﻿@using DataLayer.Models
+@using Task = System.Threading.Tasks.Task
+@model IEnumerable<DataLayer.Models.ConstructionSite>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,21 +14,21 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProjectWorth)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateStart)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateFinish)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserId)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectWorth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateFinish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.City)
             </th>
@@ -55,13 +57,13 @@
                 @Html.DisplayFor(modelItem => item.DateFinish)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @Html.DisplayFor(modelItem => item.CreatedBy.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.City.Id)
+                @Html.DisplayFor(modelItem => item.City.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Contract.Id)
+                @Html.DisplayFor(modelItem => item.Contract.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Location.Id)

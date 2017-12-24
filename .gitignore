@@ -75,3 +75,5 @@ _[Ss]cripts
 *.ncrunchsolution
 *.dot[Cc]over
 .vs
+ConstructionDiary/wwwroot/uploads/*.*
+!ConstructionDiary/wwwroot/uploads/.gitkeep

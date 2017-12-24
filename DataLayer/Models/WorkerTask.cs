@@ -1,4 +1,4 @@
-﻿namespace ConstructionDiary.Models
+﻿namespace DataLayer.Models
 {
     public class WorkerTask
     {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ConstructionDiary.BR;
+﻿using ConstructionDiary.BR;
 using ConstructionDiary.BR.UserManagment;
-using ConstructionDiary.Models;
-using Microsoft.AspNetCore.Authorization;
+using DataLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,7 +45,6 @@ namespace ConstructionDiary.Controllers
             return RedirectToAction("Index","Home");
         }
 
-        [Authorize]
         public IActionResult Register()
         {
 

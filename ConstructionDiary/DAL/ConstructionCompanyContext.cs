@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using ConstructionDiary.Models;
 
 namespace ConstructionDiary.DAL
 {

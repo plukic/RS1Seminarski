@@ -4,15 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
 namespace ConstructionDiary.Migrations
 {
     [DbContext(typeof(ConstructionCompanyContext))]
-    [Migration("20171221220924_PleskDBMigration")]
-    partial class PleskDBMigration
+    [Migration("20171224115649_construction_site_changes")]
+    partial class construction_site_changes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +19,7 @@ namespace ConstructionDiary.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ConstructionDiary.Models.City", b =>
+            modelBuilder.Entity("DataLayer.Models.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -35,7 +33,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("City");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.ConstructionSite", b =>
+            modelBuilder.Entity("DataLayer.Models.ConstructionSite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -44,19 +42,19 @@ namespace ConstructionDiary.Migrations
 
                     b.Property<int>("ContractId");
 
-                    b.Property<string>("CreatedById");
+                    b.Property<DateTime?>("DateFinish");
 
-                    b.Property<DateTime>("DateFinish");
-
-                    b.Property<DateTime>("DateStart");
+                    b.Property<DateTime?>("DateStart")
+                        .IsRequired();
 
                     b.Property<int>("LocationId");
 
                     b.Property<decimal>("ProjectWorth");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
@@ -64,14 +62,14 @@ namespace ConstructionDiary.Migrations
 
                     b.HasIndex("ContractId");
 
-                    b.HasIndex("CreatedById");
-
                     b.HasIndex("LocationId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ConstructionSites");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.ConstructionSiteManager", b =>
+            modelBuilder.Entity("DataLayer.Models.ConstructionSiteManager", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -87,7 +85,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("ConstructionSiteManager");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Contract", b =>
+            modelBuilder.Entity("DataLayer.Models.Contract", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -105,7 +103,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Contracts");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.ControlEntry", b =>
+            modelBuilder.Entity("DataLayer.Models.ControlEntry", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -128,7 +126,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("ControlEntries");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Document", b =>
+            modelBuilder.Entity("DataLayer.Models.Document", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -144,7 +142,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Documents");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Location", b =>
+            modelBuilder.Entity("DataLayer.Models.Location", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -160,7 +158,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Machine", b =>
+            modelBuilder.Entity("DataLayer.Models.Machine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -174,7 +172,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Machines");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Material", b =>
+            modelBuilder.Entity("DataLayer.Models.Material", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -188,7 +186,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Material");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Remark", b =>
+            modelBuilder.Entity("DataLayer.Models.Remark", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -207,7 +205,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Remarks");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Role", b =>
+            modelBuilder.Entity("DataLayer.Models.Role", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -235,7 +233,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Task", b =>
+            modelBuilder.Entity("DataLayer.Models.Task", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -254,7 +252,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Tool", b =>
+            modelBuilder.Entity("DataLayer.Models.Tool", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -268,7 +266,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Tools");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.User", b =>
+            modelBuilder.Entity("DataLayer.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -325,7 +323,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Worker", b =>
+            modelBuilder.Entity("DataLayer.Models.Worker", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -343,7 +341,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Workers");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.WorkerTask", b =>
+            modelBuilder.Entity("DataLayer.Models.WorkerTask", b =>
                 {
                     b.Property<int>("WorkerId");
 
@@ -358,7 +356,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("WorkerTask");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Worksheet", b =>
+            modelBuilder.Entity("DataLayer.Models.Worksheet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -376,7 +374,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Worksheets");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.WorksheetMachine", b =>
+            modelBuilder.Entity("DataLayer.Models.WorksheetMachine", b =>
                 {
                     b.Property<int>("WorksheetId");
 
@@ -393,7 +391,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("WorksheetMachine");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.WorksheetMaterial", b =>
+            modelBuilder.Entity("DataLayer.Models.WorksheetMaterial", b =>
                 {
                     b.Property<int>("WorksheetId");
 
@@ -408,7 +406,7 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("WorksheetMaterial");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.WorksheetTool", b =>
+            modelBuilder.Entity("DataLayer.Models.WorksheetTool", b =>
                 {
                     b.Property<int>("WorksheetId");
 
@@ -505,124 +503,124 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.ConstructionSite", b =>
+            modelBuilder.Entity("DataLayer.Models.ConstructionSite", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.City", "City")
+                    b.HasOne("DataLayer.Models.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ConstructionDiary.Models.Contract", "Contract")
+                    b.HasOne("DataLayer.Models.Contract", "Contract")
                         .WithMany()
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ConstructionDiary.Models.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
-
-                    b.HasOne("ConstructionDiary.Models.Location", "Location")
+                    b.HasOne("DataLayer.Models.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataLayer.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.ConstructionSiteManager", b =>
+            modelBuilder.Entity("DataLayer.Models.ConstructionSiteManager", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.User", "User")
+                    b.HasOne("DataLayer.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Contract", b =>
+            modelBuilder.Entity("DataLayer.Models.Contract", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Document", "Document")
+                    b.HasOne("DataLayer.Models.Document", "Document")
                         .WithMany()
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.ControlEntry", b =>
+            modelBuilder.Entity("DataLayer.Models.ControlEntry", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Document", "Document")
+                    b.HasOne("DataLayer.Models.Document", "Document")
                         .WithMany()
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ConstructionDiary.Models.Worksheet")
+                    b.HasOne("DataLayer.Models.Worksheet")
                         .WithMany("ControlEntries")
                         .HasForeignKey("WorksheetId");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Remark", b =>
+            modelBuilder.Entity("DataLayer.Models.Remark", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Worksheet", "Worksheet")
+                    b.HasOne("DataLayer.Models.Worksheet", "Worksheet")
                         .WithMany("Remarks")
                         .HasForeignKey("WorksheetId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Task", b =>
+            modelBuilder.Entity("DataLayer.Models.Task", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Worksheet")
+                    b.HasOne("DataLayer.Models.Worksheet")
                         .WithMany("Tasks")
                         .HasForeignKey("WorksheetId");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.WorkerTask", b =>
+            modelBuilder.Entity("DataLayer.Models.WorkerTask", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Task", "Task")
+                    b.HasOne("DataLayer.Models.Task", "Task")
                         .WithMany("WorkerTasks")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ConstructionDiary.Models.Worker", "Worker")
+                    b.HasOne("DataLayer.Models.Worker", "Worker")
                         .WithMany("WorkerTasks")
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.Worksheet", b =>
+            modelBuilder.Entity("DataLayer.Models.Worksheet", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.ConstructionSiteManager", "GetConstructionSiteManager")
+                    b.HasOne("DataLayer.Models.ConstructionSiteManager", "GetConstructionSiteManager")
                         .WithMany("Worksheets")
                         .HasForeignKey("GetConstructionSiteManagerId");
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.WorksheetMachine", b =>
+            modelBuilder.Entity("DataLayer.Models.WorksheetMachine", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Machine", "Machine")
+                    b.HasOne("DataLayer.Models.Machine", "Machine")
                         .WithMany("WorksheetMachines")
                         .HasForeignKey("MachineId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ConstructionDiary.Models.Worksheet", "Worksheet")
+                    b.HasOne("DataLayer.Models.Worksheet", "Worksheet")
                         .WithMany("WorksheetMachines")
                         .HasForeignKey("WorksheetId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.WorksheetMaterial", b =>
+            modelBuilder.Entity("DataLayer.Models.WorksheetMaterial", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Material", "Material")
+                    b.HasOne("DataLayer.Models.Material", "Material")
                         .WithMany("WorksheetMaterials")
                         .HasForeignKey("MaterialId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ConstructionDiary.Models.Worksheet", "Worksheet")
+                    b.HasOne("DataLayer.Models.Worksheet", "Worksheet")
                         .WithMany("WorksheetMaterials")
                         .HasForeignKey("WorksheetId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ConstructionDiary.Models.WorksheetTool", b =>
+            modelBuilder.Entity("DataLayer.Models.WorksheetTool", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Tool", "Tool")
+                    b.HasOne("DataLayer.Models.Tool", "Tool")
                         .WithMany("WorksheetTools")
                         .HasForeignKey("ToolId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ConstructionDiary.Models.Worksheet", "Worksheet")
+                    b.HasOne("DataLayer.Models.Worksheet", "Worksheet")
                         .WithMany("WorksheetTools")
                         .HasForeignKey("WorksheetId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -630,7 +628,7 @@ namespace ConstructionDiary.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Role")
+                    b.HasOne("DataLayer.Models.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -638,7 +636,7 @@ namespace ConstructionDiary.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.User")
+                    b.HasOne("DataLayer.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -646,7 +644,7 @@ namespace ConstructionDiary.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.User")
+                    b.HasOne("DataLayer.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -654,12 +652,12 @@ namespace ConstructionDiary.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.Role")
+                    b.HasOne("DataLayer.Models.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ConstructionDiary.Models.User")
+                    b.HasOne("DataLayer.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -667,7 +665,7 @@ namespace ConstructionDiary.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ConstructionDiary.Models.User")
+                    b.HasOne("DataLayer.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

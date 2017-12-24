@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ConstructionDiary.Models
+namespace DataLayer.Models
 {
     public class Tool
     {

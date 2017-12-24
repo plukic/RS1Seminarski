@@ -1,5 +1,4 @@
-﻿using ConstructionDiary.Models;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +9,11 @@ using System;
 using ConstructionDiary.BR.UserManagment.Implementation;
 using ConstructionDiary.BR.UserManagment;
 using Microsoft.EntityFrameworkCore;
+using ConstructionDiary.BR.ConstructionSites.Interfaces;
+using ConstructionDiary.BR.ConstructionSites.Implementation;
+using ConstructionDiary.BR.Documents.Interfaces;
+using ConstructionDiary.BR.Documents.Implementation;
+using DataLayer.Models;
 
 namespace ConstructionDiary
 {
@@ -27,7 +31,7 @@ namespace ConstructionDiary
         {
 
             services.AddDbContext<ConstructionCompanyContext>(options =>
-       options.UseSqlServer(Configuration.GetConnectionString("fit-server")));
+       options.UseSqlServer(Configuration.GetConnectionString("local")));
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ConstructionCompanyContext>()
                 .AddDefaultTokenProviders();
@@ -47,6 +51,8 @@ namespace ConstructionDiary
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IUserDA, UserDA>();
             services.AddTransient<IUserManagment, UserManagment>();
+            services.AddTransient<IConstructionSitesService, ConstructionSitesService>();
+            services.AddTransient<IDocumentsService, DocumentsService>();
 
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
@@ -63,11 +69,11 @@ namespace ConstructionDiary
             AuthAppBuilderExtensions.UseAuthentication(app);
             app.UseMvcWithDefaultRoute();
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //else
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
             {
                 app.UseExceptionHandler("/Home/Error");
             }

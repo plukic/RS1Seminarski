@@ -1,0 +1,71 @@
+﻿@using DataLayer.Models
+@using Task = System.Threading.Tasks.Task
+@model DataLayer.Models.ConstructionSite
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ConstructionSite</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectWorth)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectWorth)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateStart)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateStart)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateFinish)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateFinish)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Contract)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Contract.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Location.Id)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
