@@ -12,5 +12,7 @@ namespace ConstructionDiary.DAL
         void Add(T entity);
         void Delete(T entity);
         void Edit(T entity);
+        IEnumerable<T> List(ISpecification<T> spec);
+        T GetSingle(ISpecification<T> spec);
     }
 }

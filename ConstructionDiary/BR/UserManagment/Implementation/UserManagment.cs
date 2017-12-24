@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ConstructionDiary.Models;
+using DataLayer.Models;
 
 namespace ConstructionDiary.BR.UserManagment.Implementation
 {

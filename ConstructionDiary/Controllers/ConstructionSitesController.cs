@@ -1,53 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ConstructionDiary.BR.ConstructionSites.Interfaces;
 using ConstructionDiary.DAL;
-using ConstructionDiary.Models;
 using ConstructionDiary.ViewModels;
+using DataLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ConstructionDiary.Controllers
 {
     public class ConstructionSitesController : Controller
     {
-        private IRepository<ConstructionSite> _constructionSitesRepository;
-        private IRepository<City> _citiesRepository;
-        private UserManager<User> _userManager;
-        private ILogger<ConstructionSitesController> _logger;
+        private readonly IRepository<City> _citiesRepository;
+        private readonly ILogger<ConstructionSitesController> _logger;
+        private readonly IConstructionSitesService _constructionSitesService;
+        private readonly UserManager<User> _userManager;
 
         public ConstructionSitesController(
             IRepository<ConstructionSite> constructionSitesRepository,
             IRepository<City> citiesRepository,
+            IRepository<Contract> contractsRepository,
             ILogger<ConstructionSitesController> logger,
+            IConstructionSitesService constructionSitesService,
             UserManager<User> userManager)
         {
-            _constructionSitesRepository = constructionSitesRepository;
             _citiesRepository = citiesRepository;
-            _userManager = userManager;
             _logger = logger;
+            _constructionSitesService = constructionSitesService;
+            _userManager = userManager;
         }
         // GET: ConstructionSites
         public ActionResult Index()
         {
-            List<ConstructionSite> constructionSites = _constructionSitesRepository.List().ToList();
+            var constructionSites = _constructionSitesService.GetAll();
             return View(constructionSites);
         }
 
         // GET: ConstructionSites/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var model = _constructionSitesService.GetById(id);
+            return View(model);
         }
 
         // GET: ConstructionSites/Create
+        [Authorize]
         public ActionResult Create()
         {
-            List<City> cities = _citiesRepository.List().ToList();
-            ConstructionSite constructionSite = new ConstructionSite();
+            var cities = _citiesRepository.List().ToList();
+            var constructionSite = new ConstructionSite();
             var viewModel = new CreateConstructionSiteViewModel()
             {
                 constructionSite = constructionSite,
@@ -59,8 +64,9 @@ namespace ConstructionDiary.Controllers
         // POST: ConstructionSites/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ConstructionSite constructionSite)
+        public async Task<ActionResult> Create(ConstructionSite constructionSite, IFormFile contractFile)
         {
+            
             try
             {
                 if (!ModelState.IsValid)
@@ -69,15 +75,13 @@ namespace ConstructionDiary.Controllers
                 }
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 constructionSite.UserId = user.Id;
-                constructionSite.ContractId = 3;
-                constructionSite.LocationId = 1;
+                await _constructionSitesService.Store(constructionSite, contractFile);
 
-                _constructionSitesRepository.Add(constructionSite);
                 return RedirectToAction(nameof(Index));
             }
             catch(Exception e)
             {
-                _logger.LogError("Error creating constriction site", e);
+                _logger.LogError("Error creating construction site", e);
                 return RedirectToAction("Create");
             }
         }
@@ -108,7 +112,8 @@ namespace ConstructionDiary.Controllers
         // GET: ConstructionSites/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var model = _constructionSitesService.GetById(id);
+            return View(model);
         }
 
         // POST: ConstructionSites/Delete/5
@@ -118,7 +123,7 @@ namespace ConstructionDiary.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                _constructionSitesService.DeleteById(id);
 
                 return RedirectToAction(nameof(Index));
             }

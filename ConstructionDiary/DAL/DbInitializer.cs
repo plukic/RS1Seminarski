@@ -1,6 +1,5 @@
 ﻿using ConstructionDiary.DAL;
-using ConstructionDiary.Models;
-using System;
+using DataLayer.Models;
 using System.Linq;
 
 namespace ConstructionDiary.Data

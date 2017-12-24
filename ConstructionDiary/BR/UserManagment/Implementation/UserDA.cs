@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ConstructionDiary.DAL;
-using ConstructionDiary.Models;
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConstructionDiary.BR.UserManagment.Implementation

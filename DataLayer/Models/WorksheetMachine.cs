@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConstructionDiary.Models
+namespace DataLayer.Models
 {
     public class WorksheetMachine
     {
