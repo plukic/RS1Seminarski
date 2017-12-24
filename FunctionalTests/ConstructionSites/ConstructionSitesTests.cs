@@ -1,8 +1,10 @@
-﻿using FunctionalTests.PageObjectModels;
+﻿using System;
+using FunctionalTests.PageObjectModels;
 using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 using System.IO;
 using System.Reflection;
+using OpenQA.Selenium.Support.UI;
 
 namespace FunctionalTests.ConstructionSites
 {
@@ -26,7 +28,7 @@ namespace FunctionalTests.ConstructionSites
         }
 
         [Test]
-        public void ShouldDisplaySiteCreationForm()
+        public void ShouldAllowConstructionSiteCreationThroughForm()
         {
             using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
             {
@@ -40,8 +42,12 @@ namespace FunctionalTests.ConstructionSites
                 var constructionSitesPage = new ConstructionSitesPage(driver);
                 constructionSitesPage.OpenSiteCreationForm();
 
-                var form = constructionSitesPage.ConstructionSitesCreationForm;
-                Assert.That(form, Is.Not.Null);
+                constructionSitesPage.FillOutForm();
+
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                var loadedList = wait.Until(ExpectedConditions.ElementToBeClickable(constructionSitesPage.ConstructionSitesTable));
+                Assert.That(loadedList, Is.Not.Null);
+
             }
         }
     }

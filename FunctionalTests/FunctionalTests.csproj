@@ -20,4 +20,8 @@
     <PackageReference Include="System.Security.Permissions" Version="4.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestStatics\" />
+  </ItemGroup>
+
 </Project>
