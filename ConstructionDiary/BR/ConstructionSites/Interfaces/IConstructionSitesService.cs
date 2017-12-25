@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace ConstructionDiary.BR.ConstructionSites.Interfaces
 {
@@ -11,5 +12,6 @@ namespace ConstructionDiary.BR.ConstructionSites.Interfaces
         List<ConstructionSite> GetAll();
         void DeleteById(int id);
         ConstructionSite GetById(int id);
+        Task Update(ConstructionSite constructionSite, IFormFile contractFile);
     }
 }

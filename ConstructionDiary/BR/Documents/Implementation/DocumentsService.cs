@@ -23,6 +23,19 @@ namespace ConstructionDiary.BR.Documents.Implementation
             _documentsRepository = documentsRepository;
 
         }
+
+        private async Task<string> _storeFileToFS(IFormFile file)
+        {
+            string fileName = GetUniqueName(file.FileName);
+            string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+            string filePath = Path.Combine(uploadsFolder, fileName);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            return filePath;
+        }
         private string GetUniqueName(string fileName)
         {
             fileName = Path.GetFileName(fileName);
@@ -33,13 +46,7 @@ namespace ConstructionDiary.BR.Documents.Implementation
         }
         public async Task<Document> Store(IFormFile file, string type)
         {
-            var fileName = GetUniqueName(file.FileName);
-            var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-            var filePath = Path.Combine(uploadsFolder, fileName);
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
+            string filePath = await _storeFileToFS(file);
             Document document = new Document()
             {
                 Location = filePath,
@@ -47,6 +54,16 @@ namespace ConstructionDiary.BR.Documents.Implementation
                 Type = type
             };
             _documentsRepository.Add(document);
+            return document;
+        }
+
+        public async Task<Document> Update(Document document, IFormFile contractFile)
+        {
+            string filePath = await _storeFileToFS(contractFile);
+            document.Location = filePath;
+            document.Date = DateTime.Now;
+
+            _documentsRepository.Edit(document);
             return document;
         }
     }
