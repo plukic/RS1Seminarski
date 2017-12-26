@@ -47,6 +47,11 @@ namespace ConstructionDiary.BR.ConstructionSites.Implementation
             return _constructionSitesRepository.List(specification).ToList();
         }
 
+        public List<ConstructionSite> GetAll(ISpecification<ConstructionSite> specification)
+        {
+            return _constructionSitesRepository.List(specification).ToList();
+        }
+
         public void DeleteById(int id)
         {
             var constructionSite = _constructionSitesRepository.GetById(id);

@@ -1,79 +1,102 @@
 ﻿@using DataLayer.Models
+@using ConstructionDiary.ViewModels;
 @using Task = System.Threading.Tasks.Task
-@model IEnumerable<DataLayer.Models.ConstructionSite>
+@*@model IEnumerable<DataLayer.Models.ConstructionSite>*@
+@model ConstructionDiary.ViewModels.ConstructionSitesListViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="row construction-sites-list">
+    <div class="col-sm-5 col-md-4 col-lg-3">
+        <h2>Index</h2>
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    </div>
+    <div class="col-sm-7 col-md-8 col-lg-9">
+        <form asp-action="" method="get" class="construction-sites-filters">
+            <div class="row">
+                <div class="col-sm-8 col-md-8 col-lg-8">
+                    <div class="form-group">
+                        <label asp-for="@Model.OpenStatus" class="control-label"></label>
+                        <select asp-for="@Model.OpenStatus" asp-items="Html.GetEnumSelectList<OpenStatus>()" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <input type="submit" value="Filter" class="btn btn-default"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProjectWorth)
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].ProjectWorth)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateStart)
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].DateStart)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateFinish)
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].DateFinish)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].CreatedBy)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].City)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Contract)
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].Contract)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].Location)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectWorth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateFinish)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Contract.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.ConstructionSites)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectWorth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateFinish)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contract.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.Id)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

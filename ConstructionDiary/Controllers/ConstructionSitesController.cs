@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ConstructionDiary.DAL.Specs;
 
 namespace ConstructionDiary.Controllers
 {
@@ -34,10 +35,16 @@ namespace ConstructionDiary.Controllers
             _userManager = userManager;
         }
         // GET: ConstructionSites
-        public ActionResult Index()
+        public ActionResult Index(OpenStatus openStatus = OpenStatus.All)
         {
-            var constructionSites = _constructionSitesService.GetAll();
-            return View(constructionSites);
+            ISpecification <ConstructionSite> specification = new ConstructionSitesFilters(openStatus);
+            List<ConstructionSite> constructionSites = _constructionSitesService.GetAll(specification);
+            var model = new ConstructionSitesListViewModel()
+            {
+                ConstructionSites = constructionSites,
+                OpenStatus = openStatus,
+            };
+            return View(model);
         }
 
         // GET: ConstructionSites/Details/5
