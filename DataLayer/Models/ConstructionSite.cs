@@ -8,7 +8,6 @@ namespace DataLayer.Models
     {
         Open,
         Closed,
-        All
     };
     public class ConstructionSite
     {
@@ -19,7 +18,7 @@ namespace DataLayer.Models
         [Required]
         public decimal ProjectWorth { get; set; }
 
-        [DefaultValue(Models.OpenStatus.All)]
+        [DefaultValue(Models.OpenStatus.Open)]
         public OpenStatus OpenStatus { get; set; }
 
         [Required]

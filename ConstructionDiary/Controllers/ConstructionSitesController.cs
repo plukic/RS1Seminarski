@@ -35,7 +35,7 @@ namespace ConstructionDiary.Controllers
             _userManager = userManager;
         }
         // GET: ConstructionSites
-        public ActionResult Index(OpenStatus openStatus = OpenStatus.All)
+        public ActionResult Index(OpenStatus? openStatus)
         {
             ISpecification <ConstructionSite> specification = new ConstructionSitesFilters(openStatus);
             List<ConstructionSite> constructionSites = _constructionSitesService.GetAll(specification);

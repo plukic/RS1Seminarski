@@ -7,6 +7,6 @@ namespace ConstructionDiary.ViewModels
     public class ConstructionSitesListViewModel
     {
         public List<ConstructionSite> ConstructionSites;
-        public OpenStatus OpenStatus = OpenStatus.All;
+        public OpenStatus? OpenStatus;
     }
 }

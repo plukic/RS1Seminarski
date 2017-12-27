@@ -1,7 +1,6 @@
 ﻿@using DataLayer.Models
 @using ConstructionDiary.ViewModels;
 @using Task = System.Threading.Tasks.Task
-@*@model IEnumerable<DataLayer.Models.ConstructionSite>*@
 @model ConstructionDiary.ViewModels.ConstructionSitesListViewModel
 
 @{
@@ -21,7 +20,9 @@
                 <div class="col-sm-8 col-md-8 col-lg-8">
                     <div class="form-group">
                         <label asp-for="@Model.OpenStatus" class="control-label"></label>
-                        <select asp-for="@Model.OpenStatus" asp-items="Html.GetEnumSelectList<OpenStatus>()" class="form-control"></select>
+                        <select asp-for="@Model.OpenStatus" asp-items="Html.GetEnumSelectList<OpenStatus>()" class="form-control">
+                            <option>Filter by open status</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-sm-4 col-md-4 col-lg-4">
