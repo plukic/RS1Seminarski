@@ -4,6 +4,7 @@ using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 using System.IO;
 using System.Reflection;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace FunctionalTests.ConstructionSites
@@ -32,20 +33,46 @@ namespace FunctionalTests.ConstructionSites
         {
             using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
             {
-                var registrationPage = new RegistrationPage(driver);
-                registrationPage.RegisterAndLogin();
-                driver.Navigate().GoToUrl(@"http://localhost:52140");
-
-                var navbar = new NavbarPage(driver);
-                navbar.NavigateToConstructionSites();
-
                 var constructionSitesPage = new ConstructionSitesPage(driver);
-                constructionSitesPage.OpenSiteCreationForm();
+                constructionSitesPage.CreateConstructionSite(driver);
+                
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                IWebElement loadedList = wait.Until(ExpectedConditions.ElementToBeClickable(constructionSitesPage.ConstructionSitesTable));
+                Assert.That(loadedList, Is.Not.Null);
+
+            }
+        }
+        [Test]
+        public void ShouldAllowConstructionSiteEditThroughForm()
+        {
+            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            {
+                var constructionSitesPage = new ConstructionSitesPage(driver);
+                int id = constructionSitesPage.CreateConstructionSite(driver);
+                driver.Navigate().GoToUrl(@"http://localhost:52140/ConstructionSites/Edit/" + id);
+                
+                constructionSitesPage.FillOutForm();
+                constructionSitesPage.SubmitForm();
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                IWebElement loadedList = wait.Until(ExpectedConditions.ElementToBeClickable(constructionSitesPage.ConstructionSitesTable));
+                Assert.That(loadedList, Is.Not.Null);
+
+            }
+        }
+        [Test]
+        public void ShouldAllowConstructionSiteEditWithoutFileInput()
+        {
+            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            {
+                var constructionSitesPage = new ConstructionSitesPage(driver);
+                int id = constructionSitesPage.CreateConstructionSite(driver);
+                driver.Navigate().GoToUrl(@"http://localhost:52140/ConstructionSites/Edit/" + id);
 
                 constructionSitesPage.FillOutForm();
-
+                constructionSitesPage.ContractFileInput.Clear();
+                constructionSitesPage.SubmitForm();
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-                var loadedList = wait.Until(ExpectedConditions.ElementToBeClickable(constructionSitesPage.ConstructionSitesTable));
+                IWebElement loadedList = wait.Until(ExpectedConditions.ElementToBeClickable(constructionSitesPage.ConstructionSitesTable));
                 Assert.That(loadedList, Is.Not.Null);
 
             }

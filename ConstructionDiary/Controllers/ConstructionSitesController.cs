@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ConstructionDiary.DAL.Specs;
 
 namespace ConstructionDiary.Controllers
 {
@@ -21,7 +23,6 @@ namespace ConstructionDiary.Controllers
         private readonly UserManager<User> _userManager;
 
         public ConstructionSitesController(
-            IRepository<ConstructionSite> constructionSitesRepository,
             IRepository<City> citiesRepository,
             IRepository<Contract> contractsRepository,
             ILogger<ConstructionSitesController> logger,
@@ -34,10 +35,16 @@ namespace ConstructionDiary.Controllers
             _userManager = userManager;
         }
         // GET: ConstructionSites
-        public ActionResult Index()
+        public ActionResult Index(OpenStatus openStatus = OpenStatus.All)
         {
-            var constructionSites = _constructionSitesService.GetAll();
-            return View(constructionSites);
+            ISpecification <ConstructionSite> specification = new ConstructionSitesFilters(openStatus);
+            List<ConstructionSite> constructionSites = _constructionSitesService.GetAll(specification);
+            var model = new ConstructionSitesListViewModel()
+            {
+                ConstructionSites = constructionSites,
+                OpenStatus = openStatus,
+            };
+            return View(model);
         }
 
         // GET: ConstructionSites/Details/5
@@ -73,9 +80,17 @@ namespace ConstructionDiary.Controllers
                 {
                     return View();
                 }
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                constructionSite.UserId = user.Id;
-                await _constructionSitesService.Store(constructionSite, contractFile);
+
+                if (constructionSite.Id != 0)
+                {
+                    await _constructionSitesService.Update(constructionSite, contractFile);
+                }
+                else
+                {
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+                    constructionSite.UserId = user.Id;
+                    await _constructionSitesService.Store(constructionSite, contractFile);
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -87,25 +102,40 @@ namespace ConstructionDiary.Controllers
         }
 
         // GET: ConstructionSites/Edit/5
-        public ActionResult Edit(int id)
+        public ViewResult Edit(int id)
         {
-            return View();
+            List<City> cities = _citiesRepository.List().ToList();
+            var constructionSite = _constructionSitesService.GetById(id);
+
+            var viewModel = new CreateConstructionSiteViewModel()
+            {
+                constructionSite = constructionSite,
+                cities = cities,
+            };
+            return View("Create", viewModel);
         }
 
         // POST: ConstructionSites/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
+                if (!ModelState.IsValid)
+                {
+                    return View("Create");
+                }
+                
+                //_constructionSitesService.Store(constructionSite, contractFile);
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+                _logger.LogError("Error creating construction site", e);
+                return View("Create");
             }
         }
 

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ConstructionDiary.DAL.Specs;
 using DataLayer.Models;
+using Task = System.Threading.Tasks.Task;
 
 namespace ConstructionDiary.BR.ConstructionSites.Implementation
 {
@@ -46,6 +47,11 @@ namespace ConstructionDiary.BR.ConstructionSites.Implementation
             return _constructionSitesRepository.List(specification).ToList();
         }
 
+        public List<ConstructionSite> GetAll(ISpecification<ConstructionSite> specification)
+        {
+            return _constructionSitesRepository.List(specification).ToList();
+        }
+
         public void DeleteById(int id)
         {
             var constructionSite = _constructionSitesRepository.GetById(id);
@@ -56,6 +62,25 @@ namespace ConstructionDiary.BR.ConstructionSites.Implementation
         {
             var specification = new ConstructionSiteAllRelatedDataSpecification(id);
             return _constructionSitesRepository.GetSingle(specification);
+        }
+
+        public async Task Update(ConstructionSite constructionSite, IFormFile contractFile)
+        {
+            if (contractFile != null)
+            {
+                constructionSite.Contract.Document =
+                    await _documentsService.Update(constructionSite.Contract.Document, contractFile);
+            }
+
+
+            constructionSite.Contract.Date = DateTime.Now;
+            var tempLocation = new Location();
+            _locationsRepository.Add(tempLocation);
+            constructionSite.LocationId = tempLocation.Id;
+
+            constructionSite.ContractId = constructionSite.Contract.Id;
+
+            _constructionSitesRepository.Edit(constructionSite);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace ConstructionDiary.DAL.Specs
         {
             AddInclude(c => c.City);
             AddInclude(c => c.Contract);
+            AddInclude(c => c.Contract.Document);
             AddInclude(c => c.CreatedBy);
         }
 
@@ -17,6 +18,7 @@ namespace ConstructionDiary.DAL.Specs
         {
             AddInclude(c => c.City);
             AddInclude(c => c.Contract);
+            AddInclude(c => c.Contract.Document);
             AddInclude(c => c.CreatedBy);
         }
     }

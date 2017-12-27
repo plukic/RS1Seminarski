@@ -4,6 +4,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataLayer.Models
 {
+    public enum OpenStatus
+    {
+        Open,
+        Closed,
+        All
+    };
     public class ConstructionSite
     {
         public int Id { get; set; }
@@ -12,6 +18,9 @@ namespace DataLayer.Models
 
         [Required]
         public decimal ProjectWorth { get; set; }
+
+        [DefaultValue(Models.OpenStatus.All)]
+        public OpenStatus OpenStatus { get; set; }
 
         [Required]
         public DateTime ?DateStart { get; set; }
