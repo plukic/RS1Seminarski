@@ -19,10 +19,9 @@
                 @Html.TextBoxFor(m => m.Username, new { @placeholder = "Korisničko ime" })
                 @Html.PasswordFor(m => m.Password, new { @placeholder = "Lozinka" })
                 <button>login</button>
-                @if (!ViewData.ModelState.IsValid)
-                {
-                    <p class="message" style="color:red">Podaci nisu validni</p>
-                }
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                @*<p class="message" style="color:red">@ValidationSummary</p>*@
                 <a href="/home">Home</a>
 
             </form>
