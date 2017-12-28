@@ -6,6 +6,7 @@ using DataLayer.Models;
 using ConstructionDiary.BR.UserManagment.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ConstructionDiary.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace ConstructionDiary.BR.UserManagment.Implementation
 {
@@ -13,10 +14,12 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
     {
         private IUserDA userDA;
         private IRoleDA roleDA;
-        public UserManagment(IUserDA userDA,IRoleDA roleDA)
+        private readonly UserManager<User> userManager;
+        public UserManagment(IUserDA userDA,IRoleDA roleDA,UserManager<User> userManager)
         {
             this.userDA = userDA;
             this.roleDA = roleDA;
+            this.userManager = userManager;
         }
 
      
@@ -70,6 +73,16 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
         public IList<SelectListItem> GetRoles()
         {
             return CreateUserRolesSelectList();
+        }
+
+        public string ResetPassword(string userId)
+        {
+            string newPassword = GenerateUserRandomPassword();
+            User user =  userManager.FindByIdAsync(userId).Result;
+            string hashedPass = userManager.PasswordHasher.HashPassword(user, newPassword);
+
+            userDA.UpdateUserPassword(userId, hashedPass);
+            return newPassword;
         }
 
         public bool UserExist(string userName)

@@ -45,5 +45,12 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
         {
             return ctx.Users.ToList();
         }
+
+        public void UpdateUserPassword(string userId, string hashedPass)
+        {
+            User u =  ctx.Users.Where(x => x.Id.Equals(userId)).First();
+            u.PasswordHash = hashedPass;
+            ctx.SaveChanges();
+        }
     }
 }

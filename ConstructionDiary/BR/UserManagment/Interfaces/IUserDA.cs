@@ -12,5 +12,6 @@ namespace ConstructionDiary.BR.UserManagment
         bool CreateUserAsync(User user,string password);
         bool AddRoleToUser(User user, Role r);
         User FindUser(string userName);
+        void UpdateUserPassword(string userId, string hashedPass);
     }
 }

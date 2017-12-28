@@ -15,5 +15,6 @@ namespace ConstructionDiary.BR.UserManagment
         IList<SelectListItem> GetRoles();
         string GenerateUserRandomPassword();
         bool UserExist(string userName);
+        string ResetPassword(string userId);
     }
 }

@@ -32,6 +32,7 @@ namespace ConstructionDiary.Controllers
             {
                 usersVM.Add(new UserAccountIndexViewModel()
                 {
+                    Id = x.Id,
                     Email = x.Email,
                     FirstNameLastName = x.FirstName + " " +x.LastName,
                     PhoneNumber = x.PhoneNumber,
@@ -80,5 +81,32 @@ namespace ConstructionDiary.Controllers
            return Json(!userExist);
         }
 
+        public IActionResult ResetPassword(string userId)
+        {
+            string newPassword = userManagment.ResetPassword(userId);
+
+            var users = userManagment.GetExistingUsers();
+            IList<UserAccountIndexViewModel> usersVM = new List<UserAccountIndexViewModel>();
+            UserAccountIndexViewModel vm;
+            foreach (var x in users)
+            {
+                vm = new UserAccountIndexViewModel()
+                {
+                    Id=x.Id,
+                    Email = x.Email,
+                    FirstNameLastName = x.FirstName + " " + x.LastName,
+                    PhoneNumber = x.PhoneNumber,
+                    Username = x.UserName
+                };
+                if (x.Id.Equals(userId))
+                {
+                    vm.NewPassword = newPassword;
+                    vm.HasResetPassword = true;
+                }
+
+                usersVM.Add(vm);
+            }
+            return View("Index",usersVM);
+        }
     }
 }

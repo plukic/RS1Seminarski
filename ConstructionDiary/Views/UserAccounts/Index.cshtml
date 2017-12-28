@@ -43,7 +43,15 @@
                     }
                 </td>
                 <td>
-                    @Html.ActionLink("Poništi password", "Delete", new { /* id=item.PrimaryKey */ })
+                    @if (!item.HasResetPassword)
+                    {
+                    @Html.ActionLink("Poništi password", "ResetPassword", new {userId =  item.Id})
+                    }
+                    else
+                    {
+                        <p>@item.NewPassword</p>
+                    }
+
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
