@@ -11,6 +11,7 @@ namespace ConstructionDiary.DAL.Specs
             AddInclude(c => c.Contract);
             AddInclude(c => c.Contract.Document);
             AddInclude(c => c.CreatedBy);
+            AddInclude(c => c.Location);
         }
 
         public ConstructionSiteAllRelatedDataSpecification(int id)
@@ -20,6 +21,7 @@ namespace ConstructionDiary.DAL.Specs
             AddInclude(c => c.Contract);
             AddInclude(c => c.Contract.Document);
             AddInclude(c => c.CreatedBy);
+            AddInclude(c => c.Location);
         }
     }
 }

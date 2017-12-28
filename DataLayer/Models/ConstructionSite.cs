@@ -39,6 +39,7 @@ namespace DataLayer.Models
         public Contract Contract { get; set; }
 
         public int LocationId { get; set; }
+        [Required]
         public Location Location { get; set; }
 
         [DisplayName("Created by")]

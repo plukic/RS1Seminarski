@@ -78,7 +78,13 @@ namespace ConstructionDiary.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return View();
+                    var cities = _citiesRepository.List().ToList();
+                    var viewModel = new CreateConstructionSiteViewModel()
+                    {
+                        constructionSite = constructionSite,
+                        cities = cities,
+                    };
+                    return View(viewModel);
                 }
 
                 if (constructionSite.Id != 0)

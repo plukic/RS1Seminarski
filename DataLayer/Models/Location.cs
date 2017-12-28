@@ -6,10 +6,10 @@ namespace DataLayer.Models
     public class Location
     {
         public int Id { get; set; }
-        [Required]
-        public double Latitude { get; set; }
-        [Required]
-        public double Longitude { get; set; }
+        [Required(ErrorMessage = "Latitude is required")]
+        public double? Latitude { get; set; }
+        [Required(ErrorMessage = "Longitude is required")]
+        public double? Longitude { get; set; }
         public string Address { get; set; }
 
         [NotMapped]

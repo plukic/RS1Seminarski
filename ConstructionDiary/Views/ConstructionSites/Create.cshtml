@@ -45,11 +45,12 @@
             </div>
             @*<input type="hidden" asp-for="constructionSite.Contract.Id" />*@
             @{
-                if (Model.constructionSite.Id != 0)
-                {
-                    <input type="hidden" asp-for="constructionSite.Contract.Id" />
-                    <input type="hidden" asp-for="constructionSite.Contract.Document.Id" />
-                }
+        if (isEdit)
+        {
+            <input type="hidden" asp-for="constructionSite.Contract.Id" />
+            <input type="hidden" asp-for="constructionSite.Contract.Document.Id" />
+            <input type="hidden" asp-for="constructionSite.Location.Id" />
+}
             }
 
             <div class="form-group">
@@ -69,10 +70,15 @@
                     </div>
                 }
             }
+            <input type="hidden" asp-for="constructionSite.Location.Latitude" id="site_latitude" />
+            <input type="hidden" asp-for="constructionSite.Location.Longitude" id="site_longitude" />
             <div class="form-group">
                 <input type="submit" value="@title" class="btn btn-default" />
             </div>
         </form>
+    </div>
+    <div class="col-md-8">
+        @Html.Partial("LocationMap", Model.constructionSite.Location)
     </div>
 </div>
 

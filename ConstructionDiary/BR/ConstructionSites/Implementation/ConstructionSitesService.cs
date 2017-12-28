@@ -30,12 +30,10 @@ namespace ConstructionDiary.BR.ConstructionSites.Implementation
         public async Task<ConstructionSite> Store(ConstructionSite constructionSite, IFormFile contract)
         {
             Document document = await _documentsService.Store(contract, "opis");
+            _locationsRepository.Add(constructionSite.Location);
 
             constructionSite.Contract.Document = document;
             constructionSite.Contract.Date = DateTime.Now;
-            var tempLocation = new Location();
-            _locationsRepository.Add(tempLocation);
-            constructionSite.LocationId = tempLocation.Id;
 
             _constructionSitesRepository.Add(constructionSite);
             return constructionSite;
@@ -74,13 +72,18 @@ namespace ConstructionDiary.BR.ConstructionSites.Implementation
 
 
             constructionSite.Contract.Date = DateTime.Now;
-            var tempLocation = new Location();
-            _locationsRepository.Add(tempLocation);
-            constructionSite.LocationId = tempLocation.Id;
+            _locationsRepository.Edit(constructionSite.Location);
 
             constructionSite.ContractId = constructionSite.Contract.Id;
 
-            _constructionSitesRepository.Edit(constructionSite);
+            try
+            {
+                _constructionSitesRepository.Edit(constructionSite);
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+            }
         }
     }
 }
