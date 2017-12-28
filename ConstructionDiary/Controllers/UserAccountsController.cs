@@ -6,21 +6,26 @@ using ConstructionDiary.BR.UserManagment;
 using ConstructionDiary.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using DataLayer.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace ConstructionDiary.Controllers
 {
     [Authorize(Roles = "Manager")]
     public class UserAccountsController : Controller
     {
         IUserManagment userManagment;
-
+        
         public UserAccountsController(IUserManagment userManagment)
         {
             this.userManagment = userManagment;
         }
 
+
+
         public IActionResult Index()
         {
+
             var users = userManagment.GetExistingUsers();
             IList<UserAccountIndexViewModel> usersVM = new List<UserAccountIndexViewModel>();
             foreach (var x in users)
@@ -36,5 +41,44 @@ namespace ConstructionDiary.Controllers
 
             return View(usersVM);
         }
+        public IActionResult AddUser()
+        {
+            IList<SelectListItem>roles = userManagment.GetRoles();
+            string password=  userManagment.GenerateUserRandomPassword();
+            RegisterViewModel rvm = new RegisterViewModel
+            {
+                Roles = roles,
+                Password = password
+            };
+
+            return View(rvm);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddUser(RegisterViewModel obj)
+        {
+            if (ModelState.IsValid)
+            {
+                if (userManagment.CreateUserAsync(obj))
+                {
+                    return RedirectToAction("AddUser");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Greška prilikom kreiranja korisnika");
+                }
+
+
+            }
+            obj.Roles = userManagment.GetRoles();
+            return View(obj);
+        }
+        [HttpPost]
+        public JsonResult ValidUsername(string UserName)
+        {
+            bool userExist = userManagment.UserExist(UserName);
+           return Json(!userExist);
+        }
+
     }
 }

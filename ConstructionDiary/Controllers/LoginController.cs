@@ -1,5 +1,6 @@
 ﻿using ConstructionDiary.BR;
 using ConstructionDiary.BR.UserManagment;
+using ConstructionDiary.ViewModels;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
