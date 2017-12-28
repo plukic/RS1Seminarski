@@ -96,6 +96,24 @@ namespace ConstructionDiary.Controllers
             return View("Index", PrepareUserAccountIndexViewModel());
         }
 
+        public IActionResult Edit(string userId)
+        {
+            UserAccountEditViewModel vm = userManagment.GetUserDetails(userId);
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(UserAccountEditViewModel userEditModel)
+        {
+            if (ModelState.IsValid)
+            {
+                userManagment.UpdateUser(userEditModel);
+                return RedirectToAction("Index");
+            }
+            return View(userEditModel);
+        }
+
         private IList<UserAccountIndexViewModel> PrepareUserAccountIndexViewModel()
         {
             var users = userManagment.GetExistingUsers();

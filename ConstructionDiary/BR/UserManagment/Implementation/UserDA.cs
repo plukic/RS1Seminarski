@@ -6,6 +6,7 @@ using ConstructionDiary.DAL;
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using ConstructionDiary.ViewModels;
 
 namespace ConstructionDiary.BR.UserManagment.Implementation
 {
@@ -37,25 +38,38 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
 
         public void DeactivateUser(string userId)
         {
-            User u  = ctx.Users.Where(x=>x.Id.Equals(userId)).FirstOrDefault();
+            User u = ctx.Users.Where(x => x.Id.Equals(userId)).FirstOrDefault();
             u.IsDeleted = true;
             ctx.SaveChanges();
         }
 
         public User FindUser(string userName)
         {
-            return ctx.Users.Where(x=>x.UserName.Equals(userName)).FirstOrDefault();
+            return ctx.Users.Where(x => x.UserName.Equals(userName)).FirstOrDefault();
 
         }
+
+
 
         public List<User> GetUsers()
         {
             return ctx.Users.ToList();
         }
 
+        public void UpdateUser(UserAccountEditViewModel userEditModel)
+        {
+            User u = ctx.Users.Where(x => x.Id.Equals(userEditModel.UserId)).FirstOrDefault();
+            u.Email = userEditModel.Email;
+            u.FirstName = userEditModel.FirstName;
+            u.LastName = userEditModel.LastName;
+            u.DateOfBirth = userEditModel.BirthDate;
+            ctx.SaveChanges();
+
+        }
+
         public void UpdateUserPassword(string userId, string hashedPass)
         {
-            User u =  ctx.Users.Where(x => x.Id.Equals(userId)).First();
+            User u = ctx.Users.Where(x => x.Id.Equals(userId)).First();
             u.PasswordHash = hashedPass;
             ctx.SaveChanges();
         }

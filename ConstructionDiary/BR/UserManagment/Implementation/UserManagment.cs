@@ -80,6 +80,37 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
             return CreateUserRolesSelectList();
         }
 
+        public UserAccountEditViewModel GetUserDetails(string userId)
+        {
+            UserAccountEditViewModel vm;
+            User u = userManager.FindByIdAsync(userId).Result;
+            Role role = roleDA.FindRoleByUserId(userId);
+            IList<Role> roles = roleDA.GetRoles();
+            IList<SelectListItem> items = new List<SelectListItem>();
+            foreach (var x in roles)
+            {
+                items.Add(new SelectListItem
+                {
+                    Text = x.Name,
+                    Selected = x.Id.Equals(role.Id),
+                    Value = x.Name
+                });
+            }
+            vm = new UserAccountEditViewModel
+            {
+                BirthDate = u.DateOfBirth,
+                Email = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                UserId = u.Id,
+                UserName = u.UserName,
+                UserSelectedRole = role.Name,
+                Roles = items
+            };
+
+            return vm;
+        }
+
         public string ResetPassword(string userId)
         {
             string newPassword = GenerateUserRandomPassword();
@@ -88,6 +119,12 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
 
             userDA.UpdateUserPassword(userId, hashedPass);
             return newPassword;
+        }
+
+        public void UpdateUser(UserAccountEditViewModel userEditModel)
+        {
+            userDA.UpdateUser(userEditModel);
+            roleDA.UpdateRole(userEditModel);
         }
 
         public bool UserExist(string userName)
