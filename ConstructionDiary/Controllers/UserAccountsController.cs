@@ -23,10 +23,13 @@ namespace ConstructionDiary.Controllers
 
 
 
-        public IActionResult Index()
+        public IActionResult Index(string userName, DateTime? birthDate)
         {
-            var users = userManagment.GetExistingUsers();
-            IList<UserAccountIndexViewModel> usersVM = PrepareUserAccountIndexViewModel();
+            ViewData["username"] = userName;
+            ViewData["birthDate"] = birthDate;
+            List<UserAccountIndexViewModel> usersVM = PrepareUserAccountIndexViewModel()
+                .Where(x => (string.IsNullOrEmpty(userName) || x.Username.Contains(userName)) && (birthDate==null||x.BirthDate.Equals(birthDate)))
+                .ToList();
             return View(usersVM);
         }
 
@@ -129,7 +132,8 @@ namespace ConstructionDiary.Controllers
                     Email = x.Email,
                     FirstNameLastName = x.FirstName + " " + x.LastName,
                     PhoneNumber = x.PhoneNumber,
-                    Username = x.UserName
+                    Username = x.UserName,
+                    BirthDate = x.DateOfBirth
                 };
                 usersVM.Add(vm);
             }
