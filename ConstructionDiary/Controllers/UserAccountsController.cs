@@ -15,7 +15,7 @@ namespace ConstructionDiary.Controllers
     public class UserAccountsController : Controller
     {
         IUserManagment userManagment;
-        
+
         public UserAccountsController(IUserManagment userManagment)
         {
             this.userManagment = userManagment;
@@ -25,27 +25,16 @@ namespace ConstructionDiary.Controllers
 
         public IActionResult Index()
         {
-
             var users = userManagment.GetExistingUsers();
-            IList<UserAccountIndexViewModel> usersVM = new List<UserAccountIndexViewModel>();
-            foreach (var x in users)
-            {
-                usersVM.Add(new UserAccountIndexViewModel()
-                {
-                    Id = x.Id,
-                    Email = x.Email,
-                    FirstNameLastName = x.FirstName + " " +x.LastName,
-                    PhoneNumber = x.PhoneNumber,
-                    Username = x.UserName
-                });
-            }
-
+            IList<UserAccountIndexViewModel> usersVM = PrepareUserAccountIndexViewModel();
             return View(usersVM);
         }
+
+
         public IActionResult AddUser()
         {
-            IList<SelectListItem>roles = userManagment.GetRoles();
-            string password=  userManagment.GenerateUserRandomPassword();
+            IList<SelectListItem> roles = userManagment.GetRoles();
+            string password = userManagment.GenerateUserRandomPassword();
             RegisterViewModel rvm = new RegisterViewModel
             {
                 Roles = roles,
@@ -78,35 +67,55 @@ namespace ConstructionDiary.Controllers
         public JsonResult ValidUsername(string UserName)
         {
             bool userExist = userManagment.UserExist(UserName);
-           return Json(!userExist);
+            return Json(!userExist);
         }
+
+
 
         public IActionResult ResetPassword(string userId)
         {
             string newPassword = userManagment.ResetPassword(userId);
 
             var users = userManagment.GetExistingUsers();
+            IList<UserAccountIndexViewModel> usersVM = PrepareUserAccountIndexViewModel();
+            foreach (var x in usersVM)
+            {
+                if (x.Id.Equals(userId))
+                {
+                    x.NewPassword = newPassword;
+                    x.HasResetPassword = true;
+                    break;
+                }
+            }
+            return View("Index", usersVM);
+        }
+
+        public IActionResult Delete(string userId)
+        {
+            userManagment.DeactivateUser(userId);
+            return View("Index", PrepareUserAccountIndexViewModel());
+        }
+
+        private IList<UserAccountIndexViewModel> PrepareUserAccountIndexViewModel()
+        {
+            var users = userManagment.GetExistingUsers();
             IList<UserAccountIndexViewModel> usersVM = new List<UserAccountIndexViewModel>();
             UserAccountIndexViewModel vm;
             foreach (var x in users)
             {
+                if (x.IsDeleted)
+                    continue;
                 vm = new UserAccountIndexViewModel()
                 {
-                    Id=x.Id,
+                    Id = x.Id,
                     Email = x.Email,
                     FirstNameLastName = x.FirstName + " " + x.LastName,
                     PhoneNumber = x.PhoneNumber,
                     Username = x.UserName
                 };
-                if (x.Id.Equals(userId))
-                {
-                    vm.NewPassword = newPassword;
-                    vm.HasResetPassword = true;
-                }
-
                 usersVM.Add(vm);
             }
-            return View("Index",usersVM);
+            return usersVM;
         }
     }
 }

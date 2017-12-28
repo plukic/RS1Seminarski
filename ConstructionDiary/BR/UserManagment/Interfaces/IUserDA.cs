@@ -13,5 +13,6 @@ namespace ConstructionDiary.BR.UserManagment
         bool AddRoleToUser(User user, Role r);
         User FindUser(string userName);
         void UpdateUserPassword(string userId, string hashedPass);
+        void DeactivateUser(string userId);
     }
 }

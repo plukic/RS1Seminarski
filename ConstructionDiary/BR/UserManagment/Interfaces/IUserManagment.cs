@@ -16,5 +16,6 @@ namespace ConstructionDiary.BR.UserManagment
         string GenerateUserRandomPassword();
         bool UserExist(string userName);
         string ResetPassword(string userId);
+        void DeactivateUser(string userId);
     }
 }

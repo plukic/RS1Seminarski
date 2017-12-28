@@ -44,6 +44,11 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
             return userDA.CreateUserAsync(user, obj.Password) && roleDA.AddRole(r) && userDA.AddRoleToUser(user, r);
         }
 
+        public void DeactivateUser(string userId)
+        {
+            userDA.DeactivateUser(userId);
+        }
+
         public string GenerateUserRandomPassword()
         {
             int passwordLength = 10;

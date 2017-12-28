@@ -35,6 +35,13 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
             return result.Succeeded;
         }
 
+        public void DeactivateUser(string userId)
+        {
+            User u  = ctx.Users.Where(x=>x.Id.Equals(userId)).FirstOrDefault();
+            u.IsDeleted = true;
+            ctx.SaveChanges();
+        }
+
         public User FindUser(string userName)
         {
             return ctx.Users.Where(x=>x.UserName.Equals(userName)).FirstOrDefault();
