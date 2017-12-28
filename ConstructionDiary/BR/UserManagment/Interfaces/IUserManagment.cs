@@ -17,5 +17,7 @@ namespace ConstructionDiary.BR.UserManagment
         bool UserExist(string userName);
         string ResetPassword(string userId);
         void DeactivateUser(string userId);
+        UserAccountEditViewModel GetUserDetails(string userId);
+        void UpdateUser(UserAccountEditViewModel userEditModel);
     }
 }
