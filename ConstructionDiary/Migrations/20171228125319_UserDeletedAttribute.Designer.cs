@@ -12,9 +12,10 @@ using System;
 namespace ConstructionDiary.Migrations
 {
     [DbContext(typeof(ConstructionCompanyContext))]
-    partial class ConstructionCompanyContextModelSnapshot : ModelSnapshot
+    [Migration("20171228125319_UserDeletedAttribute")]
+    partial class UserDeletedAttribute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

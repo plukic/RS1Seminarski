@@ -1,5 +1,6 @@
 ﻿using ConstructionDiary.BR;
 using ConstructionDiary.BR.UserManagment;
+using ConstructionDiary.ViewModels;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,15 +27,22 @@ namespace ConstructionDiary.Controllers
         {
             if (ModelState.IsValid)
             {
+                User u = userManager.FindByNameAsync(obj.Username).Result;
+                
+                if(u!=null && u.IsDeleted)
+                {
+                    ModelState.AddModelError("", "Korisnik nije aktivan");
+                    return View("Index", obj);
+                }
+
                 var result = loginManager.PasswordSignInAsync
                 (obj.Username, obj.Password, false, false).Result;
-
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError("", "Invalid login!");
+                ModelState.AddModelError("", "Pogrešni login podaci!");
             }
 
             return View("Index",obj);

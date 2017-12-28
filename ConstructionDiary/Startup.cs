@@ -14,6 +14,7 @@ using ConstructionDiary.BR.ConstructionSites.Implementation;
 using ConstructionDiary.BR.Documents.Interfaces;
 using ConstructionDiary.BR.Documents.Implementation;
 using DataLayer.Models;
+using ConstructionDiary.BR.UserManagment.Interfaces;
 
 namespace ConstructionDiary
 {
@@ -31,8 +32,15 @@ namespace ConstructionDiary
         {
 
             services.AddDbContext<ConstructionCompanyContext>(options =>
-       options.UseSqlServer(Configuration.GetConnectionString("local")));
-            services.AddIdentity<User, Role>()
+            options.UseSqlServer(Configuration.GetConnectionString("local")));
+            services.AddIdentity<User, Role>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredLength = 4;
+            })
                 .AddEntityFrameworkStores<ConstructionCompanyContext>()
                 .AddDefaultTokenProviders();
 
@@ -50,6 +58,7 @@ namespace ConstructionDiary
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IUserDA, UserDA>();
+            services.AddTransient<IRoleDA, RoleDA>();
             services.AddTransient<IUserManagment, UserManagment>();
             services.AddTransient<IConstructionSitesService, ConstructionSitesService>();
             services.AddTransient<IDocumentsService, DocumentsService>();

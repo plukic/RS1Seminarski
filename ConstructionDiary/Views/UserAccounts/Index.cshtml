@@ -43,19 +43,26 @@
                     }
                 </td>
                 <td>
-                    @Html.ActionLink("Poništi password", "Delete", new { /* id=item.PrimaryKey */ })
+                    @if (!item.HasResetPassword)
+                    {
+                    @Html.ActionLink("Poništi password", "ResetPassword", new {userId =  item.Id})
+                    }
+                    else
+                    {
+                        <p>@item.NewPassword</p>
+                    }
+
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Izbriši", "Delete", new { userId = item.Id })
                 </td>
             </tr>
         }
         <tr></tr>
     </tbody>
 </table>
-<button type="button" class="btn btn-primary">Dodaj</button>
+<input type="button" class="btn btn-primary" value="Dodaj" onclick="location.href='@Url.Action("AddUser", "UserAccounts")'" />
 
 
 
