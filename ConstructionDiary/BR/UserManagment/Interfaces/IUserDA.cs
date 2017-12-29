@@ -18,5 +18,7 @@ namespace ConstructionDiary.BR.UserManagment
         void DeactivateUser(string userId);
         void UpdateUser(UserAccountEditViewModel userEditModel);
         void UpdateUserProfile(UserAccountsProfileViewModel obj);
+        bool CreateConstructionSiteManager(RegisterViewModel obj);
+        bool ChangePassword(UserAccountsProfileViewModel obj);
     }
 }

@@ -1,4 +1,5 @@
-﻿using ConstructionDiary.DAL;
+﻿using ConstructionDiary.BR.UserManagment;
+using ConstructionDiary.DAL;
 using ConstructionDiary.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +21,9 @@ namespace ConstructionDiary
                 try
                 {
                     var context = services.GetRequiredService<ConstructionCompanyContext>();
+                    var userManager = services.GetRequiredService<IUserManagment>();
+
+                    userManager.SeedDb();
                     DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)

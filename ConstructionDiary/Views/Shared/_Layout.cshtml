@@ -66,13 +66,7 @@
 
         </div>
     </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2017 - GradjevinskiDnevnik</p>
-        </footer>
-    </div>
+
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -96,7 +90,16 @@
         <script src="~/Scripts/jquery-1.10.2.js"></script>
         <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     </environment>
-
     @RenderSection("Scripts", required: false)
+
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2017 - GradjevinskiDnevnik</p>
+        </footer>
+    </div>
+
 </body>
 </html>

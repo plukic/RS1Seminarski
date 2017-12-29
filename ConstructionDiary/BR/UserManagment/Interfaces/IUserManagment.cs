@@ -21,7 +21,9 @@ namespace ConstructionDiary.BR.UserManagment
         UserAccountEditViewModel GetUserDetails(string userId);
         void UpdateUser(UserAccountEditViewModel userEditModel);
         User GetLoggedUser();
+        void SeedDb();
         bool UpdateUserProfile(UserAccountsProfileViewModel obj);
         bool IsPasswordCorrect(string oldPassword);
+        bool ShouldChangePassword();
     }
 }

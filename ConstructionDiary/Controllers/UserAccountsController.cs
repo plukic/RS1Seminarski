@@ -13,7 +13,7 @@ using ConstructionDiary.ViewModels.UserAccounts;
 
 namespace ConstructionDiary.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager, ConstructionSiteManager")]
     public class UserAccountsController : Controller
     {
         IUserManagment userManagment;
@@ -24,18 +24,19 @@ namespace ConstructionDiary.Controllers
         }
 
 
-
+        [Authorize(Roles = "Manager")]
         public IActionResult Index(string userName, DateTime? birthDate)
         {
             ViewData["username"] = userName;
             ViewData["birthDate"] = birthDate;
             List<UserAccountIndexViewModel> usersVM = PrepareUserAccountIndexViewModel()
-                .Where(x => (string.IsNullOrEmpty(userName) || x.Username.Contains(userName)) && (birthDate==null||x.BirthDate.Equals(birthDate)))
+                .Where(x => (string.IsNullOrEmpty(userName) || x.Username.Contains(userName)) && (birthDate == null || x.BirthDate.Equals(birthDate)))
                 .ToList();
             return View(usersVM);
         }
 
 
+        [Authorize(Roles = "Manager")]
         public IActionResult AddUser()
         {
             IList<SelectListItem> roles = userManagment.GetRoles();
@@ -48,8 +49,10 @@ namespace ConstructionDiary.Controllers
 
             return View(rvm);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public IActionResult AddUser(RegisterViewModel obj)
         {
             if (ModelState.IsValid)
@@ -68,6 +71,9 @@ namespace ConstructionDiary.Controllers
             obj.Roles = userManagment.GetRoles();
             return View(obj);
         }
+
+
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public JsonResult ValidUsername(string UserName)
         {
@@ -76,7 +82,7 @@ namespace ConstructionDiary.Controllers
         }
 
 
-
+        [Authorize(Roles = "Manager")]
         public IActionResult ResetPassword(string userId)
         {
             string newPassword = userManagment.ResetPassword(userId);
@@ -95,18 +101,24 @@ namespace ConstructionDiary.Controllers
             return View("Index", usersVM);
         }
 
+
+        [Authorize(Roles = "Manager")]
         public IActionResult Delete(string userId)
         {
             userManagment.DeactivateUser(userId);
             return View("Index", PrepareUserAccountIndexViewModel());
         }
 
+
+        [Authorize(Roles = "Manager")]
         public IActionResult Edit(string userId)
         {
             UserAccountEditViewModel vm = userManagment.GetUserDetails(userId);
             return View(vm);
         }
 
+
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(UserAccountEditViewModel userEditModel)
@@ -118,6 +130,51 @@ namespace ConstructionDiary.Controllers
             }
             return View(userEditModel);
         }
+
+
+
+        [Authorize(Roles = "Manager, ConstructionSiteManager")]
+        public IActionResult Profile()
+        {
+            User u = userManagment.GetLoggedUser();
+
+            return View(new UserAccountsProfileViewModel()
+            {
+                BirthDate = u.DateOfBirth,
+                Email = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                UserName = u.UserName
+            });
+        }
+
+        [Authorize(Roles = "Manager, ConstructionSiteManager")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Profile(UserAccountsProfileViewModel obj)
+        {
+            if (!string.IsNullOrEmpty(obj.NewPassword) && string.IsNullOrEmpty(obj.OldPassword))
+            {
+                ModelState.AddModelError(nameof(obj.OldPassword), "Upišite staru lozinku");
+                return View(obj);
+            }
+            bool isSuccess = userManagment.UpdateUserProfile(obj);
+            if (!isSuccess)
+            {
+                ModelState.AddModelError("", "Promjena passworda nije uspjela, pokušajte ponovo");
+            }
+            return View(obj);
+        }
+
+
+        [Authorize(Roles = "Manager, ConstructionSiteManager")]
+        [HttpPost]
+        public JsonResult ValidPassword(string oldPassword)
+        {
+            bool samePassword = userManagment.IsPasswordCorrect(oldPassword);
+            return Json(samePassword);
+        }
+
 
         private IList<UserAccountIndexViewModel> PrepareUserAccountIndexViewModel()
         {
@@ -141,44 +198,5 @@ namespace ConstructionDiary.Controllers
             }
             return usersVM;
         }
-
-
-        public IActionResult Profile()
-        {
-            User u = userManagment.GetLoggedUser();
-
-            return View(new UserAccountsProfileViewModel()
-            {
-                BirthDate = u.DateOfBirth,
-                Email = u.Email,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                UserName = u.UserName
-            });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Profile(UserAccountsProfileViewModel obj)
-        {
-            if (!string.IsNullOrEmpty(obj.NewPassword) && string.IsNullOrEmpty(obj.OldPassword))
-            {
-                ModelState.AddModelError(nameof(obj.OldPassword), "Upišite staru lozinku");
-                return View(obj);
-            }
-           bool isSuccess =  userManagment.UpdateUserProfile(obj);
-            if (!isSuccess)
-            {
-                ModelState.AddModelError("", "Promjena passworda nije uspjela, pokušajte ponovo");
-            }
-            return View(obj);
-        }
-        [HttpPost]
-        public JsonResult ValidPassword(string oldPassword)
-        {
-            bool samePassword = userManagment.IsPasswordCorrect(oldPassword);
-            return Json(samePassword);
-        }
-
     }
 }

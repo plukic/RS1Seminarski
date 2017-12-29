@@ -10,6 +10,7 @@ namespace DataLayer.Models
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public bool IsDeleted { get; set; }
+        public bool NeedToChangePassword { get; set; }
         [NotMapped]
         public string FullName
         {

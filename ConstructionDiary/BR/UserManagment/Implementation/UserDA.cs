@@ -28,7 +28,32 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
             return true;
         }
 
-        
+        public bool ChangePassword(UserAccountsProfileViewModel obj)
+        {
+            var username = obj.UserName;
+            User u = ctx.Users.Where(x => x.UserName.Equals(obj.UserName)).First();
+
+            bool result = userManager.ChangePasswordAsync(u, obj.OldPassword, obj.NewPassword).Result.Succeeded;
+            u.NeedToChangePassword = !result;
+            ctx.SaveChanges();
+            return result;
+        }
+
+        public bool CreateConstructionSiteManager(RegisterViewModel obj)
+        {
+            User u = ctx.Users.Where(x => x.UserName.Equals(obj.UserName)).First();
+
+            ConstructionSiteManager csm = new ConstructionSiteManager
+            {
+                User = u,
+                UserId = u.Id
+            };
+            ctx.ConstructionSiteManagers.Add(csm);
+            ctx.SaveChanges();
+            return true;
+
+        }
+
         public bool CreateUserAsync(User user, string password)
         {
 
@@ -72,6 +97,7 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
         public void UpdateUserPassword(string userId, string hashedPass)
         {
             User u = ctx.Users.Where(x => x.Id.Equals(userId)).First();
+            u.NeedToChangePassword = true;
             u.PasswordHash = hashedPass;
             ctx.SaveChanges();
         }

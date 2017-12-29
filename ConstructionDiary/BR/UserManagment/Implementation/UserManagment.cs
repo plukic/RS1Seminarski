@@ -38,7 +38,8 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
                 Email = obj.Email,
                 FirstName = obj.FirstName,
                 LastName = obj.LastName,
-                DateOfBirth = obj.BirthDate
+                DateOfBirth = obj.BirthDate,
+                NeedToChangePassword = true
             };
 
             Role r = new Role
@@ -46,7 +47,13 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
                 Name = obj.UserSelectedRole
             };
 
-            return userDA.CreateUserAsync(user, obj.Password) && roleDA.AddRole(r) && userDA.AddRoleToUser(user, r);
+            bool addRole = roleDA.AddRole(r);
+            bool addUser = userDA.CreateUserAsync(user, obj.Password);
+            if (r.Name.Equals("ConstructionSiteManager"))
+                addUser = userDA.CreateConstructionSiteManager(obj);
+            bool addRoleToUser = userDA.AddRoleToUser(user, r);
+
+            return addRole && addUser && addRoleToUser;
         }
 
         public void DeactivateUser(string userId)
@@ -139,6 +146,31 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
             return newPassword;
         }
 
+        public void SeedDb()
+        {
+            var users = GetExistingUsers();
+            var roles = roleDA.GetRoles();
+            if (users.Count == 0)
+            {
+                RegisterViewModel rvm = new RegisterViewModel()
+                {
+                    Email = "admin@admin.ba",
+                    FirstName = "Admin",
+                    LastName = "Admin",
+                    Password = "Password1",
+                    UserSelectedRole = "Manager",
+                    UserName = "admin"
+                };
+                CreateUserAsync(rvm);
+            }
+        }
+
+        public bool ShouldChangePassword()
+        {
+            User u = GetLoggedUser();
+            return u!=null && u.NeedToChangePassword;
+        }
+
         public void UpdateUser(UserAccountEditViewModel userEditModel)
         {
             userDA.UpdateUser(userEditModel);
@@ -151,7 +183,7 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
             userDA.UpdateUserProfile(obj);
             if (!string.IsNullOrEmpty(obj.NewPassword))
             {
-                return userManager.ChangePasswordAsync(GetLoggedUser(), obj.OldPassword, obj.NewPassword).Result.Succeeded;
+                return userDA.ChangePassword(obj);
             }
             return true;
 
