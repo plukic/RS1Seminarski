@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ConstructionDiary.ViewModels.UserAccounts;
+
 namespace ConstructionDiary.Controllers
 {
     [Authorize(Roles = "Manager")]
@@ -139,5 +141,44 @@ namespace ConstructionDiary.Controllers
             }
             return usersVM;
         }
+
+
+        public IActionResult Profile()
+        {
+            User u = userManagment.GetLoggedUser();
+
+            return View(new UserAccountsProfileViewModel()
+            {
+                BirthDate = u.DateOfBirth,
+                Email = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                UserName = u.UserName
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Profile(UserAccountsProfileViewModel obj)
+        {
+            if (!string.IsNullOrEmpty(obj.NewPassword) && string.IsNullOrEmpty(obj.OldPassword))
+            {
+                ModelState.AddModelError(nameof(obj.OldPassword), "Upišite staru lozinku");
+                return View(obj);
+            }
+           bool isSuccess =  userManagment.UpdateUserProfile(obj);
+            if (!isSuccess)
+            {
+                ModelState.AddModelError("", "Promjena passworda nije uspjela, pokušajte ponovo");
+            }
+            return View(obj);
+        }
+        [HttpPost]
+        public JsonResult ValidPassword(string oldPassword)
+        {
+            bool samePassword = userManagment.IsPasswordCorrect(oldPassword);
+            return Json(samePassword);
+        }
+
     }
 }
