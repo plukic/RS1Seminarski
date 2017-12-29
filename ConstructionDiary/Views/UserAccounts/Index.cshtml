@@ -1,7 +1,11 @@
 ﻿@model IList<ConstructionDiary.ViewModels.UserAccountIndexViewModel>
 @{ 
-    string username =(string) ViewData["username"];
-    DateTime birthDate = birthDate = ViewData["birthDate"]!=null? (DateTime)ViewData["birthDate"]:DateTime.MinValue;
+    string username = (string)ViewData["username"];
+    DateTime? birthDate = null;
+    if (ViewData["birthDate"] != null)
+    {
+        birthDate = (DateTime)ViewData["birthDate"];
+    }
 }
 <h3>Korisnici</h3>
 
@@ -14,7 +18,7 @@
                 <label for="userName">Korisnicko ime</label>
                 @*<input name="userName" type="text" id="userName"  />*@
                 <input asp-for="@username" class="form-control" />
-                <input asp-for="@birthDate" class="form-control" type="date"/>
+                <input asp-for="@birthDate" class="form-control" type="date" />
                 <input type="submit" value="Filter" class="btn btn-default" />
             </div>
         </div>

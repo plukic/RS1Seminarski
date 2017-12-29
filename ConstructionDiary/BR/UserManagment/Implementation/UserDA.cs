@@ -7,6 +7,7 @@ using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ConstructionDiary.ViewModels;
+using ConstructionDiary.ViewModels.UserAccounts;
 
 namespace ConstructionDiary.BR.UserManagment.Implementation
 {
@@ -27,6 +28,7 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
             return true;
         }
 
+        
         public bool CreateUserAsync(User user, string password)
         {
 
@@ -71,6 +73,16 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
         {
             User u = ctx.Users.Where(x => x.Id.Equals(userId)).First();
             u.PasswordHash = hashedPass;
+            ctx.SaveChanges();
+        }
+
+        public void UpdateUserProfile(UserAccountsProfileViewModel obj)
+        {
+            User u = ctx.Users.Where(x => x.UserName.Equals(obj.UserName)).FirstOrDefault();
+            u.Email = obj.Email;
+            u.FirstName = obj.FirstName;
+            u.LastName = obj.LastName;
+            u.DateOfBirth =obj.BirthDate;
             ctx.SaveChanges();
         }
     }
