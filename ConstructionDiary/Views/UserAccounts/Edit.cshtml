@@ -1,41 +1,23 @@
-﻿@using ConstructionDiary.ViewModels
-@using DataLayer.Models
-@model ConstructionDiary.ViewModels.RegisterViewModel
+﻿@model ConstructionDiary.ViewModels.UserAccountEditViewModel
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Edit";
 }
 
-<!DOCTYPE html>
+<h2>Edit</h2>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Register</title>
-</head>
-<body>
-
-<h4>RegisterViewModel</h4>
+<h4>UserAccountEditViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Register">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="UserId" class="form-control" type="hidden"/>
             <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
+                <label asp-for="UserName" class="control-label">@Model.UserName</label> 
+                <input type="hidden" asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
@@ -57,7 +39,17 @@
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+
+                @*<label asp-for="Roles" class="control-label">Korisnička uloga</label>
+                <select asp-for="UserSelectedRole" asp-items="@Model.Roles" class="form-control"></select>
+                <span asp-validation-for="Roles" class="text-danger"></span>*@
+
+                <label asp-for="UserSelectedRole" class="control-label"></label>
+                <select  asp-for="UserSelectedRole" asp-items="@Model.Roles" class="form-control" ></select>
+                <span asp-validation-for="UserSelectedRole" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>
@@ -67,5 +59,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-</body>
-</html>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

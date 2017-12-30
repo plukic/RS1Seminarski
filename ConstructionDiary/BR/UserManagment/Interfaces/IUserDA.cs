@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ConstructionDiary.ViewModels;
+using ConstructionDiary.ViewModels.UserAccounts;
 using DataLayer.Models;
 
 namespace ConstructionDiary.BR.UserManagment
@@ -14,5 +16,9 @@ namespace ConstructionDiary.BR.UserManagment
         User FindUser(string userName);
         void UpdateUserPassword(string userId, string hashedPass);
         void DeactivateUser(string userId);
+        void UpdateUser(UserAccountEditViewModel userEditModel);
+        void UpdateUserProfile(UserAccountsProfileViewModel obj);
+        bool CreateConstructionSiteManager(RegisterViewModel obj);
+        bool ChangePassword(UserAccountsProfileViewModel obj);
     }
 }

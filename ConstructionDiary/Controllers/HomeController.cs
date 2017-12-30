@@ -3,11 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using ConstructionDiary.BR;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using ConstructionDiary.BR.UserManagment.Implementation;
+using ConstructionDiary.BR.UserManagment;
 
 namespace ConstructionDiary.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
+        IUserManagment userManagment;
+
+        public HomeController(IUserManagment userManagment)
+        {
+            this.userManagment = userManagment;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -28,6 +38,11 @@ namespace ConstructionDiary.Controllers
             ViewData["Message"] = "Your application description page.";
 
             return View();
+        }
+        public JsonResult CheckForPasswordReset()
+        {
+
+            return new JsonResult(userManagment.ShouldChangePassword());
         }
     }
 }

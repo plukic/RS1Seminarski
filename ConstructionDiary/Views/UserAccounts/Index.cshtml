@@ -1,6 +1,30 @@
 ﻿@model IList<ConstructionDiary.ViewModels.UserAccountIndexViewModel>
-
+@{ 
+    string username = (string)ViewData["username"];
+    DateTime? birthDate = null;
+    if (ViewData["birthDate"] != null)
+    {
+        birthDate = (DateTime)ViewData["birthDate"];
+    }
+}
 <h3>Korisnici</h3>
+
+
+
+<div class="col-sm-7 col-md-8 col-lg-9">
+    <form asp-action="" method="get">
+        <div class="col-sm-8 col-md-8 col-lg-8">
+            <div class="form-group">
+                <label for="userName">Korisnicko ime</label>
+                @*<input name="userName" type="text" id="userName"  />*@
+                <input asp-for="@username" class="form-control" />
+                <input asp-for="@birthDate" class="form-control" type="date" />
+                <input type="submit" value="Filter" class="btn btn-default" />
+            </div>
+        </div>
+    </form>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -14,14 +38,14 @@
                 Email
             </th>
             <th>
-                Broj telefona
+               Datum rođenja
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
-        {
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstNameLastName)
@@ -33,19 +57,12 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @if (string.IsNullOrEmpty(item.PhoneNumber))
-                    {
-                        <p>Ne postoji</p>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                    }
+                     @*   @Html.DisplayFor(modelItem => item.BirthDate)*@
                 </td>
                 <td>
                     @if (!item.HasResetPassword)
                     {
-                    @Html.ActionLink("Poništi password", "ResetPassword", new {userId =  item.Id})
+                        @Html.ActionLink("Poništi password", "ResetPassword", new { userId = item.Id })
                     }
                     else
                     {
@@ -54,7 +71,7 @@
 
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Edit", "Edit", new { userId = item.Id }) |
                     @Html.ActionLink("Izbriši", "Delete", new { userId = item.Id })
                 </td>
             </tr>
