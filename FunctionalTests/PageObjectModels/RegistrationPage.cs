@@ -1,16 +1,25 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.Extensions.Configuration;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.IO;
 
 namespace FunctionalTests.PageObjectModels
 {
     public class RegistrationPage
     {
         private readonly IWebDriver _driver;
+        private readonly IConfigurationRoot _configuration;
 
         public RegistrationPage(IWebDriver driver)
         {
             _driver = driver;
+
+            IConfigurationBuilder config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile($"appsettings.development.json", optional: false);
+
+            _configuration = config.Build();
         }
 
         private const string TestAccountUsername = "John";
@@ -43,22 +52,6 @@ namespace FunctionalTests.PageObjectModels
         {
             _driver.Navigate().GoToUrl(@"http://localhost:52140/login");
         }
-        public void RegisterAccount()
-        {
-            NavigateToRegistration();
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            wait.Until(ExpectedConditions.ElementExists(By.Id(_usernameInputId)));
-
-            UsernameInput.SendKeys(TestAccountUsername);
-            PasswordInput.SendKeys(_testAccountPassword);
-            RepeatPasswordInput.SendKeys(_testAccountPassword);
-            EmailInput.SendKeys(TestAccountEmail);
-            FirstNameInput.SendKeys(TestAccountFirstName);
-            LastNameInput.SendKeys(TestAccountLastName);
-            DateOfBirthInput.SendKeys(TestAccountDateOfBirth);
-
-            Form.Submit();
-        }
 
         public void Login()
         {
@@ -68,13 +61,16 @@ namespace FunctionalTests.PageObjectModels
 
             LoginUsernameInput.SendKeys(TestAccountUsername);
             PasswordInput.SendKeys(_testAccountPassword);
-
+            LoginUsernameInput.Clear();
+            PasswordInput.Clear();
+            LoginUsernameInput.SendKeys(_configuration["MANAGER_USERNAME"]);
+            PasswordInput.SendKeys(_configuration["MANAGER_PASSWORD"]);
             Form.Submit();
         }
 
         public void RegisterAndLogin()
         {
-            RegisterAccount();
+            //RegisterAccount();
             Login();
         }
 

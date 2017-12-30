@@ -67,7 +67,7 @@ namespace FunctionalTests.PageObjectModels
 
             var navbar = new NavbarPage(driver);
             navbar.NavigateToConstructionSites();
-
+     
             OpenSiteCreationForm();
 
             FillOutForm();
