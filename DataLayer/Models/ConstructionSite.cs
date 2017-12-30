@@ -8,7 +8,6 @@ namespace DataLayer.Models
     {
         Open,
         Closed,
-        All
     };
     public class ConstructionSite
     {
@@ -17,19 +16,21 @@ namespace DataLayer.Models
         public string Title { get; set; }
 
         [Required]
+        [DisplayName("Project worth")]
         public decimal ProjectWorth { get; set; }
 
-        [DefaultValue(Models.OpenStatus.All)]
+        [DefaultValue(Models.OpenStatus.Open)]
         public OpenStatus OpenStatus { get; set; }
 
         [Required]
+        [DisplayName("Site opening date")]
         public DateTime ?DateStart { get; set; }
+        [DisplayName("Site closing date")]
         public DateTime ?DateFinish { get; set; }
 
         [Required]
         [DisplayName("City")]
         public int CityId { get; set; }
-        [DisplayName("City")]
         public City City { get; set; }
 
         [Required]
@@ -38,6 +39,7 @@ namespace DataLayer.Models
         public Contract Contract { get; set; }
 
         public int LocationId { get; set; }
+        [Required]
         public Location Location { get; set; }
 
         [DisplayName("Created by")]

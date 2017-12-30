@@ -1,11 +1,12 @@
-﻿using System;
-using FunctionalTests.PageObjectModels;
+﻿using FunctionalTests.PageObjectModels;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+using System;
 using System.IO;
 using System.Reflection;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+using Assert = NUnit.Framework.Assert;
 
 namespace FunctionalTests.ConstructionSites
 {
@@ -18,6 +19,8 @@ namespace FunctionalTests.ConstructionSites
             using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
             {
                 driver.Navigate().GoToUrl(@"http://localhost:52140");
+                var registrationPage = new RegistrationPage(driver);
+                registrationPage.RegisterAndLogin();
 
                 var navbar = new NavbarPage(driver);
                 navbar.NavigateToConstructionSites();

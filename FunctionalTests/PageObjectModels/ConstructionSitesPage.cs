@@ -27,12 +27,11 @@ namespace FunctionalTests.PageObjectModels
         public IWebElement SiteTitleInput { get => _driver.FindElement(By.Id("constructionSite_Title")); }
         public IWebElement SiteWorthInput { get => _driver.FindElement(By.Id("constructionSite_ProjectWorth")); }
         public IWebElement DateStartInput { get => _driver.FindElement(By.Id("constructionSite_DateStart")); }
-
-
         public IWebElement DateFinishInput { get => _driver.FindElement(By.Id("constructionSite_DateFinish")); }
         public IWebElement CityInput { get => _driver.FindElement(By.Id("constructionSite_CityId")); }
         public IWebElement ContractDescriptionInput { get => _driver.FindElement(By.Id("constructionSite_Contract_Description")); }
         public IWebElement ContractFileInput { get => _driver.FindElement(By.CssSelector("input[type='file']")); }
+        public IWebElement Map { get => _driver.FindElement(By.Id("location-map")); }
 
 
         public void OpenSiteCreationForm()
@@ -57,6 +56,7 @@ namespace FunctionalTests.PageObjectModels
             DateFinishInput.SendKeys(TestEndDate);
             new SelectElement(CityInput).SelectByText(TestSiteCity);
             ContractDescriptionInput.SendKeys(TestContractDescription);
+            Map.Click();
         }
 
         public int CreateConstructionSite(IWebDriver driver)
@@ -67,7 +67,7 @@ namespace FunctionalTests.PageObjectModels
 
             var navbar = new NavbarPage(driver);
             navbar.NavigateToConstructionSites();
-
+     
             OpenSiteCreationForm();
 
             FillOutForm();
