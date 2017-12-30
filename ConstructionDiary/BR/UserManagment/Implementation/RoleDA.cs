@@ -49,10 +49,10 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
 
             if (roles.Count == 0)
             {
-                roles.Add(new Role { Name = "Manager" });
-                roles.Add(new Role { Name = "ConstructionSiteManager" });
+                AddRole(new Role { Name = "Manager" });
+                AddRole(new Role { Name = "ConstructionSiteManager" });
 
-                ctx.SaveChanges();
+                return ctx.Roles.ToList();
             }
             return roles;
         }
