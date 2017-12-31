@@ -1,16 +1,22 @@
 ﻿@using DataLayer.Models;
 @model ConstructionDiary.ViewModels.CreateConstructionSiteViewModel
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
 @{
     var isEdit = Model.constructionSite.Id != 0;
-    var title = isEdit ? "Edit" : "Create";
+    var title = isEdit ? "Uredi" : "Dodaj";
     ViewData["Title"] = title;
+    // to be passed to partial view
+    ViewData["IsDetails"] = false;
     var citiesSelectList = Model.cities.Select(c => new SelectListItem() { Text = c.Name, Value = c.Id.ToString() }).ToList();
 }
 
 <h2>@title</h2>
 
-<h4>ConstructionSite</h4>
+<h4>Gradilište</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -43,18 +49,17 @@
                     <option>Select a city</option>
                 </select>
             </div>
-            @*<input type="hidden" asp-for="constructionSite.Contract.Id" />*@
             @{
-        if (isEdit)
-        {
-            <input type="hidden" asp-for="constructionSite.Contract.Id" />
-            <input type="hidden" asp-for="constructionSite.Contract.Document.Id" />
-            <input type="hidden" asp-for="constructionSite.Location.Id" />
-}
+                if (isEdit)
+                {
+                    <input type="hidden" asp-for="constructionSite.Contract.Id" />
+                    <input type="hidden" asp-for="constructionSite.Contract.Document.Id" />
+                    <input type="hidden" asp-for="constructionSite.Location.Id" />
+                }
             }
 
             <div class="form-group">
-                <label asp-for="constructionSite.Contract.Description" class="control-label">Contract info</label>
+                <label asp-for="constructionSite.Contract.Description" class="control-label">Opis ugovora</label>
                 <input asp-for="constructionSite.Contract.Description" class="form-control" />
             </div>
             <div class="form-group">
@@ -85,7 +90,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

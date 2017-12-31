@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using DataLayer.Models;
+﻿using DataLayer.Models;
+using System.Collections.Generic;
 
 namespace ConstructionDiary.ViewModels
 {
@@ -7,6 +7,7 @@ namespace ConstructionDiary.ViewModels
     public class ConstructionSitesListViewModel
     {
         public List<ConstructionSite> ConstructionSites;
+
         public OpenStatus? OpenStatus;
     }
 }

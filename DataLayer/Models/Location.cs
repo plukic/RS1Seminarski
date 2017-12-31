@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.Models
@@ -15,7 +16,14 @@ namespace DataLayer.Models
         [NotMapped]
         public string Position
         {
-            get => Latitude + ", " + Longitude;
+            get
+            {
+                if (Latitude == 0 || Longitude == 0)
+                {
+                    return null;
+                }
+                return String.Format("{0:0.0000}", Latitude) + ", " + String.Format("{0:0.0000}", Longitude);
+            }
         }
     }
 }
