@@ -20,35 +20,10 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="All" class="text-danger"></div>
+        <form asp-action="Create" enctype="multipart/form-data" class="site-create-edit">
             <input type="hidden" asp-for="constructionSite.Id" />
-            <div class="form-group">
-                <label asp-for="constructionSite.Title" class="control-label"></label>
-                <input asp-for="constructionSite.Title" class="form-control" />
-                <span asp-validation-for="constructionSite.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="constructionSite.ProjectWorth" class="control-label"></label>
-                <input asp-for="constructionSite.ProjectWorth" class="form-control" />
-                <span asp-validation-for="constructionSite.ProjectWorth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="constructionSite.DateStart" class="control-label"></label>
-                <input type="date" asp-for="constructionSite.DateStart" class="form-control" />
-                <span asp-validation-for="constructionSite.DateStart" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="constructionSite.DateFinish" class="control-label"></label>
-                <input type="date" asp-for="constructionSite.DateFinish" class="form-control" />
-                <span asp-validation-for="constructionSite.DateFinish" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="constructionSite.CityId" class="control-label"></label>
-                <select asp-for="constructionSite.CityId" class="form-control" asp-items="citiesSelectList">
-                    <option>Select a city</option>
-                </select>
-            </div>
+            <input type="hidden" asp-for="constructionSite.Location.Latitude" id="site_latitude" />
+            <input type="hidden" asp-for="constructionSite.Location.Longitude" id="site_longitude" />
             @{
                 if (isEdit)
                 {
@@ -57,35 +32,75 @@
                     <input type="hidden" asp-for="constructionSite.Location.Id" />
                 }
             }
-
-            <div class="form-group">
-                <label asp-for="constructionSite.Contract.Description" class="control-label">Opis ugovora</label>
-                <input asp-for="constructionSite.Contract.Description" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="constructionSite.Contract" class="control-label"></label>
-                <input type="file" class="form-control" name="contractFile" />
-            </div>
-            @{
-                if (isEdit)
-                {
+            <div class="panel panel-default">
+                <div class="panel-heading">Opće informacije</div>
+                <div class="panel-body">
                     <div class="form-group">
-                        <label asp-for="constructionSite.OpenStatus" class="control-label"></label>
-                        <select asp-for="constructionSite.OpenStatus" class="form-control" asp-items="Html.GetEnumSelectList<OpenStatus>()"></select>
+                        <label asp-for="constructionSite.Title" class="control-label"></label>
+                        <input asp-for="constructionSite.Title" class="form-control" />
+                        <span asp-validation-for="constructionSite.Title" class="text-danger"></span>
                     </div>
-                }
-            }
-            <input type="hidden" asp-for="constructionSite.Location.Latitude" id="site_latitude" />
-            <input type="hidden" asp-for="constructionSite.Location.Longitude" id="site_longitude" />
+                    <div class="form-group">
+                        <label asp-for="constructionSite.ProjectWorth" class="control-label"></label>
+                        <input asp-for="constructionSite.ProjectWorth" class="form-control" />
+                        <span asp-validation-for="constructionSite.ProjectWorth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="constructionSite.DateStart" class="control-label"></label>
+                        <input type="date" asp-for="constructionSite.DateStart" class="form-control" />
+                        <span asp-validation-for="constructionSite.DateStart" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="constructionSite.DateFinish" class="control-label"></label>
+                        <input type="date" asp-for="constructionSite.DateFinish" class="form-control" />
+                        <span asp-validation-for="constructionSite.DateFinish" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="constructionSite.CityId" class="control-label"></label>
+                        <select asp-for="constructionSite.CityId" class="form-control" asp-items="citiesSelectList">
+                            <option>Select a city</option>
+                        </select>
+                    </div>
+                    @{
+                        if (isEdit)
+                        {
+                            <div class="form-group">
+                                <label asp-for="constructionSite.OpenStatus" class="control-label"></label>
+                                <select asp-for="constructionSite.OpenStatus" class="form-control" asp-items="Html.GetEnumSelectList<OpenStatus>()"></select>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Ugovor</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label asp-for="constructionSite.Contract" class="control-label"></label>
+                        <input type="file" class="form-control" name="contractFile" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="constructionSite.Contract.Description" class="control-label">Opis ugovora</label>
+                        <input asp-for="constructionSite.Contract.Description" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <input type="submit" value="@title" class="btn btn-default" />
             </div>
         </form>
     </div>
     <div class="col-md-8">
-        @Html.Partial("LocationMap", Model.constructionSite.Location)
+        <div class="panel panel-default">
+            <div class="panel-heading">Lokacija</div>
+            @Html.Partial("LocationMap", Model.constructionSite.Location)
+        </div>
     </div>
 </div>
+@*</div>*@
 
 <div>
     <a asp-action="Index">Back to List</a>

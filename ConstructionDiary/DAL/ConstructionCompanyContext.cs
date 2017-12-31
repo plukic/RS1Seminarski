@@ -85,6 +85,19 @@ namespace ConstructionDiary.DAL
                 .HasOne(wm => wm.Machine)
                 .WithMany(m => m.WorksheetMachines)
                 .HasForeignKey(wm => wm.MachineId);
+
+            modelBuilder.Entity<ConstructionSiteSiteManager>()
+                .HasKey(cssm => new { cssm.ConstructionSiteId, cssm.ConstructionSiteManagerId });
+
+            modelBuilder.Entity<ConstructionSiteSiteManager>()
+                .HasOne(cssm => cssm.ConstructionSite)
+                .WithMany(cs => cs.ConstructionSiteManagers)
+                .HasForeignKey(cssm => cssm.ConstructionSiteId);
+
+            modelBuilder.Entity<ConstructionSiteSiteManager>()
+                .HasOne(cssm => cssm.ConstructionSiteManager)
+                .WithMany(csm => csm.ConstructionSites)
+                .HasForeignKey(cssm => cssm.ConstructionSiteManagerId);
         }
     }
 }

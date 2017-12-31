@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -54,5 +55,7 @@ namespace DataLayer.Models
         public string UserId { get; set; }
         [DisplayName("Kreirao/la")]
         public User CreatedBy { get; set; }
+
+        public List<ConstructionSiteSiteManager> ConstructionSiteManagers { get; set; }
     }
 }

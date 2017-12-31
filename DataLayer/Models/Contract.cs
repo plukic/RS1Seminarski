@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DataLayer.Models
 {
@@ -11,5 +12,7 @@ namespace DataLayer.Models
 
         public int DocumentId { get; set; }
         public Document Document { get; set; }
+
+        public List<ConstructionSiteManager> SiteManagers{ get; set; }
     }
 }
