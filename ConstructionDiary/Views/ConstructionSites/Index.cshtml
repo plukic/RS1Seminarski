@@ -9,9 +9,9 @@
 
 <div class="row construction-sites-list">
     <div class="col-sm-5 col-md-4 col-lg-3">
-        <h2>Index</h2>
+        <h2>Gradilišta</h2>
         <p>
-            <a asp-action="Create">Create New</a>
+            <a asp-action="Create">Dodaj novo</a>
         </p>
     </div>
     <div class="col-sm-7 col-md-8 col-lg-9">
@@ -19,15 +19,15 @@
             <div class="row">
                 <div class="col-sm-8 col-md-8 col-lg-8">
                     <div class="form-group">
-                        <label asp-for="@Model.OpenStatus" class="control-label"></label>
+                        <label asp-for="@Model.OpenStatus" class="control-label">Status</label>
                         <select asp-for="@Model.OpenStatus" asp-items="Html.GetEnumSelectList<OpenStatus>()" class="form-control">
-                            <option>Filter by open status</option>
+                            <option>Filtriraj prema statusu</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
-                        <input type="submit" value="Filter" class="btn btn-default"/>
+                        <input type="submit" value="Filtriraj" class="btn btn-default"/>
                     </div>
                 </div>
             </div>
@@ -90,12 +90,12 @@
                     @Html.DisplayFor(modelItem => item.Contract.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Location.Id)
+                    @Html.DisplayFor(modelItem => item.Location.Position)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalji</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
                 </td>
             </tr>
         }

@@ -15,6 +15,7 @@ using ConstructionDiary.BR.Documents.Interfaces;
 using ConstructionDiary.BR.Documents.Implementation;
 using DataLayer.Models;
 using ConstructionDiary.BR.UserManagment.Interfaces;
+using React.AspNet;
 
 namespace ConstructionDiary
 {
@@ -28,7 +29,7 @@ namespace ConstructionDiary
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 
             services.AddDbContext<ConstructionCompanyContext>(options =>
@@ -63,11 +64,13 @@ namespace ConstructionDiary
             services.AddTransient<IConstructionSitesService, ConstructionSitesService>();
             services.AddTransient<IDocumentsService, DocumentsService>();
 
+            services.AddReact();
+
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddLogging();
-
+            return services.BuildServiceProvider();
         }
 
 
@@ -87,6 +90,10 @@ namespace ConstructionDiary
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseReact(config =>
+            {
+
+            });
             app.UseStaticFiles();
 
             app.UseMvc(routes =>

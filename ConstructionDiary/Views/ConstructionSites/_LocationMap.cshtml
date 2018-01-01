@@ -1,25 +1,26 @@
 ﻿@model DataLayer.Models.Location
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+@{
+    bool notEditable = (bool)ViewData["IsDetails"];
+}
 <div class="location-map" id="location-map"></div>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACtbHC31aJwsZcofMtPIAHL_xX_GtutSk&callback=initializeMap"
         type="text/javascript"></script>
 <script>
-    window.addEventListener('load',
-        function() {
+    $(document).ready(
+        function () {
             $.validator.setDefaults({
                 ignore: ""
 
             });
         },
         false);
-    var initialLatitude = @(Model != null && Model.Latitude != null ? Model.Latitude : 48.13954);
-    var initialLongitude = @(Model != null && Model.Longitude != null ? Model.Longitude : 11.42894);
+    var initialLatitude = @(Model?.Latitude != null && Model.Latitude != 0 ? Model.Latitude : 48.13954);
+    var initialLongitude = @(Model?.Longitude != null && Model.Longitude != 0 ? Model.Longitude : 11.42894);
     var $latitudeInput;
     var $longitudeInput;
     var initialMarkerLat = @(Model?.Latitude ?? 0)
     var initialMarkerLng = @(Model?.Longitude ?? 0);
+    var editable ='@(notEditable)' === '@false'
     var map;
     var marker = null;
     function initializeMap() {
@@ -35,15 +36,17 @@
 
         if (initialMarkerLat && initialMarkerLng) {
             var initialMarkerCoords = new window.google.maps.LatLng(initialMarkerLat, initialMarkerLng);
-            marker = new google.maps.Marker({
+            marker = new window.google.maps.Marker({
                 position: initialMarkerCoords,
                 map: map
             });
         }
 
-        window.google.maps.event.addListener(map, 'click', function (event) {
+        if (editable) {
+            window.google.maps.event.addListener(map, 'click', function (event) {
             placeMarker(event.latLng);
         });
+        }
     }
 
     function placeMarker(location) {
@@ -54,7 +57,7 @@
         $longitudeInput.val(location.lng()).trigger("change");
         $latitudeInput.valid();
         $longitudeInput.valid();
-        marker = new google.maps.Marker({
+        marker = new window.google.maps.Marker({
             position: location,
             map: map
         });

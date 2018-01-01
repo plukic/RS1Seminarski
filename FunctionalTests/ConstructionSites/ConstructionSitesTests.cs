@@ -38,7 +38,7 @@ namespace FunctionalTests.ConstructionSites
             {
                 var constructionSitesPage = new ConstructionSitesPage(driver);
                 constructionSitesPage.CreateConstructionSite(driver);
-                
+
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
                 IWebElement loadedList = wait.Until(ExpectedConditions.ElementToBeClickable(constructionSitesPage.ConstructionSitesTable));
                 Assert.That(loadedList, Is.Not.Null);
