@@ -17,15 +17,18 @@ namespace ConstructionDiary.BR.ConstructionSites.Implementation
         private readonly IRepository<ConstructionSite> _constructionSitesRepository;
         private readonly IRepository<Location> _locationsRepository;
         private readonly IDocumentsService _documentsService;
-  
+        private readonly IRepository<ConstructionSiteSiteManager> _constructionSiteSetManagersRepository;
+
         public ConstructionSitesService(
             IRepository<ConstructionSite> constructionSitesRepository,
             IRepository<Location> locationsRepository,
-            IDocumentsService documentsService)
+            IDocumentsService documentsService,
+            IRepository<ConstructionSiteSiteManager> constructionSiteSetManagersRepository)
         {
             _constructionSitesRepository = constructionSitesRepository;
             _documentsService = documentsService;
             _locationsRepository = locationsRepository;
+            _constructionSiteSetManagersRepository = constructionSiteSetManagersRepository;
         }
         public async Task<ConstructionSite> Store(ConstructionSite constructionSite, IFormFile contract)
         {
@@ -84,6 +87,15 @@ namespace ConstructionDiary.BR.ConstructionSites.Implementation
             {
                 Console.Write(e);
             }
+        }
+
+        public void AddConstructionSiteManager(int id, ConstructionSiteManager manager)
+        {
+            _constructionSiteSetManagersRepository.Add(new ConstructionSiteSiteManager()
+            {
+                ConstructionSiteId = id,
+                ConstructionSiteManagerId = manager.Id,
+            });
         }
     }
 }

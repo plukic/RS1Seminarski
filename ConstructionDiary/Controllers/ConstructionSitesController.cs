@@ -169,5 +169,19 @@ namespace ConstructionDiary.Controllers
             }
         }
 
+        // POST: ConstructionSites/SiteManagers/5
+        [HttpPost]
+        public void SiteManagers(int id, [FromBody] ConstructionSiteManager manager)
+        {
+            try
+            {
+                _constructionSitesService.AddConstructionSiteManager(id, manager);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+        }
+
     }
 }
