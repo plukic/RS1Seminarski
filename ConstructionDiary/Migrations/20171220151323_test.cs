@@ -117,7 +117,7 @@ namespace ConstructionDiary.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Amount = table.Column<double>(nullable: false),
+                    Amount = table.Column<double>(nullable: false, defaultValue: 1),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -470,7 +470,7 @@ namespace ConstructionDiary.Migrations
                 {
                     WorksheetId = table.Column<int>(nullable: false),
                     MaterialId = table.Column<int>(nullable: false),
-                    Amount = table.Column<double>(nullable: false)
+                    Amount = table.Column<double>(nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
                 {
