@@ -95,7 +95,12 @@
     render() {
         return (
             <div className="construction-sites-managers-list">
-                <input type="text" onChange={this.filterChange} value={this.state.filter || ""} />
+                <input
+                    type="text"
+                    placeholder="Filtriraj listu"
+                    className="form-control"
+                    onChange={this.filterChange}
+                    value={this.state.filter || ""} />
                 <table className="table table-hover">
                     <thead>
                         <tr>

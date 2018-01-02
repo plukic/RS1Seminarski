@@ -42,7 +42,7 @@
                     @if (Context.User.Identity.IsAuthenticated && (Context.User.IsInRole("Manager") || Context.User.IsInRole("ConstructionSiteManager")))
                     {
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Radni listovi</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Alati i mašine</a></li>
+                        <li><a asp-area="" asp-controller="Equipment" asp-action="Index">Alati i mašine</a></li>
                     }
 
                 </ul>

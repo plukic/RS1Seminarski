@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20180102121838_unite_machines_tools_into_equipment.cs" />
     <Compile Remove="Migrations\20180102121838_unite_machines_tools_into_equipment.Designer.cs" />
+    <Compile Remove="Migrations\20180102132005_equipment_quantity.cs" />
+    <Compile Remove="Migrations\20180102132005_equipment_quantity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,10 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Equipment\" />
   </ItemGroup>
 
 </Project>
