@@ -12,9 +12,10 @@ using System;
 namespace ConstructionDiary.Migrations
 {
     [DbContext(typeof(ConstructionCompanyContext))]
-    partial class ConstructionCompanyContextModelSnapshot : ModelSnapshot
+    [Migration("20180102122957_unite_machines_tools_into_equipment")]
+    partial class unite_machines_tools_into_equipment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
