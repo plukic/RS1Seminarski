@@ -72,7 +72,8 @@
         const urlParts = window.location.href.split('/');
         const constructionSiteId = parseInt(urlParts[urlParts.length - 1], 10);
         fetch(`/ConstructionSites/SiteManagers/${constructionSiteId}`,
-                {
+            {
+                    credentials: 'include',
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

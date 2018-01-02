@@ -32,6 +32,8 @@ namespace FunctionalTests.PageObjectModels
         public IWebElement ContractDescriptionInput { get => _driver.FindElement(By.Id("constructionSite_Contract_Description")); }
         public IWebElement ContractFileInput { get => _driver.FindElement(By.CssSelector("input[type='file']")); }
         public IWebElement Map { get => _driver.FindElement(By.Id("location-map")); }
+        public IWebElement AddSitemManagerButton { get => _driver.FindElement(By.Id("open-add-site-manager-button")); }
+        public IWebElement SubmitAddSitemManagerButton { get => _driver.FindElement(By.Id("add-site-manager-submit-button")); }
 
 
         public void OpenSiteCreationForm()
@@ -39,6 +41,19 @@ namespace FunctionalTests.PageObjectModels
             var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             var clickableElement = wait.Until(ExpectedConditions.ElementToBeClickable(CreateNewSiteLink));
             clickableElement.Click();
+        }
+
+        public void OpenAddSiteManagerModal()
+        {
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            var clickableElement = wait.Until(ExpectedConditions.ElementToBeClickable(AddSitemManagerButton));
+            clickableElement.Click();
+        }
+
+        public void OpenSiteEdit()
+        {
+            int id = CreateConstructionSite(_driver);
+            _driver.Navigate().GoToUrl(@"http://localhost:52140/ConstructionSites/Edit/" + id);
         }
 
         public void FillOutForm()

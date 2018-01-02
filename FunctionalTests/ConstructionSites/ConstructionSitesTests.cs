@@ -68,8 +68,7 @@ namespace FunctionalTests.ConstructionSites
             using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
             {
                 var constructionSitesPage = new ConstructionSitesPage(driver);
-                int id = constructionSitesPage.CreateConstructionSite(driver);
-                driver.Navigate().GoToUrl(@"http://localhost:52140/ConstructionSites/Edit/" + id);
+                constructionSitesPage.OpenSiteEdit();
 
                 constructionSitesPage.FillOutForm();
                 constructionSitesPage.ContractFileInput.Clear();
@@ -77,6 +76,30 @@ namespace FunctionalTests.ConstructionSites
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
                 IWebElement loadedList = wait.Until(ExpectedConditions.ElementToBeClickable(constructionSitesPage.ConstructionSitesTable));
                 Assert.That(loadedList, Is.Not.Null);
+
+            }
+        }
+
+        [Test]
+        public void ShouldAllowAddingConstructionSiteManagerToConstructionSite()
+        {
+            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            {
+                var registrationPage = new RegistrationPage(driver);
+                registrationPage.RegisterAndLogin();
+                var constructionSitesPage = new ConstructionSitesPage(driver);
+                constructionSitesPage.OpenSiteEdit();
+                constructionSitesPage.OpenAddSiteManagerModal();
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+                IWebElement randomManager = driver.FindElement(By.CssSelector(".construction-sites-managers-list tbody tr"));
+                var clickableManager = wait.Until(ExpectedConditions.ElementToBeClickable(randomManager));
+                clickableManager.Click();
+                constructionSitesPage.SubmitAddSitemManagerButton.Click();
+       
+                var addedManager = wait.Until(ExpectedConditions.ElementExists(By.CssSelector(".construction-site-managers-panel .panel-body .site-manager")));
+
+                Assert.That(addedManager, Is.Not.Null);
 
             }
         }

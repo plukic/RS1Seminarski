@@ -17,18 +17,18 @@ namespace ConstructionDiary.BR.ConstructionSites.Implementation
         private readonly IRepository<ConstructionSite> _constructionSitesRepository;
         private readonly IRepository<Location> _locationsRepository;
         private readonly IDocumentsService _documentsService;
-        private readonly IRepository<ConstructionSiteSiteManager> _constructionSiteSetManagersRepository;
+        private readonly IRepository<ConstructionSiteSiteManager> _constructionSiteSiteManagersRepository;
 
         public ConstructionSitesService(
             IRepository<ConstructionSite> constructionSitesRepository,
             IRepository<Location> locationsRepository,
             IDocumentsService documentsService,
-            IRepository<ConstructionSiteSiteManager> constructionSiteSetManagersRepository)
+            IRepository<ConstructionSiteSiteManager> constructionSiteSiteManagersRepository)
         {
             _constructionSitesRepository = constructionSitesRepository;
             _documentsService = documentsService;
             _locationsRepository = locationsRepository;
-            _constructionSiteSetManagersRepository = constructionSiteSetManagersRepository;
+            _constructionSiteSiteManagersRepository = constructionSiteSiteManagersRepository;
         }
         public async Task<ConstructionSite> Store(ConstructionSite constructionSite, IFormFile contract)
         {
@@ -91,11 +91,19 @@ namespace ConstructionDiary.BR.ConstructionSites.Implementation
 
         public void AddConstructionSiteManager(int id, ConstructionSiteManager manager)
         {
-            _constructionSiteSetManagersRepository.Add(new ConstructionSiteSiteManager()
+            _constructionSiteSiteManagersRepository.Add(new ConstructionSiteSiteManager()
             {
                 ConstructionSiteId = id,
                 ConstructionSiteManagerId = manager.Id,
             });
+        }
+
+        public void RemoveConstructionSiteManager(int constructionSiteId, int managerId)
+        {
+            var managerRelation = _constructionSiteSiteManagersRepository.GetSingle(
+                new ConstructionSiteSiteManagerSpecification(constructionSiteId, managerId)
+            );
+            _constructionSiteSiteManagersRepository.Delete(managerRelation);
         }
     }
 }
