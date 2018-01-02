@@ -16,10 +16,9 @@ namespace ConstructionDiary.DAL
         public DbSet<ControlEntry> ControlEntries { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<Machine> Machines { get; set; }
+        public DbSet<Equipment> Equipment { get; set; }
         public DbSet<Remark> Remarks { get; set; }
         public DbSet<Task> Tasks { get; set; }
-        public DbSet<Tool> Tools { get; set; }
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Worksheet> Worksheets { get; set; }
         public DbSet<ConstructionSiteManager> ConstructionSiteManagers { get; set; }
@@ -46,19 +45,6 @@ namespace ConstructionDiary.DAL
                 .WithMany(t => t.WorkerTasks)
                 .HasForeignKey(wt => wt.TaskId);
 
-            modelBuilder.Entity<WorksheetTool>()
-                .HasKey(wt => new { wt.WorksheetId, wt.ToolId });
-
-            modelBuilder.Entity<WorksheetTool>()
-                .HasOne(wt => wt.Worksheet)
-                .WithMany(w => w.WorksheetTools)
-                .HasForeignKey(wt => wt.WorksheetId);
-
-            modelBuilder.Entity<WorksheetTool>()
-                .HasOne(wt => wt.Tool)
-                .WithMany(t => t.WorksheetTools)
-                .HasForeignKey(wt => wt.ToolId);
-
             modelBuilder.Entity<WorksheetMaterial>()
                 .HasKey(wm => new { wm.WorksheetId, wm.MaterialId });
 
@@ -73,18 +59,18 @@ namespace ConstructionDiary.DAL
                 .HasForeignKey(wm => wm.MaterialId);
 
 
-            modelBuilder.Entity<WorksheetMachine>()
-               .HasKey(wm => new { wm.WorksheetId, wm.MachineId });
+            modelBuilder.Entity<WorksheetEquipment>()
+               .HasKey(wm => new { wm.WorksheetId, wm.EquipmentId });
 
-            modelBuilder.Entity<WorksheetMachine>()
+            modelBuilder.Entity<WorksheetEquipment>()
                 .HasOne(wm => wm.Worksheet)
-                .WithMany(w => w.WorksheetMachines)
+                .WithMany(w => w.WorksheetEquipment)
                 .HasForeignKey(wm => wm.WorksheetId);
 
-            modelBuilder.Entity<WorksheetMachine>()
-                .HasOne(wm => wm.Machine)
-                .WithMany(m => m.WorksheetMachines)
-                .HasForeignKey(wm => wm.MachineId);
+            modelBuilder.Entity<WorksheetEquipment>()
+                .HasOne(wm => wm.Equipment)
+                .WithMany(m => m.WorksheetEquipment)
+                .HasForeignKey(wm => wm.EquipmentId);
 
             modelBuilder.Entity<ConstructionSiteSiteManager>()
                 .HasKey(cssm => new { cssm.ConstructionSiteId, cssm.ConstructionSiteManagerId });
