@@ -9,7 +9,13 @@
         {
             foreach (ConstructionSiteSiteManager managerRelation in Model.ConstructionSiteManagers)
              {
-                 <p class="site-manager">@managerRelation.ConstructionSiteManager.User?.FullName</p>
+                 <p class="site-manager">
+                     @managerRelation.ConstructionSiteManager.User?.FullName
+                    <a
+                        href="/ConstructionSites/RemoveSiteManager/@Model.Id?managerId=@managerRelation.ConstructionSiteManagerId"
+                        class="fa fa-times"
+                        aria-hidden="true"></a>
+                 </p>
              }
         }
         <div class="add-construction-site-manager">
@@ -38,7 +44,7 @@
     </div>
 </div>
 <script>
-window.constructionSite = @Html.Raw(Json.Serialize(Model, new JsonSerializerSettings()
+    window.constructionSite = @Html.Raw(Json.Serialize(Model, new JsonSerializerSettings()
                                      {
                                          ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                                      }))</script>

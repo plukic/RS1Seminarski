@@ -81,10 +81,12 @@ namespace FunctionalTests.ConstructionSites
         }
 
         [Test]
-        public void ShouldAllowAddingConstructionSitemManagerToConstructionSite()
+        public void ShouldAllowAddingConstructionSiteManagerToConstructionSite()
         {
             using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
             {
+                var registrationPage = new RegistrationPage(driver);
+                registrationPage.RegisterAndLogin();
                 var constructionSitesPage = new ConstructionSitesPage(driver);
                 constructionSitesPage.OpenSiteEdit();
                 constructionSitesPage.OpenAddSiteManagerModal();
@@ -94,7 +96,7 @@ namespace FunctionalTests.ConstructionSites
                 var clickableManager = wait.Until(ExpectedConditions.ElementToBeClickable(randomManager));
                 clickableManager.Click();
                 constructionSitesPage.SubmitAddSitemManagerButton.Click();
-
+       
                 var addedManager = wait.Until(ExpectedConditions.ElementExists(By.CssSelector(".construction-site-managers-panel .panel-body .site-manager")));
 
                 Assert.That(addedManager, Is.Not.Null);

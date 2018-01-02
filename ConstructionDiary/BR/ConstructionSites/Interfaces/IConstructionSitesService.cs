@@ -16,5 +16,6 @@ namespace ConstructionDiary.BR.ConstructionSites.Interfaces
         ConstructionSite GetById(int id);
         Task Update(ConstructionSite constructionSite, IFormFile contractFile);
         void AddConstructionSiteManager(int id, ConstructionSiteManager manager);
+        void RemoveConstructionSiteManager(int id, int managerId);
     }
 }

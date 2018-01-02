@@ -108,15 +108,13 @@ namespace ConstructionDiary.Controllers
         }
 
         // GET: ConstructionSites/Edit/5
+        [Authorize]
         public ViewResult Edit(int id)
         {
-            List<City> cities = _citiesRepository.List().ToList();
-            var constructionSite = _constructionSitesService.GetById(id);
-
             var viewModel = new CreateConstructionSiteViewModel()
             {
-                constructionSite = constructionSite,
-                cities = cities,
+                constructionSite = _constructionSitesService.GetById(id),
+                cities = _citiesRepository.List().ToList(),
             };
             return View("Create", viewModel);
         }
@@ -170,6 +168,7 @@ namespace ConstructionDiary.Controllers
         }
 
         // POST: ConstructionSites/SiteManagers/5
+        [Authorize]
         [HttpPost]
         public void SiteManagers(int id, [FromBody] ConstructionSiteManager manager)
         {
@@ -181,6 +180,22 @@ namespace ConstructionDiary.Controllers
             {
                 _logger.LogError(e.Message);
             }
+        }
+
+        // GET: ConstructionSites/RemoveSiteManagers/5?managerId=2
+        [Authorize]
+        public ActionResult RemoveSiteManager(int id, int managerId)
+        {
+            try
+            {
+                _constructionSitesService.RemoveConstructionSiteManager(id, managerId);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+
+            return RedirectToAction("Edit", new {id= id});
         }
 
     }
