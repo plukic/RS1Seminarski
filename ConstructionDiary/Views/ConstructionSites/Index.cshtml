@@ -5,6 +5,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    var citiesSelectList = Model.Cities.Select(c => new SelectListItem() { Text = c.Name, Value = c.Id.ToString() }).ToList();
 }
 
 <div class="row construction-sites-list">
@@ -17,7 +18,15 @@
     <div class="col-sm-7 col-md-8 col-lg-9">
         <form asp-action="" method="get" class="construction-sites-filters">
             <div class="row">
-                <div class="col-sm-8 col-md-8 col-lg-8">
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label asp-for="@Model.SelectedCity" class="control-label">Grad</label>
+                        <select asp-for="@Model.SelectedCity.Id" asp-items="@citiesSelectList" class="form-control" name="SelectedCity.Id">
+                            <option>Filtriraj prema gradu</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label asp-for="@Model.OpenStatus" class="control-label">Status</label>
                         <select asp-for="@Model.OpenStatus" asp-items="Html.GetEnumSelectList<OpenStatus>()" class="form-control">
@@ -27,7 +36,7 @@
                 </div>
                 <div class="col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
-                        <input type="submit" value="Filtriraj" class="btn btn-default"/>
+                        <input type="submit" value="Filtriraj" class="btn btn-default" />
                     </div>
                 </div>
             </div>
