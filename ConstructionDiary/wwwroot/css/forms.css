@@ -1,0 +1,14 @@
+﻿form.filters {
+    max-width: 700px;
+    margin-top: 20px;
+}
+
+form.filters input[type=submit] {
+    margin-top: 25px;
+}
+
+@media (max-width: 767px) {
+    form.filters input[type=submit] {
+        margin-top: 0;
+    }
+}

@@ -1,4 +1,7 @@
 ﻿using ConstructionDiary.BR.EquipmentManagement.Interfaces;
+using ConstructionDiary.DAL;
+using ConstructionDiary.DAL.Specs;
+using ConstructionDiary.ViewModels;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,10 +21,18 @@ namespace ConstructionDiary.Controllers
             _equipmentService = equipmentService;
         }
         // GET: Equipment
-        public ActionResult Index()
+        public ActionResult Index(string nameFilter = "")
         {
-            List <Equipment> allEquipment = _equipmentService.GetAll().ToList();
-            return View(allEquipment);
+            ISpecification<Equipment> specification = new EquipmentFilters(
+                nameFilter ?? ""
+            );
+            List <Equipment> allEquipment = _equipmentService.GetAll(specification).ToList();
+            var viewModel = new EquipmentListViewModel
+            {
+                Equipment = allEquipment,
+                NameFilter = nameFilter,
+            };
+            return View(viewModel);
         }
 
         // GET: Equipment/Details/5

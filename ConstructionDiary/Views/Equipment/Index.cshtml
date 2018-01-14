@@ -1,34 +1,54 @@
-﻿@model IEnumerable<DataLayer.Models.Equipment>
+﻿@model ConstructionDiary.ViewModels.EquipmentListViewModel
 
 @{
     ViewData["Title"] = "Oprema";
 }
 
-<h2>Oprema</h2>
-
-<p>
-    <a asp-action="Create">Dodaj novu</a>
-</p>
+<div class="row construction-sites-list">
+    <div class="col-sm-5 col-md-4 col-lg-3">
+        <h2>Oprema</h2>
+        <p>
+            <a asp-action="Create">Dodaj novu</a>
+        </p>
+    </div>
+    <div class="col-sm-7 col-md-8 col-lg-9">
+        <form asp-action="" method="get" class="filters">
+            <div class="row">
+                <div class="col-sm-8 col-md-8 col-lg-8">
+                    <div class="form-group">
+                        <label asp-for="@Model.NameFilter" class="control-label">Naziv</label>
+                        <input asp-for="@Model.NameFilter" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <input type="submit" value="Filtriraj" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    @Html.DisplayNameFor(model => model.Equipment[0].Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PurchaseDate)
+                    @Html.DisplayNameFor(model => model.Equipment[0].PurchaseDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.SerialNumber)
+                    @Html.DisplayNameFor(model => model.Equipment[0].SerialNumber)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Quantity)
+                    @Html.DisplayNameFor(model => model.Equipment[0].Quantity)
                 </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Equipment) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
