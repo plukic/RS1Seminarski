@@ -36,6 +36,9 @@
                     @Html.DisplayNameFor(model => model.Equipment[0].Name)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.Equipment[0].Description)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Equipment[0].PurchaseDate)
                 </th>
                 <th>
@@ -54,6 +57,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.PurchaseDate)
             </td>
             <td>
@@ -63,9 +69,9 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalji</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Ukloni</a>
             </td>
         </tr>
 }
