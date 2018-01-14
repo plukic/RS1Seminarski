@@ -53,3 +53,6 @@ form.site-create-edit .add-construction-site-manager > p {
     margin-left: 7px;
     text-decoration: none;
 }
+#construction-site-details form .form-group {
+    text-align: center;
+}

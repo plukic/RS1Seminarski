@@ -124,29 +124,6 @@ namespace ConstructionDiary.Controllers
             return View("Create", viewModel);
         }
 
-        // POST: ConstructionSites/Edit/5
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return View("Create");
-                }
-                
-                //_constructionSitesService.Store(constructionSite, contractFile);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError("Error creating construction site", e);
-                return View("Create");
-            }
-        }
 
         // GET: ConstructionSites/Delete/5
         public ActionResult Delete(int id)
@@ -201,6 +178,26 @@ namespace ConstructionDiary.Controllers
             }
 
             return RedirectToAction("Edit", new {id= id});
+        }
+
+        // POST: ConstructionSites/Edit/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeOpenStatus(int id, OpenStatus openStatus)
+        {
+            try
+            {
+                var constructionSite = _constructionSitesService.GetById(id);
+                constructionSite.OpenStatus = openStatus;
+                await _constructionSitesService.Update(constructionSite, null);
+                return RedirectToAction(nameof(Details), new {id});
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error changing open status for construction site", e);
+                return View("Details");
+            }
         }
 
     }
