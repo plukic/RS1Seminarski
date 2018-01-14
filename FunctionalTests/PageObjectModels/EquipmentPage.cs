@@ -15,6 +15,7 @@ namespace FunctionalTests.PageObjectModels
         }
 
         private const string TestEquipmentTitle = "equipment a";
+        private const string TestEquipmentDescription = "just a piece of equipment";
         private const string TestPurchaseDate = "01012017";
         private const int TestQuantity = 6;
         private const string TestSerialNumber = "A3232";
@@ -23,6 +24,7 @@ namespace FunctionalTests.PageObjectModels
         public IWebElement EquipmentForm { get => _driver.FindElement(By.CssSelector("form[action*='/Equipment/Create']")); } 
         public IWebElement CreateNewEquipmentLink { get => _driver.FindElement(By.CssSelector("a[href*='/Equipment/Create']")); }
         public IWebElement EquipmentTitleInput { get => _driver.FindElement(By.Id("Name")); }
+        public IWebElement EquipmentDescriptionInput { get => _driver.FindElement(By.Id("Description")); }
         public IWebElement DatePurchaseInput { get => _driver.FindElement(By.Id("PurchaseDate")); }
         public IWebElement SerialNumberInput { get => _driver.FindElement(By.Id("SerialNumber")); }
         public IWebElement QuantityInput { get => _driver.FindElement(By.Id("Quantity")); }
@@ -49,6 +51,7 @@ namespace FunctionalTests.PageObjectModels
 
 
             EquipmentTitleInput.SendKeys(TestEquipmentTitle);
+            EquipmentDescriptionInput.SendKeys(TestEquipmentDescription);
             DatePurchaseInput.SendKeys(TestPurchaseDate);
             QuantityInput.SendKeys(TestQuantity.ToString());
             SerialNumberInput.SendKeys(TestSerialNumber);

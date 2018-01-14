@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.Models
 {
@@ -23,6 +24,11 @@ namespace DataLayer.Models
         [DefaultValue(1)]
         [DisplayName("Količina")]
         public int Quantity { get; set; }
+
+        [Column(TypeName = "text")]
+        [DisplayName("Opis")]
+        [MinLength(4)]
+        public string Description { get; set; }
 
         public List<WorksheetEquipment> WorksheetEquipment { get; set; }
     }
