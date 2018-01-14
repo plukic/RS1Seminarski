@@ -2,7 +2,7 @@
 
 namespace DataLayer.Models
 {
-    public class WorksheetMachine
+    public class WorksheetEquipment
     {
         public DateTime UsageStart { get; set; }
         public DateTime UsageEnd{ get; set; }
@@ -10,7 +10,7 @@ namespace DataLayer.Models
         public int WorksheetId { get; set; }
         public Worksheet Worksheet { get; set; }
 
-        public int MachineId { get; set; }
-        public Machine Machine { get; set; }
+        public int EquipmentId { get; set; }
+        public Equipment Equipment { get; set; }
     }
 }

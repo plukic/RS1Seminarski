@@ -8,7 +8,7 @@ using System.IO;
 using System.Reflection;
 using Assert = NUnit.Framework.Assert;
 
-namespace FunctionalTests.ConstructionSites
+namespace FunctionalTests.Tests
 {
     [TestFixture]
     public class ConstructionSitesTests

@@ -12,9 +12,10 @@ using System;
 namespace ConstructionDiary.Migrations
 {
     [DbContext(typeof(ConstructionCompanyContext))]
-    partial class ConstructionCompanyContextModelSnapshot : ModelSnapshot
+    [Migration("20180102122957_unite_machines_tools_into_equipment")]
+    partial class unite_machines_tools_into_equipment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,12 +167,9 @@ namespace ConstructionDiary.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
-                    b.Property<DateTime?>("PurchaseDate");
-
-                    b.Property<int>("Quantity");
+                    b.Property<DateTime>("PurchaseDate");
 
                     b.Property<string>("SerialNumber");
 
@@ -203,13 +201,9 @@ namespace ConstructionDiary.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double?>("Amount")
-                        .IsRequired();
+                    b.Property<double>("Amount");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int>("Unit");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 

@@ -12,9 +12,10 @@ using System;
 namespace ConstructionDiary.Migrations
 {
     [DbContext(typeof(ConstructionCompanyContext))]
-    partial class ConstructionCompanyContextModelSnapshot : ModelSnapshot
+    [Migration("20180102134133_equipment_quantity")]
+    partial class equipment_quantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,13 +204,9 @@ namespace ConstructionDiary.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double?>("Amount")
-                        .IsRequired();
+                    b.Property<double>("Amount");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int>("Unit");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 

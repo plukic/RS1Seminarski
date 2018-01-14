@@ -38,11 +38,12 @@
                         <li><a asp-area="" asp-controller="UserAccounts" asp-action="Index">Korisnički nalozi</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Korisnici</a></li>
                         <li><a asp-area="" asp-controller="ConstructionSites" asp-action="Index">Gradilišta</a></li>
+                        <li><a asp-area="" asp-controller="Materials" asp-action="Index">Materijali</a></li>
                     }
                     @if (Context.User.Identity.IsAuthenticated && (Context.User.IsInRole("Manager") || Context.User.IsInRole("ConstructionSiteManager")))
                     {
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Radni listovi</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Alati i mašine</a></li>
+                        <li><a asp-area="" asp-controller="Equipment" asp-action="Index">Alati i mašine</a></li>
                     }
 
                 </ul>

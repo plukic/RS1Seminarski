@@ -13,8 +13,7 @@ namespace DataLayer.Models
         public List<ControlEntry> ControlEntries { get; set; }
         public List<Task> Tasks { get; set; }
         public ConstructionSiteManager GetConstructionSiteManager { get; set; }
-        public List<WorksheetTool> WorksheetTools { get; set; }
         public List<WorksheetMaterial> WorksheetMaterials { get; set; }
-        public List<WorksheetMachine> WorksheetMachines { get; set; }
+        public List<WorksheetEquipment> WorksheetEquipment { get; set; }
     }
 }

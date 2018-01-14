@@ -1,5 +1,6 @@
 ﻿using ConstructionDiary.DAL;
 using DataLayer.Models;
+using System;
 using System.Linq;
 
 namespace ConstructionDiary.Data
@@ -37,6 +38,15 @@ namespace ConstructionDiary.Data
                     LastName = "LastName",
                 }
             });
+
+            var equipment = new Equipment[]
+            {
+                new Equipment() {Name = "Čekić", PurchaseDate = DateTime.Now, SerialNumber = "A7687"},
+                new Equipment() {Name = "Mješalica", PurchaseDate = DateTime.Now, SerialNumber = "C7689"},
+                new Equipment() {Name = "Bager", PurchaseDate = DateTime.Now, SerialNumber = "Z6573"},
+            };
+            context.Equipment.AddRange(equipment);
+
             context.SaveChanges();
         }
     }

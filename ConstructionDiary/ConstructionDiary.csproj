@@ -5,6 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180102121838_unite_machines_tools_into_equipment.cs" />
+    <Compile Remove="Migrations\20180102121838_unite_machines_tools_into_equipment.Designer.cs" />
+    <Compile Remove="Migrations\20180102132005_equipment_quantity.cs" />
+    <Compile Remove="Migrations\20180102132005_equipment_quantity.Designer.cs" />
+    <Compile Remove="Migrations\20180102205813_materials-measurement-unit.cs" />
+    <Compile Remove="Migrations\20180102205813_materials-measurement-unit.Designer.cs" />
+    <Compile Remove="Migrations\20180102212244_materials-quantity.cs" />
+    <Compile Remove="Migrations\20180102212244_materials-quantity.Designer.cs" />
+    <Compile Remove="Migrations\20180102212415_materials-quantity.cs" />
+    <Compile Remove="Migrations\20180102212415_materials-quantity.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.1" />
