@@ -4,8 +4,8 @@ namespace ConstructionDiary.DAL.Specs
 {
     public class ConstructionSitesFilters : BaseSpecification<ConstructionSite>
     {
-        public ConstructionSitesFilters(OpenStatus? openStatus)
-            : base(c => openStatus == null || c.OpenStatus == openStatus)
+        public ConstructionSitesFilters(OpenStatus? openStatus, City selectedCity)
+            : base(cs => (openStatus == null || cs.OpenStatus == openStatus) && (selectedCity == null || cs.City.Equals(selectedCity)))
         {
             AddInclude(c => c.City);
             AddInclude(c => c.Contract);

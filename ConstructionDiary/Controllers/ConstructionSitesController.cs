@@ -35,14 +35,19 @@ namespace ConstructionDiary.Controllers
             _userManager = userManager;
         }
         // GET: ConstructionSites
-        public ActionResult Index(OpenStatus? openStatus)
+        public ActionResult Index(OpenStatus? openStatus, City selectedCity)
         {
-            ISpecification <ConstructionSite> specification = new ConstructionSitesFilters(openStatus);
+            ISpecification <ConstructionSite> specification = new ConstructionSitesFilters(
+                openStatus,
+                selectedCity.Id == 0 ? null : selectedCity
+            );
             List<ConstructionSite> constructionSites = _constructionSitesService.GetAll(specification);
             var model = new ConstructionSitesListViewModel()
             {
                 ConstructionSites = constructionSites,
                 OpenStatus = openStatus,
+                Cities = _citiesRepository.List().ToList(),
+                SelectedCity = selectedCity,
             };
             return View(model);
         }
