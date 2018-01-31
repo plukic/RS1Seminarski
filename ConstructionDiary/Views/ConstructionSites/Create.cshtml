@@ -25,12 +25,12 @@
             <input type="hidden" asp-for="constructionSite.Location.Latitude" id="site_latitude" />
             <input type="hidden" asp-for="constructionSite.Location.Longitude" id="site_longitude" />
             @{
-        if (isEdit)
-        {
-            <input type="hidden" asp-for="constructionSite.Contract.Id" />
-            <input type="hidden" asp-for="constructionSite.Contract.Document.Id" />
-            <input type="hidden" asp-for="constructionSite.Location.Id" />
-}
+                if (isEdit)
+                {
+                    <input type="hidden" asp-for="constructionSite.Contract.Id" />
+                    <input type="hidden" asp-for="constructionSite.Contract.Document.Id" />
+                    <input type="hidden" asp-for="constructionSite.Location.Id" />
+                }
             }
             <div class="panel panel-default">
                 <div class="panel-heading">Opće informacije</div>
@@ -62,13 +62,13 @@
                         </select>
                     </div>
                     @{
-                if (isEdit)
-                {
-                    <div class="form-group">
-                        <label asp-for="constructionSite.OpenStatus" class="control-label"></label>
-                        <select asp-for="constructionSite.OpenStatus" class="form-control" asp-items="Html.GetEnumSelectList<OpenStatus>()"></select>
-                    </div>
-        }
+                        if (isEdit)
+                        {
+                            <div class="form-group">
+                                <label asp-for="constructionSite.OpenStatus" class="control-label"></label>
+                                <select asp-for="constructionSite.OpenStatus" class="form-control" asp-items="Html.GetEnumSelectList<OpenStatus>()"></select>
+                            </div>
+                        }
                     }
                 </div>
             </div>

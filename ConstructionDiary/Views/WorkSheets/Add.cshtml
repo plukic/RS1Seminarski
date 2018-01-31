@@ -1,0 +1,42 @@
+﻿@model ConstructionDiary.ViewModels.WorkSheet.WorkSheetAddVM;
+
+@{
+    ViewData["Title"] = "Add";
+}
+<div class="container">
+    <form class="worksheet-form">
+        <div class="form-group row">
+            <label for="inputDate" class="col-sm-2 col-form-label">Datum</label>
+            <div class="col-sm-4">
+                <input type="date" class="form-control" id="inputDate">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Gradiliste</label>
+            <div class="col-sm-4">
+                <select asp-for="ConstructionSiteId" asp-items="Model.ConstructionSites" class="form-control"></select>
+            </div>
+        </div>
+    </form>
+    <h3>Zadaci</h3>
+    <div id="tasks">
+
+    </div>
+    <h3>Oprema</h3>
+    <div id="equipment">
+
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/Tasks.js")"></script>
+<script type="text/javascript">
+    $(document).ready(new function myfunction() {
+        $.get('/WorkSheetsAjax/IndexTasks', function (result) {
+            $("#tasks").html(result);
+        })
+        //$.get('/WorkSheetsAjax/IndexEquipment', function (result) {
+        //    $("#tasks").html(result);
+        //})
+    });
+
+</script>

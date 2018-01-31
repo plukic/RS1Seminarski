@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+<table class="table" id="tasksTable">
+    <thead>
+        <tr>
+            <th>Naziv zadatka</th>
+            <th>Opis zadatka</th>
+        </tr>
+    </thead>
+    <tbody id="tasksTableBody"></tbody>
+</table>
+<button class="btn btn-primary" ajax-poziv='da' ajax-url='/WorkSheetsAjax/AddTask' ajax-rezultat='tasks'>Dodaj radni zadatak</button>
+
+
+<script type="text/javascript">
+    var tasks = GetTasks();
+    for (var i = 0; i < tasks.length; i++) {
+        var title = '<td>' + tasks[i].title + '</td>';
+        var description= '<td>' + tasks[i].description + '</td>';
+        var actionDelete = '<button taskId ="' + tasks[i].id+'" class="btn btn-danger btnDelete">Obrisi</button>';
+        var actionEdit = '<button taskId ="' + tasks[i].id +'" class="btn btn-primary btnEdit">Uredi</button>';
+        var row = '<tr>' + title + description + '<td>' + actionEdit + actionDelete+'</td>'+'</tr>';
+        $("#tasksTableBody").append(row); 
+    }
+
+
+    $(".btnDelete").click(function myfunction() {
+        var taskId = $(this).attr("taskId");
+        DeleteTask(taskId);
+        var closestRow = $(this).closest("tr");
+        closestRow.remove();
+    });
+
+    $(".btnEdit").click(function myfunction() {
+        
+        var taskId = $(this).attr("taskId");
+        console.log(taskId);
+        $.get('/WorkSheetsAjax/AddTask?taskId=' + taskId, function myfunction(result) {
+            $("#tasks").html(result);
+        })
+    });
+</script>
