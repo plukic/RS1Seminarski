@@ -22,6 +22,8 @@ namespace ConstructionDiary.DAL
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Worksheet> Worksheets { get; set; }
         public DbSet<ConstructionSiteManager> ConstructionSiteManagers { get; set; }
+        public DbSet<WorksheetMaterial> WorksheetMaterial { get; set; }
+        public DbSet<Material> Material{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

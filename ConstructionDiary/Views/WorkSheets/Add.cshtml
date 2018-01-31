@@ -22,21 +22,22 @@
     <div id="tasks">
 
     </div>
-    <h3>Oprema</h3>
-    <div id="equipment">
+    <h3>Materijali</h3>
+    <div id="materials">
 
     </div>
 </div>
 
 <script src="@Url.Content("~/js/Tasks.js")"></script>
+<script src="@Url.Content("~/js/Materials.js")"></script>
 <script type="text/javascript">
     $(document).ready(new function myfunction() {
         $.get('/WorkSheetsAjax/IndexTasks', function (result) {
             $("#tasks").html(result);
         })
-        //$.get('/WorkSheetsAjax/IndexEquipment', function (result) {
-        //    $("#tasks").html(result);
-        //})
+        $.get('/WorkSheetsAjax/IndexMaterials', function (result) {
+            $("#materials").html(result);
+        })
     });
 
 </script>

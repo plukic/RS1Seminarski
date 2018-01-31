@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+<table class="table" id="materialTable">
+    <thead>
+        <tr>
+            <th>Naziv materijala</th>
+            <th>Kolicina</th>
+        </tr>
+    </thead>
+    <tbody id="materialTableBody"></tbody>
+</table>
+<button class="btn btn-primary" ajax-poziv='da' ajax-url='/WorkSheetsAjax/AddMaterial' ajax-rezultat='materials'>Dodaj Materijale</button>
+
+
+<script type="text/javascript">
+    var materials = GetMaterials();
+
+    for (var i = 0; i < materials.length; i++) {
+        var name = '<td>' + materials[i].name + '</td>';
+        var amount = '<td>' + materials[i].amount + '</td>';
+        var actionDelete = '<button materialId ="' + materials[i].id+'" class="btn btn-danger btnDelete">Obrisi</button>';
+        var actionEdit = '<button materialId="' + materials[i].id +'" class="btn btn-primary btnEdit">Uredi</button>';
+        var row = '<tr>' + name + amount + '<td>' + actionEdit + actionDelete+'</td>'+'</tr>';
+        $("#materialTableBody").append(row);
+    }
+
+
+    $(".btnDelete").click(function myfunction() {
+        var materialId = $(this).attr("materialId");
+        DeleteMaterial(materialId);
+        var closestRow = $(this).closest("tr");
+        closestRow.remove();
+    });
+
+    $(".btnEdit").click(function myfunction() {
+
+        var materialId = $(this).attr("materialId");
+        $.get('/WorkSheetsAjax/AddMaterial?materialId=' + materialId, function myfunction(result) {
+            $("#materials").html(result);
+        })
+    });
+</script>
