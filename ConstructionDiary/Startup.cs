@@ -40,6 +40,8 @@ namespace ConstructionDiary
 
             services.AddDbContext<ConstructionCompanyContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("local")));
+
+
             services.AddIdentity<User, Role>(options =>
             {
                 options.Password.RequireDigit = true;

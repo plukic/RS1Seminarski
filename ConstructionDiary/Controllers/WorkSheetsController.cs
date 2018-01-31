@@ -29,5 +29,11 @@ namespace ConstructionDiary.Controllers
             return View(vm);
 
         }
+        [HttpPost]
+        public IActionResult Add(WorkSheetAddVM vm)
+        {
+            vm.ConstructionSites = worksheetService.GetWorkSheetAddViewModel().ConstructionSites;
+            return View(vm);
+        }
     }
 }

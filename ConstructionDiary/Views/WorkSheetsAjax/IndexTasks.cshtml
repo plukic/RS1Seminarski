@@ -14,26 +14,38 @@
 
 
 <script type="text/javascript">
-    var tasks = GetTasks();
-    for (var i = 0; i < tasks.length; i++) {
-        var title = '<td>' + tasks[i].title + '</td>';
-        var description= '<td>' + tasks[i].description + '</td>';
-        var actionDelete = '<button taskId ="' + tasks[i].id+'" class="btn btn-danger btnDelete">Obrisi</button>';
-        var actionEdit = '<button taskId ="' + tasks[i].id +'" class="btn btn-primary btnEdit">Uredi</button>';
-        var row = '<tr>' + title + description + '<td>' + actionEdit + actionDelete+'</td>'+'</tr>';
-        $("#tasksTableBody").append(row); 
+    var toggleTable = function () {
+        var tasks = GetTasks();
+        if (tasks.length == 0)
+            $("#tasksTable").hide();
+        else
+            $("#tasksTable").show();
     }
 
+    $(document).ready(function myfunction() {
+        var tasks = GetTasks();
+        for (var i = 0; i < tasks.length; i++) {
+            var title = '<td>' + tasks[i].title + '</td>';
+            var description = '<td>' + tasks[i].description + '</td>';
+            var actionDelete = '<button taskId ="' + tasks[i].id + '" class="btn btn-danger btnDelete">Obrisi</button>';
+            var actionEdit = '<button taskId ="' + tasks[i].id + '" class="btn btn-primary btnEdit">Uredi</button>';
+            var row = '<tr>' + title + description + '<td>' + actionEdit + actionDelete + '</td>' + '</tr>';
+            $("#tasksTableBody").append(row);
+        }
+        toggleTable();
+    });
 
+   
     $(".btnDelete").click(function myfunction() {
         var taskId = $(this).attr("taskId");
         DeleteTask(taskId);
         var closestRow = $(this).closest("tr");
         closestRow.remove();
-    });
 
+
+    });
     $(".btnEdit").click(function myfunction() {
-        
+
         var taskId = $(this).attr("taskId");
         console.log(taskId);
         $.get('/WorkSheetsAjax/AddTask?taskId=' + taskId, function myfunction(result) {

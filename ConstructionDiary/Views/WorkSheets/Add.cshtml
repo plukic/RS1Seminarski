@@ -4,40 +4,72 @@
     ViewData["Title"] = "Add";
 }
 <div class="container">
-    <form class="worksheet-form">
-        <div class="form-group row">
-            <label for="inputDate" class="col-sm-2 col-form-label">Datum</label>
-            <div class="col-sm-4">
-                <input type="date" class="form-control" id="inputDate">
+    <div class="card-shadow panel panel-default">
+        <div class="panel-heading">Opće informacije</div>
+        <div class="panel-body">
+            <div class="form-group row">
+                <label for="inputDate" class="col-sm-2 col-form-label">Datum</label>
+                <div class="col-sm-4">
+                    <input type="date" class="form-control" id="inputDate">
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Gradiliste</label>
-            <div class="col-sm-4">
-                <select asp-for="ConstructionSiteId" asp-items="Model.ConstructionSites" class="form-control"></select>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Gradiliste</label>
+                <div class="col-sm-4">
+                    <select id="constructionSiteSelectId"asp-for="ConstructionSiteId" asp-items="Model.ConstructionSites" class="form-control"></select>
+                </div>
             </div>
-        </div>
-    </form>
-    <h3>Zadaci</h3>
-    <div id="tasks">
 
+        </div>
     </div>
-    <h3>Materijali</h3>
-    <div id="materials">
 
+
+
+    <div class="card-shadow panel panel-default">
+        <div class="panel-heading">Zadaci</div>
+        <div class="panel-body" id="tasks">
+        </div>
+    </div>
+
+    <div class="card-shadow panel panel-default">
+        <div class="panel-heading">Materijali</div>
+        <div class="panel-body" id="materials">
+        </div>
     </div>
 </div>
+
+        <a class="btn btn-primary" id="saveWorkSheet"> Save </a>
+
 
 <script src="@Url.Content("~/js/Tasks.js")"></script>
 <script src="@Url.Content("~/js/Materials.js")"></script>
 <script type="text/javascript">
     $(document).ready(new function myfunction() {
+
+        var data = @Html.Raw(Json.Serialize(Model));
+        InitMaterials(data.Materials);
+        InitTasks(data.Tasks);
+        console.log(data);
         $.get('/WorkSheetsAjax/IndexTasks', function (result) {
             $("#tasks").html(result);
         })
         $.get('/WorkSheetsAjax/IndexMaterials', function (result) {
             $("#materials").html(result);
         })
+
+        $("#saveWorkSheet").click(function myfunction() {
+
+            var model = {};
+            model.ConstructionSiteId = $("#constructionSiteSelectId").val();
+            model.Tasks = GetTasks();
+            model.Materials = GetMaterials();
+            console.log(model);
+            var url = '/WorkSheets/Add'
+            post('/WorkSheets/Add', model);
+        });
+
+
+     
     });
 
 </script>

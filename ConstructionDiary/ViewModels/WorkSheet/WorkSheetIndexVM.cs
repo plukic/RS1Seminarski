@@ -11,6 +11,6 @@ namespace ConstructionDiary.ViewModels.WorkSheet
         public DateTime WorkSheetDate { get; set; }
         public string ConstructionSiteName { get; set; }
         public bool IsLocked{ get; set; }
-        
+
     }
 }

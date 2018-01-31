@@ -12,6 +12,8 @@ namespace ConstructionDiary.ViewModels.WorkSheet
         public List<SelectListItem> ConstructionSites { get; set; }
         public DateTime Date { get; set; }
         public string Remark { get; set; }
+        public List<TaskVM> Tasks { get; set; }
+        public List<MaterialsVM> Materials { get; set; }
 
     }
 }

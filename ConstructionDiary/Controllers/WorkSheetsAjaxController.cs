@@ -43,6 +43,7 @@ namespace ConstructionDiary.Controllers
                 })
                 .ToList()
             };
+            vm.MaterialId = materialId ?? 0;
             if (materialId != null)
             {
                 foreach (var item in vm.Materials)

@@ -35,3 +35,8 @@ var DeleteMaterial = function (materialId) {
         materials.splice(index, 1);
     }
 }
+
+var InitMaterials = function (mat) {
+    if (mat != null && mat != mat)
+        this.materials = mat;
+}

@@ -38,3 +38,7 @@ var DeleteTask = function (taskId) {
         tasks.splice(index, 1);
     }
 }
+var InitTasks = function (ta) {
+    if (ta != null && ta != ta)
+        this.tasks = ta;
+}
