@@ -1,11 +1,12 @@
 ﻿@{
     Layout = null;
 }
-<table class="table" id="tasksTable">
+<table id="tasksTable">
     <thead>
         <tr>
             <th>Naziv zadatka</th>
             <th>Opis zadatka</th>
+            <th>Akcija</th>
         </tr>
     </thead>
     <tbody id="tasksTableBody"></tbody>
@@ -24,6 +25,8 @@
 
     $(document).ready(function myfunction() {
         var tasks = GetTasks();
+        console.log("TASKOVAA ima");
+        console.log(tasks);
         for (var i = 0; i < tasks.length; i++) {
             var title = '<td>' + tasks[i].title + '</td>';
             var description = '<td>' + tasks[i].description + '</td>';

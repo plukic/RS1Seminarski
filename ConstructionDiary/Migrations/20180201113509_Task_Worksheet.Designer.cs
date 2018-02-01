@@ -12,9 +12,10 @@ using System;
 namespace ConstructionDiary.Migrations
 {
     [DbContext(typeof(ConstructionCompanyContext))]
-    partial class ConstructionCompanyContextModelSnapshot : ModelSnapshot
+    [Migration("20180201113509_Task_Worksheet")]
+    partial class Task_Worksheet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,6 +220,25 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Material");
                 });
 
+            modelBuilder.Entity("DataLayer.Models.Remark", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateTime");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.Property<int>("WorksheetId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorksheetId");
+
+                    b.ToTable("Remarks");
+                });
+
             modelBuilder.Entity("DataLayer.Models.Role", b =>
                 {
                     b.Property<string>("Id")
@@ -372,8 +392,6 @@ namespace ConstructionDiary.Migrations
                     b.Property<int?>("GetConstructionSiteManagerId");
 
                     b.Property<bool>("IsLocked");
-
-                    b.Property<string>("Remarks");
 
                     b.Property<string>("WeatherConditions");
 
@@ -566,6 +584,14 @@ namespace ConstructionDiary.Migrations
                     b.HasOne("DataLayer.Models.Worksheet")
                         .WithMany("ControlEntries")
                         .HasForeignKey("WorksheetId");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.Remark", b =>
+                {
+                    b.HasOne("DataLayer.Models.Worksheet", "Worksheet")
+                        .WithMany("Remarks")
+                        .HasForeignKey("WorksheetId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DataLayer.Models.Task", b =>

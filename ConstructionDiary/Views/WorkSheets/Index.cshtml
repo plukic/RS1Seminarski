@@ -35,7 +35,8 @@
                 @Html.DisplayFor(modelItem => item.IsLocked)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                <a href="/Worksheets/Add?worksheetId=@item.WorkSheetId" class="btn btn-default">Detalji</a>
+                <a href="/Worksheets/Delete?worksheetId=@item.WorkSheetId" class="btn btn-danger red">Obrisi</a>
             </td>
         </tr>
 }

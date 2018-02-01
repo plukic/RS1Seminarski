@@ -1,55 +1,101 @@
 ﻿@model ConstructionDiary.ViewModels.WorkSheet.WorkSheetAddVM;
-
 @{
     ViewData["Title"] = "Add";
 }
-<div class="container">
-    <div class="card-shadow panel panel-default">
+
+<div class="container" style="margin-top:50px;">
+    <div class="z-depth-4 panel panel-default">
         <div class="panel-heading">Opće informacije</div>
         <div class="panel-body">
-            <div class="form-group row">
-                <label for="inputDate" class="col-sm-2 col-form-label">Datum</label>
-                <div class="col-sm-4">
-                    <input type="date" class="form-control" id="inputDate">
-                </div>
+
+            <div class="input-field col s1">
+                <select id="constructionSiteSelectId" asp-for="ConstructionSiteId" asp-items="Model.ConstructionSites"></select>
+                <label>Odaberite gradilište</label>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Gradiliste</label>
-                <div class="col-sm-4">
-                    <select id="constructionSiteSelectId"asp-for="ConstructionSiteId" asp-items="Model.ConstructionSites" class="form-control"></select>
+            <div class="input-field col s1">
+                <label>Odaberite datum</label>
+                <input type="text" class="datepicker" id="inputDate" value="@Model.Date">
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="remark" class="materialize-textarea" data-length="120">@Model.Remark</textarea>
+                    <label for="remark">Napomena</label>
                 </div>
             </div>
 
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="weather-conditions" class="materialize-textarea" data-length="120">@Model.WeatherConditions</textarea>
+                    <label for="weather-conditions">Vremenski uvjeti</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" multiple>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
+    <input type="hidden" id="input-worksheet-id" value="@Model.WorkSheetId" />
+    <input type="hidden" id="input-tasks" value="@Model.TasksJson" />
+    <input type="hidden" id="input-materials" value="@Model.MaterialsJson" />
 
 
-
-    <div class="card-shadow panel panel-default">
+    <div class="z-depth-4 panel panel-default">
         <div class="panel-heading">Zadaci</div>
         <div class="panel-body" id="tasks">
         </div>
     </div>
 
-    <div class="card-shadow panel panel-default">
+    <div class="z-depth-4 panel panel-default">
         <div class="panel-heading">Materijali</div>
         <div class="panel-body" id="materials">
         </div>
     </div>
 </div>
 
-        <a class="btn btn-primary" id="saveWorkSheet"> Save </a>
-
+<button style="position:absolute;margin-top:150px;" class=btn-floating btn-large waves-effect waves-light red" id="saveWorkSheet"><i class="material-icons">add</i></button>
 
 <script src="@Url.Content("~/js/Tasks.js")"></script>
 <script src="@Url.Content("~/js/Materials.js")"></script>
 <script type="text/javascript">
     $(document).ready(new function myfunction() {
 
-        var data = @Html.Raw(Json.Serialize(Model));
-        InitMaterials(data.Materials);
-        InitTasks(data.Tasks);
-        console.log(data);
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 60, // Creates a dropdown of 15 years to control year,
+            today: 'Danas',
+            clear: 'Očisti',
+            close: 'Ok',
+            closeOnSelect: false // Close upon selecting a date,
+        });
+        var picker = $('.datepicker').pickadate().pickadate('picker');
+        
+        var inputMaterials = $("#input-materials").val();
+        var inputTasks = $("#input-tasks").val();
+        //console.log("===================================");
+
+        //console.log(inputTasks);
+        //console.log(inputMaterials);
+
+        //console.log("===================================");
+        $(document).ready(function () {
+            $('select').material_select();
+
+        });
+        InitMaterials(inputMaterials);
+        InitTasks(inputTasks);
+
         $.get('/WorkSheetsAjax/IndexTasks', function (result) {
             $("#tasks").html(result);
         })
@@ -57,19 +103,29 @@
             $("#materials").html(result);
         })
 
-        $("#saveWorkSheet").click(function myfunction() {
+        $("#saveWorkSheet").click(function myfunction(event) {
 
             var model = {};
+            model.WorksheetId = $("#input-worksheet-id").val();
+            model.Date = $("#inputDate").val();
+            model.Remark = $("#remark").val();
+            model.WeatherConditions = $("#weather-conditions").val();
             model.ConstructionSiteId = $("#constructionSiteSelectId").val();
             model.Tasks = GetTasks();
             model.Materials = GetMaterials();
-            console.log(model);
-            var url = '/WorkSheets/Add'
-            post('/WorkSheets/Add', model);
+
+            console.log(model)
+            var url = '/WorkSheets/Add';
+            $.post(url, model, function myfunction(result) {
+                var newDoc = document.open("text/html", "replace");
+                newDoc.write(result);
+                newDoc.close();
+            });
+
         });
 
 
-     
+
     });
 
 </script>

@@ -1,5 +1,7 @@
 ﻿var materials = [];
 var GetMaterials = function () {
+    if (materials == null)
+        materials = [];
     return materials;
 }
 var AddMaterials = function (materialId, amount, name) {
@@ -37,6 +39,10 @@ var DeleteMaterial = function (materialId) {
 }
 
 var InitMaterials = function (mat) {
-    if (mat != null && mat != mat)
-        this.materials = mat;
+    console.log("mat = " + mat);
+    if (mat != null && mat != undefined && mat != '' && mat != "") {
+        this.materials = JSON.parse(mat);
+    }
+    if (materials == null)
+        materials = [];
 }

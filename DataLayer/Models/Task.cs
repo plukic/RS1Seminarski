@@ -10,7 +10,9 @@ namespace DataLayer.Models
 
         [Column(TypeName= "text")]
         public string Description { get; set; }
-
         public List<WorkerTask> WorkerTasks { get; set; }
+
+        public int WorksheetId { get; set; }
+        public Worksheet Worksheet{ get; set; }
     }
 }

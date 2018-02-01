@@ -17,6 +17,7 @@
     </div>
 </div>
 <a id="saveLink" class="btn btn-primary">Spremi</a>
+<a id="backLink" class="btn btn-primary">Nazad</a>
 <script>
     var isValid = function (text) {
         console.log(text);
@@ -36,6 +37,9 @@
         $.get('/WorkSheetsAjax/IndexTasks', function res(result) { $("#tasks").html(result) })
     });
 
+    $("#backLink").click(function myfunction() {
+        $.get('/WorkSheetsAjax/IndexTasks', function res(result) { $("#tasks").html(result) })
+    });
 
     var task = FindTask(@taskId);
     console.log(task);
@@ -43,5 +47,5 @@
         var description = $("#taskDescriptionInput").val(task.description);
         var title = $("#taskTitleInput").val(task.title);
     }
-    
+
 </script>

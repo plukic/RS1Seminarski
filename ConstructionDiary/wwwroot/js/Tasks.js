@@ -1,7 +1,9 @@
 ﻿var KEY_TASKS = 'KEY_TASKS';
 var tasks = [];
-var id = 1;
+var id =-1;
 var GetTasks = function () {
+    if (tasks == null)
+        tasks = [];
     return tasks;
 }
 var AddTask = function (taskId, title, description) {
@@ -9,9 +11,9 @@ var AddTask = function (taskId, title, description) {
     var task = FindTask(taskId);
 
     if (task == undefined) {
+        --id;
         console.log("TASK NE POSTOJI ");
         tasks.push({ "id": id, "title": title, "description": description });
-        id++;
     } else {
         console.log(task);
         task.title = title;
@@ -39,6 +41,11 @@ var DeleteTask = function (taskId) {
     }
 }
 var InitTasks = function (ta) {
-    if (ta != null && ta != ta)
-        this.tasks = ta;
+    if (ta != null && ta != undefined && ta != '' && ta != "") {
+        tasks = JSON.parse(ta);
+    }
+    if (tasks == null) {
+        tasks = [];
+    }
+   
 }

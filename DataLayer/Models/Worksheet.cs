@@ -9,7 +9,8 @@ namespace DataLayer.Models
         public DateTime Date { get; set; }
         public string WeatherConditions { get; set; }
         public bool IsLocked { get; set; }
-        public List<Remark> Remarks { get; set; }
+
+        public string Remarks { get; set; }
         public List<ControlEntry> ControlEntries { get; set; }
         public List<Task> Tasks { get; set; }
         public ConstructionSiteManager GetConstructionSiteManager { get; set; }

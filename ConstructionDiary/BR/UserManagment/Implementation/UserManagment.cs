@@ -49,7 +49,7 @@ namespace ConstructionDiary.BR.UserManagment.Implementation
 
             bool addRole = roleDA.AddRole(r);
             bool addUser = userDA.CreateUserAsync(user, obj.Password);
-            if (r.Name.Equals("ConstructionSiteManager"))
+            if (r.Name.ToLower().Equals("constructionsitemanager"))
                 addUser = userDA.CreateConstructionSiteManager(obj);
             bool addRoleToUser = userDA.AddRoleToUser(user, r);
 

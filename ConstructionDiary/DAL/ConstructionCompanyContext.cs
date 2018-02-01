@@ -17,7 +17,6 @@ namespace ConstructionDiary.DAL
         public DbSet<Document> Documents { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Equipment> Equipment { get; set; }
-        public DbSet<Remark> Remarks { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Worksheet> Worksheets { get; set; }

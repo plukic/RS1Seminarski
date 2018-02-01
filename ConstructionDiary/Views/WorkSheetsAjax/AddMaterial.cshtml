@@ -14,7 +14,8 @@
         </div>
     </div>
 </div>
-<input id="saveBtn" value="Spremi" class="btn btn-default" />
+<button id="saveBtn" class="btn ">Spremi</button> 
+<button id="backBtn" class="btn ">Back</button>
 
 <script>
 
@@ -26,6 +27,9 @@
         AddMaterials(selectedId, amount, selectedText);
         $.get('/WorkSheetsAjax/IndexMaterials', function res(result) { $("#materials").html(result) })
 
+    });
+    $("#backBtn").click(function myfunction() {
+        $.get('/WorkSheetsAjax/IndexMaterials', function res(result) { $("#materials").html(result) })
     });
 
     var material = FindMaterial(@Model.MaterialId);
