@@ -1,40 +1,51 @@
 ﻿@{
-    int taskId = (int)(ViewData["taskId"]??0);
+    int taskId = (int)(ViewData["taskId"] ?? 0);
+
+    string title = taskId == 0 ? "Novi zadatak" : "Izmjena zadatka";
 }
 
 <div class="container">
-    <div class="form-group row">
-        <label for="taskTitleInput" class="col-sm-2 col-form-label">Naziv zadatka</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" id="taskTitleInput">
-        </div>
+    <h6>@title</h6>
+    <div class="input-field col s6">
+        <input type="text" class="form-control" id="taskTitleInput">
+        <label for="taskTitleInput" data-error="Naziv zadatka je obavezno polje" class="col-form-label">Naziv zadatka</label>
     </div>
-    <div class="form-group row">
-        <label for="taskDescriptionInput" class="col-sm-2 col-form-label">Opis zadatka</label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" id="taskDescriptionInput">
-        </div>
+    <div class="input-field col s6">
+        <input type="text" class="form-control" id="taskDescriptionInput">
+        <label for="taskDescriptionInput" data-error="Opis zadatka je obavezno polje" class="col-form-label">Opis zadatka</label>
     </div>
 </div>
 <a id="saveLink" class="btn btn-primary">Spremi</a>
 <a id="backLink" class="btn btn-primary">Nazad</a>
 <script>
     var isValid = function (text) {
-        console.log(text);
         return text !== undefined && text !=='' && text !=="";
     }
 
     $("#saveLink").click(function myfunction() {
         var description = $("#taskDescriptionInput");
         var title = $("#taskTitleInput");
+        var fieldValid = true;
         if (!isValid(title.val())) {
-            return;
+            title.removeClass('validate valid')
+            title.addClass('validate invalid')
+            fieldValid = false;
         }
+        else {
+            title.removeClass('validate invalid')
+        }
+
         if (!isValid(description.val())) {
-            return;
+            description.removeClass('validate valid')
+            description.addClass('validate invalid')
+            fieldValid = false;
+        } else {
+            description.removeClass('validate invalid')
         }
-        AddTask(@taskId,title.val(), description.val());
-        $.get('/WorkSheetsAjax/IndexTasks', function res(result) { $("#tasks").html(result) })
+        if (fieldValid) {
+            AddTask(@taskId, title.val(), description.val());
+            $.get('/WorkSheetsAjax/IndexTasks', function res(result) { $("#tasks").html(result) })
+        }
     });
 
     $("#backLink").click(function myfunction() {

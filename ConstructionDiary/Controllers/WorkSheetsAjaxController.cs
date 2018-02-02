@@ -38,7 +38,7 @@ namespace ConstructionDiary.Controllers
             {
                 Materials = ctx.Material.Select(x => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
                 {
-                    Text = x.Name + " - " + x.Unit,
+                    Text = x.Name + " - " + x.Unit.ToString(),
                     Value = x.Id.ToString()
                 })
                 .ToList()

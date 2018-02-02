@@ -246,7 +246,7 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
                 .Select(x=>new TaskVM {description = x.Description,id = x.Id,title = x.Title })
                 .ToList();
             vm.Materials = ctx.WorksheetMaterial.Where(x => x.WorksheetId == ws.Id)
-                .Select(x=>new MaterialsVM { amount = x.Amount,id = x.MaterialId,name=x.Material.Name + " " + x.Material.Unit} )
+                .Select(x=>new MaterialsVM { amount = x.Amount,id = x.MaterialId,name=x.Material.Name + " - " + x.Material.Unit.ToString()} )
                 .ToList();
             return vm;
         }

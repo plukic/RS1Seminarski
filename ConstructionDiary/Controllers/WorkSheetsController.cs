@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using ConstructionDiary.ViewModels.WorkSheet;
 using ConstructionDiary.BR.WorkSheetManagement.Interfaces;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace ConstructionDiary.Controllers
 {
@@ -40,16 +41,16 @@ namespace ConstructionDiary.Controllers
 
         }
         [HttpPost]
-        public IActionResult Add(WorkSheetAddVM vm)
-        {
+        public IActionResult Add(WorkSheetAddVM model, IList<IFormFile> files)
+        { 
             if (!ModelState.IsValid)
             {
-                vm.ConstructionSites = worksheetService.GetWorkSheetAddViewModel().ConstructionSites;
-                vm.TasksJson = JsonConvert.SerializeObject(vm.Tasks);
-                vm.MaterialsJson = JsonConvert.SerializeObject(vm.Materials);
-                return View(vm);
+                model.ConstructionSites = worksheetService.GetWorkSheetAddViewModel().ConstructionSites;
+                model.TasksJson = JsonConvert.SerializeObject(model.Tasks);
+                model.MaterialsJson = JsonConvert.SerializeObject(model.Materials);
+                return View(model);
             }
-            worksheetService.AddWorkSheet(vm);
+            worksheetService.AddWorkSheet(model);
             return RedirectToAction("Index");
         }
         public IActionResult Delete(int worksheetId)

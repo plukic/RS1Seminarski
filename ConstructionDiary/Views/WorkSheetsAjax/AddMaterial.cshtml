@@ -1,18 +1,13 @@
 ﻿@model ConstructionDiary.ViewModels.AddMaterialVM
 <div class="row">
-    <div class="col-md-4">
-        <div class="form-group">
+        <div class="form-group col-sm-4">
             <label class="control-label">Materijal</label>
             <select id ="selectList" asp-for="MaterialId" asp-items="Model.Materials" class="form-control"></select>
         </div>
-        <div class="form-group">
-            <label class="control-label">Količina</label>
-            <input id="amount" type="number" min="0" class="form-control" />
+        <div class="input-field col s6">
+            <input id="amount" type="number" class="form-control">
+            <label id="amount-label" for="amount" data-error="Količina mora biti veća od 0">Količina</label>
         </div>
-
-        <div class="form-group">
-        </div>
-    </div>
 </div>
 <button id="saveBtn" class="btn ">Spremi</button> 
 <button id="backBtn" class="btn ">Back</button>
@@ -22,9 +17,13 @@
     $("#saveBtn").click(function myfunction() {
         var selectedId = $("#selectList").val();
         var selectedText = $("#selectList option:selected").text();
-        var amount = $("#amount").val();
-        console.log("Add material " + selectedId + " - " + selectedText + " - " + amount);
-        AddMaterials(selectedId, amount, selectedText);
+        var amount = $("#amount");
+        if (amount.val() == null || amount.val() <= 0) {
+            amount.addClass('validate invalid');
+            return;
+        }
+
+        AddMaterials(selectedId, amount.val(), selectedText);
         $.get('/WorkSheetsAjax/IndexMaterials', function res(result) { $("#materials").html(result) })
 
     });
@@ -34,7 +33,9 @@
 
     var material = FindMaterial(@Model.MaterialId);
     if (material !== undefined) {
-        var amount = $("#amount").val(material.amount);
+        var amount = $("#amount");
+        amount.val(material.amount);
+        $("#amount-label").addClass('active');
     }
 
 </script>

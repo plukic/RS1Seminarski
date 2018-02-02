@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +13,7 @@ namespace ConstructionDiary.ViewModels.WorkSheet
         public int WorkSheetId { get; set; }
         public int ConstructionSiteId { get; set; }
         public List<SelectListItem> ConstructionSites { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Datum na radnom listu je obavezan")]
         public DateTime Date { get; set; }
         public string Remark { get; set; }
         public string TasksJson { get; set; }

@@ -30,7 +30,7 @@
         for (var i = 0; i < tasks.length; i++) {
             var title = '<td>' + tasks[i].title + '</td>';
             var description = '<td>' + tasks[i].description + '</td>';
-            var actionDelete = '<button taskId ="' + tasks[i].id + '" class="btn btn-danger btnDelete">Obrisi</button>';
+            var actionDelete = '<button taskId ="' + tasks[i].id + '" style="margin-left:10px" class="btn btn-danger red btnDelete">Obrisi</button>';
             var actionEdit = '<button taskId ="' + tasks[i].id + '" class="btn btn-primary btnEdit">Uredi</button>';
             var row = '<tr>' + title + description + '<td>' + actionEdit + actionDelete + '</td>' + '</tr>';
             $("#tasksTableBody").append(row);

@@ -30,8 +30,8 @@
         for (var i = 0; i < materials.length; i++) {
             var name = '<td>' + materials[i].name + '</td>';
             var amount = '<td>' + materials[i].amount + '</td>';
-            var actionDelete = '<button materialId ="' + materials[i].id + '" class="btn btn-danger btnDelete">Obrisi</button>';
-            var actionEdit = '<button materialId="' + materials[i].id + '" class="btn btn-primary btnEdit">Uredi</button>';
+            var actionDelete = '<button materialId ="' + materials[i].id + '"style="margin-left:10px" class="btn btn-danger red btnDelete">Obrisi</button>';
+            var actionEdit = '<button materialId="' + materials[i].id + '"  class="btn btn-primary btnEdit">Uredi</button>';
             var row = '<tr>' + name + amount + '<td>' + actionEdit + actionDelete + '</td>' + '</tr>';
             $("#materialTableBody").append(row);
         }
