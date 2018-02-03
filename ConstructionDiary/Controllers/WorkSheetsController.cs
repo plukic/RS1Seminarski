@@ -41,7 +41,7 @@ namespace ConstructionDiary.Controllers
 
         }
         [HttpPost]
-        public IActionResult Add(WorkSheetAddVM model, IList<IFormFile> files)
+        public IActionResult Add(WorkSheetAddVM model)
         { 
             if (!ModelState.IsValid)
             {
