@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GradjevinskiDnevnik</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-   
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -53,60 +53,7 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">GradjevinskiDnevnik</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Aktivni zadaci</a></li>
-                    @if (Context.User.Identity.IsAuthenticated && Context.User.IsInRole("Manager"))
-                    {
-                        <li><a asp-area="" asp-controller="UserAccounts" asp-action="Index">Korisnički nalozi</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Korisnici</a></li>
-                        <li><a asp-area="" asp-controller="ConstructionSites" asp-action="Index">Gradilišta</a></li>
-                        <li><a asp-area="" asp-controller="Materials" asp-action="Index">Materijali</a></li>
-                    }
-                    @if (Context.User.Identity.IsAuthenticated && (Context.User.IsInRole("Manager") || Context.User.IsInRole("ConstructionSiteManager")))
-                    {
-                        <li><a asp-area="" asp-controller="WorkSheets" asp-action="Index">Radni listovi</a></li>
-                        <li><a asp-area="" asp-controller="Equipment" asp-action="Index">Alati i mašine</a></li>
-                    }
-
-                </ul>
-
-                @if (Context.User.Identity.IsAuthenticated)
-                {
-                    <ul class="nav  navbar-nav pull-right">
-                        <li class="dropdown">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">@Context.User.Identity.Name <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/UserAccounts/Profile">Profil</a></li>
-                                <li class="divider"></li>
-                                <li><a href="/Login/Logout">Odjavi se</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                }
-                else
-                {
-                    <ul class="nav  navbar-nav pull-right">
-                        <li><a href="/Login" class="dropdown-toggle">Logiraj se </a></li>
-                    </ul>
-                }
-
-            </div>
-        </div>
-    </nav>
-
-  
+    @Html.Partial("~/Views/Shared/_HeaderContent.cshtml")
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -114,6 +61,12 @@
             <p>&copy; 2017 - GradjevinskiDnevnik</p>
         </footer>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $(".button-collapse").sideNav();
+        })
+    </script>
 
 </body>
 </html>

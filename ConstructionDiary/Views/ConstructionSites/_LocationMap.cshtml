@@ -3,8 +3,7 @@
     bool notEditable = (bool)ViewData["IsDetails"];
 }
 <div class="location-map" id="location-map"></div>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACtbHC31aJwsZcofMtPIAHL_xX_GtutSk&callback=initializeMap"
-        type="text/javascript"></script>
+
 <script>
     $(document).ready(
         function () {
@@ -23,7 +22,7 @@
     var editable ='@(notEditable)' === '@false'
     var map;
     var marker = null;
-    function initializeMap() {
+    window.initializeMap = function () {
         $latitudeInput = $("#site_latitude");
         $longitudeInput = $("#site_longitude");
         var myLatlng = new window.google.maps.LatLng(initialLatitude, initialLongitude);
@@ -65,3 +64,5 @@
         map.setCenter(location);
     }
 </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACtbHC31aJwsZcofMtPIAHL_xX_GtutSk&callback=initializeMap"
+        type="text/javascript"></script>
