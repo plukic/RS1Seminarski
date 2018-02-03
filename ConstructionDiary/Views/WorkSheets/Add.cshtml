@@ -132,35 +132,13 @@
             model.Tasks = GetTasks();
             model.Materials = GetMaterials();
 
-
-            var fileupload = $('#file-uploads').get(0)
-            var files = fileupload.files;
-            var data = new FormData();
-            for (var i = 0; i < files.length; i++) {
-                data.append(files[i].name, files[i]);
-            }
-
-            data.append("model", model);
-
             var isValid = validateModel(model);
             if (isValid) {
-
-                $.ajax({
-                    type: "post",
-                    url: "/WorkSheets/Add",
-                    contentType: false,
-                    processData: false,
-                    data: data,
-                    success: function (message) {
-                        var newDoc = document.open("text/html", "replace");
-                        newDoc.write(result);
-                        newDoc.close();
-                    },
-                    error: function () {
-                        alert("there was error uploading files!");
-                    }
-                });
-
+                $.post(url, model, function myfunction(result) {
+                    var newDoc = document.open("text/html", "replace");
+                    newDoc.write(result);
+                    newDoc.close();
+                })
             }
 
         });
