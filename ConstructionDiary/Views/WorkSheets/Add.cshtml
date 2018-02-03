@@ -1,0 +1,172 @@
+﻿@model ConstructionDiary.ViewModels.WorkSheet.WorkSheetAddVM;
+@{
+    ViewData["Title"] = "Add";
+}
+
+
+
+<div class="container" style="margin-top:50px;">
+    <div class="z-depth-4 panel panel-default">
+        <div class="panel-heading">Opće informacije</div>
+        <div class="panel-body">
+
+            <div class="input-field col s1">
+                <select id="constructionSiteSelectId" asp-for="ConstructionSiteId" asp-items="Model.ConstructionSites"></select>
+                <label for="constructionSiteSelectId">Odaberite gradilište</label>
+            </div>
+            <div class="input-field col s1">
+                <input type="text" class="datepicker " id="inputDate" value="@Model.Date.ToShortDateString()">
+                <label data-error="Datum je obavezno polje">Odaberite datum</label>
+
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="remark" class="materialize-textarea" data-length="120">@Model.Remark</textarea>
+                    <label for="remark">Napomena</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="weather-conditions" class="materialize-textarea" data-length="120">@Model.WeatherConditions</textarea>
+                    <label for="weather-conditions">Vremenski uvjeti</label>
+                </div>
+            </div>
+
+
+
+            <div id="dropzone"></div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input id="file-uploads" type="file" multiple>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" id="input-worksheet-id" value="@Model.WorkSheetId" />
+    <input type="hidden" id="input-tasks" value="@Model.TasksJson" />
+    <input type="hidden" id="input-materials" value="@Model.MaterialsJson" />
+
+
+    <div class="z-depth-4 panel panel-default">
+        <div class="panel-heading">Zadaci</div>
+        <div class="panel-body" id="tasks">
+        </div>
+    </div>
+
+    <div class="z-depth-4 panel panel-default">
+        <div class="panel-heading">Materijali</div>
+        <div class="panel-body" id="materials">
+        </div>
+    </div>
+</div>
+
+<button style="width:100%" class="btn btn-large waves-effect waves-light blue" id="saveWorkSheet">Spremi</button>
+
+<script src="@Url.Content("~/js/Tasks.js")"></script>
+<script src="@Url.Content("~/js/Materials.js")"></script>
+<script type="text/javascript">
+    var validateModel = function (model) {
+        var isValid = true;
+        var inputDate = $("#inputDate");
+        if (model.Date == null || model.Date == "") {
+            isValid = false;
+            inputDate.removeClass("validate valid");
+            inputDate.addClass("validate invalid");
+        }
+        else {
+            inputDate.removeClass("validate invalid");
+            inputDate.addClass("validate valid");
+        }
+
+        return isValid;
+    }
+
+    $(document).ready(new function myfunction() {
+        $("#dropzone").dropzone({ url: "/file/post" });
+
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 60, // Creates a dropdown of 15 years to control year,
+            today: 'Danas',
+            clear: 'Očisti',
+            close: 'Ok',
+            closeOnSelect: false // Close upon selecting a date,
+        });
+        var picker = $('.datepicker').pickadate().pickadate('picker');
+
+
+        var inputMaterials = $("#input-materials").val();
+        var inputTasks = $("#input-tasks").val();
+
+        InitMaterials(inputMaterials);
+        InitTasks(inputTasks);
+
+        $.get('/WorkSheetsAjax/IndexTasks', function (result) {
+            $("#tasks").html(result);
+        })
+        $.get('/WorkSheetsAjax/IndexMaterials', function (result) {
+            $("#materials").html(result);
+        })
+
+        $("#saveWorkSheet").click(function myfunction(event) {
+
+            var model = {};
+            model.WorksheetId = $("#input-worksheet-id").val();
+            model.Date = $("#inputDate").val();
+            model.Remark = $("#remark").val();
+            model.WeatherConditions = $("#weather-conditions").val();
+            model.ConstructionSiteId = $("#constructionSiteSelectId").val();
+            model.Tasks = GetTasks();
+            model.Materials = GetMaterials();
+
+
+            var fileupload = $('#file-uploads').get(0)
+            var files = fileupload.files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append(files[i].name, files[i]);
+            }
+
+            data.append("model", model);
+
+            var isValid = validateModel(model);
+            if (isValid) {
+
+                $.ajax({
+                    type: "post",
+                    url: "/WorkSheets/Add",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (message) {
+                        var newDoc = document.open("text/html", "replace");
+                        newDoc.write(result);
+                        newDoc.close();
+                    },
+                    error: function () {
+                        alert("there was error uploading files!");
+                    }
+                });
+
+            }
+
+        });
+
+
+
+    });
+
+</script>

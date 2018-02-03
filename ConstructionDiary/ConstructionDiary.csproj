@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\WorksSheetAjaxController.cs" />
     <Compile Remove="Migrations\20180102121838_unite_machines_tools_into_equipment.cs" />
     <Compile Remove="Migrations\20180102121838_unite_machines_tools_into_equipment.Designer.cs" />
     <Compile Remove="Migrations\20180102132005_equipment_quantity.cs" />
@@ -33,6 +34,11 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\WorkSheets\Add.cshtml" />
+    <None Include="Views\WorkSheets\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

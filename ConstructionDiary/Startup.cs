@@ -20,6 +20,8 @@ using ConstructionDiary.BR.MaterialsManagement.Interfaces;
 using DataLayer.Models;
 using ConstructionDiary.BR.UserManagment.Interfaces;
 using React.AspNet;
+using ConstructionDiary.BR.WorkSheetManagement.Interfaces;
+using ConstructionDiary.BR.WorkSheetManagement.Implementation;
 
 namespace ConstructionDiary
 {
@@ -38,6 +40,8 @@ namespace ConstructionDiary
 
             services.AddDbContext<ConstructionCompanyContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("local")));
+
+
             services.AddIdentity<User, Role>(options =>
             {
                 options.Password.RequireDigit = true;
@@ -69,6 +73,7 @@ namespace ConstructionDiary
             services.AddTransient<IDocumentsService, DocumentsService>();
             services.AddTransient<IEquipmentService, EquipmentService>();
             services.AddTransient<IMaterialsService, MaterialsService>();
+            services.AddTransient<IWorkSheetService, WorkSheetService>();
 
             services.AddReact();
 

@@ -12,9 +12,10 @@ using System;
 namespace ConstructionDiary.Migrations
 {
     [DbContext(typeof(ConstructionCompanyContext))]
-    partial class ConstructionCompanyContextModelSnapshot : ModelSnapshot
+    [Migration("20180130090200_WorksheetAttributes")]
+    partial class WorksheetAttributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,6 +220,25 @@ namespace ConstructionDiary.Migrations
                     b.ToTable("Material");
                 });
 
+            modelBuilder.Entity("DataLayer.Models.Remark", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateTime");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.Property<int>("WorksheetId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorksheetId");
+
+                    b.ToTable("Remarks");
+                });
+
             modelBuilder.Entity("DataLayer.Models.Role", b =>
                 {
                     b.Property<string>("Id")
@@ -257,7 +277,7 @@ namespace ConstructionDiary.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<int>("WorksheetId");
+                    b.Property<int?>("WorksheetId");
 
                     b.HasKey("Id");
 
@@ -372,8 +392,6 @@ namespace ConstructionDiary.Migrations
                     b.Property<int?>("GetConstructionSiteManagerId");
 
                     b.Property<bool>("IsLocked");
-
-                    b.Property<string>("Remarks");
 
                     b.Property<string>("WeatherConditions");
 
@@ -568,12 +586,19 @@ namespace ConstructionDiary.Migrations
                         .HasForeignKey("WorksheetId");
                 });
 
-            modelBuilder.Entity("DataLayer.Models.Task", b =>
+            modelBuilder.Entity("DataLayer.Models.Remark", b =>
                 {
                     b.HasOne("DataLayer.Models.Worksheet", "Worksheet")
-                        .WithMany("Tasks")
+                        .WithMany("Remarks")
                         .HasForeignKey("WorksheetId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DataLayer.Models.Task", b =>
+                {
+                    b.HasOne("DataLayer.Models.Worksheet")
+                        .WithMany("Tasks")
+                        .HasForeignKey("WorksheetId");
                 });
 
             modelBuilder.Entity("DataLayer.Models.WorkerTask", b =>
