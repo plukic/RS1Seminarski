@@ -134,7 +134,7 @@
 
             var isValid = validateModel(model);
             if (isValid) {
-                $.post(url, model, function myfunction(result) {
+                $.post('/Worksheets/Add', model, function myfunction(result) {
                     var newDoc = document.open("text/html", "replace");
                     newDoc.write(result);
                     newDoc.close();
