@@ -1,5 +1,9 @@
-﻿@{
+﻿@using DataLayer.Models
+@using Newtonsoft.Json
+@using Task = System.Threading.Tasks.Task
+@{
     int taskId = (int)(ViewData["taskId"] ?? 0);
+    var workers = (List<SelectListItem>) ViewData["Workers"];
 
     string title = taskId == 0 ? "Novi zadatak" : "Izmjena zadatka";
 }
@@ -14,17 +18,28 @@
         <input type="text" class="form-control" id="taskDescriptionInput">
         <label for="taskDescriptionInput" data-error="Opis zadatka je obavezno polje" class="col-form-label">Opis zadatka</label>
     </div>
+    <div class="row">
+        <div class="form-group col s12" id="workers-dropdowns">
+            
+        </div>
+    </div>
 </div>
 <a id="saveLink" class="btn btn-primary">Spremi</a>
 <a id="backLink" class="btn btn-primary">Nazad</a>
 <script>
+    window.workers = @Html.Raw(Json.Serialize(workers, new JsonSerializerSettings()
+                                {
+                                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                }));
     var isValid = function (text) {
-        return text !== undefined && text !=='' && text !=="";
+        return text !== undefined && text !=='';
     }
 
     $("#saveLink").click(function myfunction() {
         var description = $("#taskDescriptionInput");
         var title = $("#taskTitleInput");
+        var workers = [].slice.call(document.querySelectorAll("select.task-worker-input")).map(s => s.value)
+            .filter(v => v !== "0");
         var fieldValid = true;
         if (!isValid(title.val())) {
             title.removeClass('validate valid')
@@ -43,7 +58,7 @@
             description.removeClass('validate invalid')
         }
         if (fieldValid) {
-            AddTask(@taskId, title.val(), description.val());
+            AddTask(@taskId, title.val(), description.val(), workers);
             $.get('/WorkSheetsAjax/IndexTasks', function res(result) { $("#tasks").html(result) })
         }
     });
@@ -60,3 +75,4 @@
     }
 
 </script>
+<script src="@Url.Content("~/js/WorkersDropdowns.jsx")"></script>

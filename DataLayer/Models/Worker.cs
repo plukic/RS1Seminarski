@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.Models
 {
@@ -10,5 +11,18 @@ namespace DataLayer.Models
         public string JobDescription { get; set; }
         public string TelephoneNumber { get; set; }
         public List<WorkerTask> WorkerTasks { get; set; }
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName))
+                {
+                    return FirstName + " " + LastName;
+                }
+
+                return FirstName ?? LastName ?? string.Empty;
+            }
+        }
     }
 }
