@@ -1,0 +1,87 @@
+﻿@using DataLayer.Models
+@using Task = System.Threading.Tasks.Task
+@model DataLayer.Models.ConstructionSite
+
+@{
+    ViewData["Title"] = "Details";
+
+    // to be passed to partial view
+    ViewData["IsDetails"] = true;
+
+    String statusButtonText = Model.OpenStatus == OpenStatus.Open ? "Zatvori gradilište" : "Otvori gradilište";
+}
+
+<h2>Detalji</h2>
+
+<div id="construction-site-details">
+    <h4>@Html.DisplayFor(model => model.Title)</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Title)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ProjectWorth)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ProjectWorth)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateStart)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DateStart)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateFinish)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DateFinish)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.City)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.City.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Contract)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Contract.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CreatedBy)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CreatedBy.FullName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Location)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Location.Position)
+                </dd>
+            </dl>
+            <form asp-controller="ConstructionSites" asp-action="ChangeOpenStatus">
+                <input type="hidden" asp-for="OpenStatus" value="@(Model.OpenStatus == OpenStatus.Open ? OpenStatus.Closed : OpenStatus.Open)"/>
+                <input type="hidden" asp-for="Id"/>
+                <div class="form-group">
+                    <input type="submit" value="@statusButtonText" class="btn btn-danger"/>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            @Html.Partial("_LocationMap", Model.Location)
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,43 @@
+﻿.location-map {
+    height: 500px;
+}
+
+form.site-create-edit input[name='contractFile'] {
+    border: none;
+    box-shadow: none;
+    min-height: 39px;
+}
+
+form.site-create-edit .add-construction-site-manager {
+    position: relative;
+    min-height: 30px;
+}
+
+form.site-create-edit .add-construction-site-manager > p {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.construction-sites-managers-list tr {
+    cursor: pointer;
+}
+
+.construction-sites-managers-list tbody tr.selected,
+.construction-sites-managers-list tbody tr.selected :hover {
+    background-color: #aec3ff;
+}
+.construction-site-managers-panel .panel-body > p {
+    margin-bottom: 0;
+}
+.construction-site-managers-panel .site-manager .fa-times {
+    color: red;
+    cursor: pointer;
+    margin-left: 7px;
+    text-decoration: none;
+}
+#construction-site-details form .form-group {
+    text-align: center;
+}

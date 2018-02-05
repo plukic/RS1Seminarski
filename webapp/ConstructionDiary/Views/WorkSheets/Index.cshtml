@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ConstructionDiary.ViewModels.WorkSheet.WorkSheetIndexVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkSheetDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConstructionSiteName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsLocked)
+                </th>
+            <th>Akcija</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+       
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkSheetDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConstructionSiteName)
+            </td>
+            <td>
+                <p>@(item.IsLocked?"Zaključen":"Aktivan")</p>
+            </td>
+            <td>
+                <a href="/Worksheets/Add?worksheetId=@item.WorkSheetId" class="btn btn-default">Detalji</a>
+                <a href="/Worksheets/ControlEntities?worksheetId=@item.WorkSheetId" class="btn blue">Kontrole</a>
+                <a href="/Worksheets/Delete?worksheetId=@item.WorkSheetId" class="btn btn-danger red">Obrisi</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<a href="/WorkSheets/Add" class="btn btn-primary">Dodaj</a>
+

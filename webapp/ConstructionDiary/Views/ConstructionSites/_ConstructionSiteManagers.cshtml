@@ -1,0 +1,52 @@
+﻿@using DataLayer.Models;
+@using Newtonsoft.Json
+@model ConstructionSite
+
+<div class="panel panel-default construction-site-managers-panel">
+    <div class="panel-heading">Šefovi gradilišta</div>
+    <div class="panel-body">
+        @if (Model.ConstructionSiteManagers != null)
+        {
+            foreach (ConstructionSiteSiteManager managerRelation in Model.ConstructionSiteManagers)
+             {
+                 <p class="site-manager">
+                     @managerRelation.ConstructionSiteManager.User?.FullName
+                    <a
+                        href="/ConstructionSites/RemoveSiteManager/@Model.Id?managerId=@managerRelation.ConstructionSiteManagerId"
+                        class="fa fa-times"
+                        aria-hidden="true"></a>
+                 </p>
+             }
+        }
+        <div class="add-construction-site-manager">
+            <p data-toggle="modal" data-target="#addConstructionSiteManager" id="open-add-site-manager-button">
+                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                <span>Dodaj</span>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addConstructionSiteManager" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Dodaj novog šefa gradilišta</h4>
+            </div>
+            <div class="modal-body">
+                <div id="managers-list-root"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Odustani</button>
+                <button type="button" class="btn btn-primary" id="add-site-manager-submit-button">Spremi</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.constructionSite = @Html.Raw(Json.Serialize(Model, new JsonSerializerSettings()
+                                     {
+                                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                     }))</script>
+<script src="@Url.Content("~/js/ConstructionSiteManagerInList.jsx")"></script>
+<script src="@Url.Content("~/js/ConstructionSitesManagersList.jsx")"></script>

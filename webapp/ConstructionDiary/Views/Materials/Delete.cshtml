@@ -1,0 +1,38 @@
+﻿@model DataLayer.Models.Material
+
+@{
+    ViewData["Title"] = "Ukloni";
+}
+
+<h2>Ukloni</h2>
+
+<h3>Da li ste sigurni da želite ukloniti ovaj materijal?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Unit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Unit)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Ukloni" class="btn btn-default" /> |
+        <a asp-action="Index">Nazad na listu</a>
+    </form>
+</div>

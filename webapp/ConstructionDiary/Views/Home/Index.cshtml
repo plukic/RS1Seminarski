@@ -1,0 +1,60 @@
+﻿@model ConstructionDiary.ViewModels.TodaysTasksViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    var allWorkers = Model.Tasks.SelectMany(t => t.Workers).Select(w => new SelectListItem { Value = w.Id.ToString(), Text = w.FullName }).ToList();
+}
+<link rel="stylesheet" href="~/css/snackbar.css" />
+
+<div class="row">
+    <h2 style="display: inline-block">Današnji zadaci</h2>
+    <form class="form" id="workersFilterForm" style="display: inline-block" method="get">
+        <div class="form-group">
+            <select asp-for="@Model.SelectedWorkerId" asp-items="@allWorkers" class="form-control" id="workersDropdown" name="workerId" autocomplete="off">
+                <option value="">Pretražite po radniku</option>
+            </select>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tasks[0].title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tasks[0].description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tasks[0].Workers)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Tasks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @String.Join(", ", item.Workers.Select(w => w.FullName).ToArray())
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="snackbar">Promijenite vašu lozinku <a href="/UserAccounts/Profile/">PROMIJENI</a></div>
+<script src="~/js/snackbar_js.js"></script>
+<script>
+    var $workersDropdown = $("#workersDropdown");
+    var $workersFilterForm = $("#workersFilterForm");
+    $workersDropdown.on('change', function() {
+        $workersFilterForm.submit();
+    })
+</script>
