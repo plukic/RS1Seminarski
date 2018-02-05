@@ -10,6 +10,7 @@ using DataLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ConstructionDiary.ViewModels.UserAccounts;
+using ConstructionDiary.BR.EmailService.Interfaces;
 
 namespace ConstructionDiary.Controllers
 {
@@ -17,9 +18,10 @@ namespace ConstructionDiary.Controllers
     public class UserAccountsController : Controller
     {
         IUserManagment userManagment;
-
-        public UserAccountsController(IUserManagment userManagment)
+        IEmailService emailService;
+        public UserAccountsController(IUserManagment userManagment, IEmailService emailService)
         {
+            this.emailService = emailService;
             this.userManagment = userManagment;
         }
 
@@ -59,6 +61,8 @@ namespace ConstructionDiary.Controllers
             {
                 if (userManagment.CreateUserAsync(obj))
                 {
+                    string text = "Vaš username : " + obj.UserName + ", vaš password: " + obj.Password;
+                    emailService.SendEmail("Registracija uspješna", text, obj.Email);
                     return RedirectToAction("AddUser");
                 }
                 else

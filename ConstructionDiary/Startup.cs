@@ -25,6 +25,8 @@ using ConstructionDiary.BR.WorkSheetManagement.Interfaces;
 using ConstructionDiary.BR.WorkSheetManagement.Implementation;
 using ConstructionDiary.BR.ControlEntity.Implementation;
 using ConstructionDiary.BR.ControlEntity.Intefaces;
+using ConstructionDiary.BR.EmailService.Interfaces;
+using ConstructionDiary.BR.EmailService.Implementation;
 
 namespace ConstructionDiary
 {
@@ -79,6 +81,7 @@ namespace ConstructionDiary
             services.AddTransient<IControlEntityService, ControlEntityService>();
             services.AddTransient<IWorkSheetService, WorkSheetService>();
             services.AddTransient<IWorkersService, WorkersService>();
+            services.AddTransient<IEmailService, EmailService>();
 
 
             services.AddReact();
