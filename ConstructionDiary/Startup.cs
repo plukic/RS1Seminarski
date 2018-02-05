@@ -19,6 +19,7 @@ using ConstructionDiary.BR.MaterialsManagement.Implementation;
 using ConstructionDiary.BR.MaterialsManagement.Interfaces;
 using DataLayer.Models;
 using ConstructionDiary.BR.UserManagment.Interfaces;
+using ConstructionDiary.BR.WorkersManagement.Implementation;
 using React.AspNet;
 using ConstructionDiary.BR.WorkSheetManagement.Interfaces;
 using ConstructionDiary.BR.WorkSheetManagement.Implementation;
@@ -74,6 +75,7 @@ namespace ConstructionDiary
             services.AddTransient<IEquipmentService, EquipmentService>();
             services.AddTransient<IMaterialsService, MaterialsService>();
             services.AddTransient<IWorkSheetService, WorkSheetService>();
+            services.AddTransient<IWorkersService, WorkersService>();
 
             services.AddReact();
 

@@ -16,6 +16,10 @@
     <Compile Remove="Migrations\20180102212244_materials-quantity.Designer.cs" />
     <Compile Remove="Migrations\20180102212415_materials-quantity.cs" />
     <Compile Remove="Migrations\20180102212415_materials-quantity.Designer.cs" />
+    <Compile Remove="Migrations\20180204110949_worker-user.cs" />
+    <Compile Remove="Migrations\20180204110949_worker-user.Designer.cs" />
+    <Compile Remove="Migrations\20180204195710_workers.cs" />
+    <Compile Remove="Migrations\20180204195710_workers.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

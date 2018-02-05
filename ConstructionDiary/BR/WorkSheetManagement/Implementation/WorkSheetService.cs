@@ -1,16 +1,13 @@
-﻿using ConstructionDiary.BR.WorkSheetManagement.Interfaces;
+﻿using ConstructionDiary.BR.UserManagment;
+using ConstructionDiary.BR.WorkSheetManagement.Interfaces;
+using ConstructionDiary.DAL;
+using ConstructionDiary.ViewModels.WorkSheet;
+using DataLayer.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using ConstructionDiary.ViewModels.WorkSheet;
-using ConstructionDiary.DAL;
-using DataLayer.Models;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using ConstructionDiary.BR.UserManagment;
-using Microsoft.EntityFrameworkCore;
 
 namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
 {
@@ -59,14 +56,19 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
 
             if (vm.Tasks != null)
             {
-                foreach (var item in vm.Tasks)
+                foreach (TaskVM item in vm.Tasks)
                 {
-                    ctx.Tasks.Add(new DataLayer.Models.Task
+                    var task = new DataLayer.Models.Task
                     {
                         Description = item.description,
                         Title = item.title,
-                        Worksheet = ws
-                    });
+                        Worksheet = ws,
+                    };
+                    ctx.Tasks.Add(task);
+
+                    List<WorkerTask> workersTasks = item.WorkerIds.Select(id => ctx.Workers.First(w => w.Id == id))
+                        .Select(w => new WorkerTask { Task = task, Worker = w }).ToList();
+                    ctx.WorkerTask.AddRange(workersTasks);
                 }
             }
             if (vm.Materials != null)
@@ -214,8 +216,10 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
                 Date = DateTime.Now,
                 Remark = "",
                 ConstructionSites = ctx.ConstructionSites
-                .Select(x => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = x.Title, Value = x.Id.ToString() })
-                .ToList()
+                    .Select(x => new SelectListItem { Text = x.Title, Value = x.Id.ToString() })
+                    .ToList(),
+                Workers = ctx.Users.Select(u => new SelectListItem { Text = u.FullName, Value = u.Id})
+                    .ToList()
             };
             return vm;
         }
