@@ -44,10 +44,18 @@
   <ItemGroup>
     <None Include="Views\WorkSheets\Add.cshtml" />
     <None Include="Views\WorkSheets\Index.cshtml" />
+    <None Include="wwwroot\Templates\emailtemplate.html" />
+    <None Include="wwwroot\Templates\images\borderdown.png" />
+    <None Include="wwwroot\Templates\images\borderup.png" />
+    <None Include="wwwroot\Templates\images\trylogo.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
 
 </Project>

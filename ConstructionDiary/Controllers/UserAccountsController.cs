@@ -55,14 +55,13 @@ namespace ConstructionDiary.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Manager")]
-        public IActionResult AddUser(RegisterViewModel obj)
+        public async Task<IActionResult> AddUser(RegisterViewModel obj)
         {
             if (ModelState.IsValid)
             {
                 if (userManagment.CreateUserAsync(obj))
                 {
-                    string text = "Vaš username : " + obj.UserName + ", vaš password: " + obj.Password;
-                    emailService.SendEmail("Registracija uspješna", text, obj.Email);
+                    await emailService.SendEmail("Registracija uspješna",obj.UserName,obj.Password, obj.Email);
                     return RedirectToAction("AddUser");
                 }
                 else

@@ -7,6 +7,6 @@ namespace ConstructionDiary.BR.EmailService.Interfaces
 {
     public interface IEmailService
     {
-        bool SendEmail(string subject, string message, string receiver);
+        Task SendEmail(string subject, string username, string password, string receiver);
     }
 }
