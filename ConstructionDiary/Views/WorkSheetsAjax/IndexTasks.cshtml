@@ -11,7 +11,7 @@
     </thead>
     <tbody id="tasksTableBody"></tbody>
 </table>
-<button class="btn btn-primary" ajax-poziv='da' ajax-url='/WorkSheetsAjax/AddTask' ajax-rezultat='tasks'>Dodaj radni zadatak</button>
+<button id ="btnAddNewTask" class="btn btn-primary" ajax-poziv='da' ajax-url='/WorkSheetsAjax/AddTask' ajax-rezultat='tasks'>Dodaj radni zadatak</button>
 
 
 <script type="text/javascript">
@@ -29,15 +29,21 @@
         for (var i = 0; i < tasks.length; i++) {
             var title = '<td>' + tasks[i].title + '</td>';
             var description = '<td>' + tasks[i].description + '</td>';
-            var actionDelete = '<button taskId ="' + tasks[i].id + '" style="margin-left:10px" class="btn btn-danger red btnDelete">Obrisi</button>';
-            var actionEdit = '<button taskId ="' + tasks[i].id + '" class="btn btn-primary btnEdit">Uredi</button>';
+            var actionDelete ='';
+            var actionEdit  = '<button taskId ="' + tasks[i].id + '" class="btn btn-primary btnEdit">Uredi</button>';
+            if(!IsWorksheetLocked){
+            actionDelete ='<button taskId ="' + tasks[i].id + '" style="margin-left:10px" class="btn btn-danger red btnDelete">Obrisi</button>';
+            }
             var row = '<tr>' + title + description + '<td>' + actionEdit + actionDelete + '</td>' + '</tr>';
             $("#tasksTableBody").append(row);
         }
         toggleTable();
+        if(IsWorksheetLocked){
+            $("#btnAddNewTask").hide();
+        }
     });
 
-   
+
     $(".btnDelete").click(function myfunction() {
         var taskId = $(this).attr("taskId");
         DeleteTask(taskId);

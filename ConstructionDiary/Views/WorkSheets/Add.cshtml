@@ -1,8 +1,8 @@
 ﻿@model ConstructionDiary.ViewModels.WorkSheet.WorkSheetAddVM;
 @{
     ViewData["Title"] = "Add";
+    bool isEdit = Model.WorkSheetId != 0;
 }
-
 
 
 <div class="container" style="margin-top:50px;">
@@ -52,12 +52,26 @@
         </div>
     </div>
 </div>
+@if (Model.IsLocked)
+{
+    <a href ="/Worksheets" style="width:100%" class="btn btn-large waves-effect waves-light red">Nazad</a>
+}
+else
+{
+    <button style="width:100%" class="btn btn-large waves-effect waves-light blue" id="saveWorkSheet">Spremi</button>
 
-<button style="width:100%" class="btn btn-large waves-effect waves-light blue" id="saveWorkSheet">Spremi</button>
+    @if (isEdit)
+    {
+        <a href="/Worksheets/Complete?worksheetId=@Model.WorkSheetId" style="width:100% ;margin-top:10px;" class="btn btn-large waves-effect waves-light red" id="completeWorkSheet">Zaključi</a>
+    }
+}
+
 
 <script src="@Url.Content("~/js/Tasks.js")"></script>
 <script src="@Url.Content("~/js/Materials.js")"></script>
 <script type="text/javascript">
+    var IsWorksheetLocked = @(Model.IsLocked?"true":"false")
+
     var validateModel = function (model) {
         var isValid = true;
         var inputDate = $("#inputDate");

@@ -10,7 +10,7 @@
     </thead>
     <tbody id="materialTableBody"></tbody>
 </table>
-<button class="btn btn-primary" ajax-poziv='da' ajax-url='/WorkSheetsAjax/AddMaterial' ajax-rezultat='materials'>Dodaj Materijale</button>
+<button id="btnAddNewMaterial" class="btn btn-primary" ajax-poziv='da' ajax-url='/WorkSheetsAjax/AddMaterial' ajax-rezultat='materials'>Dodaj Materijale</button>
 
 
 <script type="text/javascript">
@@ -30,15 +30,23 @@
         for (var i = 0; i < materials.length; i++) {
             var name = '<td>' + materials[i].name + '</td>';
             var amount = '<td>' + materials[i].amount + '</td>';
-            var actionDelete = '<button materialId ="' + materials[i].id + '"style="margin-left:10px" class="btn btn-danger red btnDelete">Obrisi</button>';
-            var actionEdit = '<button materialId="' + materials[i].id + '"  class="btn btn-primary btnEdit">Uredi</button>';
+            var actionDelete = '';
+            if(!IsWorksheetLocked)        
+            {
+                actionDelete  = '<button materialId ="' + materials[i].id + '"style="margin-left:10px" class="btn btn-danger red btnDeleteMaterial">Obrisi</button>';
+            }
+
+            var actionEdit = '<button materialId="' + materials[i].id + '"  class="btn btn-primary btnEditMaterial">Uredi</button>';
             var row = '<tr>' + name + amount + '<td>' + actionEdit + actionDelete + '</td>' + '</tr>';
             $("#materialTableBody").append(row);
         }
         toggleTable()
+        if(IsWorksheetLocked){
+            $("#btnAddNewMaterial").hide();
+        }
     })
 
-    $(".btnDelete").click(function myfunction() {
+    $(".btnDeleteMaterial").click(function myfunction() {
         var materialId = $(this).attr("materialId");
         DeleteMaterial(materialId);
         var closestRow = $(this).closest("tr");
@@ -46,9 +54,9 @@
         toggleTable()
     });
 
-  
 
-    $(".btnEdit").click(function myfunction() {
+
+    $(".btnEditMaterial").click(function myfunction() {
 
         var materialId = $(this).attr("materialId");
         $.get('/WorkSheetsAjax/AddMaterial?materialId=' + materialId, function myfunction(result) {

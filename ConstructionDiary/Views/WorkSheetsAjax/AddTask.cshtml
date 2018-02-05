@@ -12,11 +12,11 @@
     <h6>@title</h6>
     <div class="input-field col s6">
         <input type="text" class="form-control" id="taskTitleInput">
-        <label for="taskTitleInput" data-error="Naziv zadatka je obavezno polje" class="col-form-label">Naziv zadatka</label>
+        <label for="taskTitleInput" data-error="Naziv zadatka je obavezno polje" class="col-form-label active">Naziv zadatka</label>
     </div>
     <div class="input-field col s6">
         <input type="text" class="form-control" id="taskDescriptionInput">
-        <label for="taskDescriptionInput" data-error="Opis zadatka je obavezno polje" class="col-form-label">Opis zadatka</label>
+        <label for="taskDescriptionInput" data-error="Opis zadatka je obavezno polje" class="col-form-label active">Opis zadatka</label>
     </div>
     <div class="row">
         <div class="form-group col s12" id="workers-dropdowns">
@@ -25,7 +25,7 @@
     </div>
 </div>
 <a id="saveLink" class="btn btn-primary">Spremi</a>
-<a id="backLink" class="btn btn-primary">Nazad</a>
+<a id="backLink" class="btn btn-primary red">Nazad</a>
 <script>
     window.workers = @Html.Raw(Json.Serialize(workers, new JsonSerializerSettings()
                                 {
@@ -33,6 +33,10 @@
                                 }));
     var isValid = function (text) {
         return text !== undefined && text !=='';
+    }
+
+    if(IsWorksheetLocked){
+        $("#saveLink").hide();
     }
 
     $("#saveLink").click(function myfunction() {

@@ -23,9 +23,9 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
 
         public void AddWorkSheet(WorkSheetAddVM vm)
         {
-            User u =userManagment.GetLoggedUser();
-            var manager  = ctx.ConstructionSiteManagers.Where(x => x.UserId == u.Id).First();
-            var constructionSite  = ctx.ConstructionSites.Where(x => x.Id== vm.ConstructionSiteId).First();
+            User u = userManagment.GetLoggedUser();
+            var manager = ctx.ConstructionSiteManagers.Where(x => x.UserId == u.Id).First();
+            var constructionSite = ctx.ConstructionSites.Where(x => x.Id == vm.ConstructionSiteId).First();
             var worksheet = ctx.Worksheets.Where(x => x.Id == vm.WorkSheetId).FirstOrDefault();
 
             if (worksheet != null)
@@ -65,10 +65,12 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
                         Worksheet = ws,
                     };
                     ctx.Tasks.Add(task);
-
-                    List<WorkerTask> workersTasks = item.WorkerIds.Select(id => ctx.Workers.First(w => w.Id == id))
-                        .Select(w => new WorkerTask { Task = task, Worker = w }).ToList();
-                    ctx.WorkerTask.AddRange(workersTasks);
+                    if (item.WorkerIds != null && item.WorkerIds.Count > 0)
+                    {
+                        List<WorkerTask> workersTasks = item.WorkerIds.Select(id => ctx.Workers.First(w => w.Id == id))
+                            .Select(w => new WorkerTask { Task = task, Worker = w }).ToList();
+                        ctx.WorkerTask.AddRange(workersTasks);
+                    }
                 }
             }
             if (vm.Materials != null)
@@ -97,7 +99,7 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
             //update and delete materials
             #region materials
             var newMaterials = vm.Materials;
-            var oldMaterials = ctx.WorksheetMaterial.Include(x=>x.Material).Where(x => x.WorksheetId == worksheet.Id).ToList();
+            var oldMaterials = ctx.WorksheetMaterial.Include(x => x.Material).Where(x => x.WorksheetId == worksheet.Id).ToList();
 
             var materialsToRemove = oldMaterials.Where(x => IsRemovedFromList(x, newMaterials)).ToList();
             var materialsToUpdate = oldMaterials.Where(x => !IsRemovedFromList(x, newMaterials)).ToList();
@@ -121,14 +123,14 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
             var oldTasks = ctx.Tasks.Where(x => x.WorksheetId == worksheet.Id).ToList();
 
             var tasksToRemove = oldTasks.Where(x => IsRemovedFromList(x, newTasks)).ToList();
-            var tasksToUpdate = oldTasks.Where(x => !IsRemovedFromList(x,newTasks)).ToList();
+            var tasksToUpdate = oldTasks.Where(x => !IsRemovedFromList(x, newTasks)).ToList();
 
             ctx.Tasks.RemoveRange(tasksToRemove);
             foreach (var item in tasksToUpdate)
             {
                 var updatedItem = newTasks.Where(x => x.id == item.Id).First();
-                item.Title= updatedItem.title;
-                item.Description= updatedItem.description;
+                item.Title = updatedItem.title;
+                item.Description = updatedItem.description;
             }
             #endregion
 
@@ -145,14 +147,14 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
                 //remove materials from stock
                 foreach (var item in materialsToAdd)
                 {
-                    ctx.Material.Where(x => x.Id == item.MaterialId).First().Amount-=item.Amount;
+                    ctx.Material.Where(x => x.Id == item.MaterialId).First().Amount -= item.Amount;
                 }
                 ctx.WorksheetMaterial.AddRange(materialsToAdd);
             }
             //add tasks
             if (newTasks != null)
             {
-                var tasksToAdd= newTasks.Where(x => !IsInList(x, oldTasks)).Select(x => new DataLayer.Models.Task
+                var tasksToAdd = newTasks.Where(x => !IsInList(x, oldTasks)).Select(x => new DataLayer.Models.Task
                 {
                     Description = x.description,
                     Title = x.title,
@@ -183,7 +185,7 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
             return false;
         }
 
-        private bool IsRemovedFromList(DataLayer.Models.Task  x, List<TaskVM> newTasks)
+        private bool IsRemovedFromList(DataLayer.Models.Task x, List<TaskVM> newTasks)
         {
             if (newTasks == null || newTasks.Count == 0)
                 return true;
@@ -218,7 +220,7 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
                 ConstructionSites = ctx.ConstructionSites
                     .Select(x => new SelectListItem { Text = x.Title, Value = x.Id.ToString() })
                     .ToList(),
-                Workers = ctx.Users.Select(u => new SelectListItem { Text = u.FullName, Value = u.Id})
+                Workers = ctx.Users.Select(u => new SelectListItem { Text = u.FullName, Value = u.Id })
                     .ToList()
             };
             return vm;
@@ -226,7 +228,7 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
 
         public WorkSheetAddVM GetWorkSheetEditViewModel(int worksheetId)
         {
-            Worksheet ws = ctx.Worksheets.Include(x=>x.ConstructionSite).Where(x => x.Id == worksheetId).First();
+            Worksheet ws = ctx.Worksheets.Include(x => x.ConstructionSite).Where(x => x.Id == worksheetId).First();
 
             WorkSheetAddVM vm = new WorkSheetAddVM
             {
@@ -247,29 +249,38 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
             }
 
             vm.Tasks = ctx.Tasks.Where(x => x.WorksheetId == ws.Id)
-                .Select(x=>new TaskVM {description = x.Description,id = x.Id,title = x.Title })
+                .Select(x => new TaskVM { description = x.Description, id = x.Id, title = x.Title })
                 .ToList();
             vm.Materials = ctx.WorksheetMaterial.Where(x => x.WorksheetId == ws.Id)
-                .Select(x=>new MaterialsVM { amount = x.Amount,id = x.MaterialId,name=x.Material.Name + " - " + x.Material.Unit.ToString()} )
+                .Select(x => new MaterialsVM { amount = x.Amount, id = x.MaterialId, name = x.Material.Name + " - " + x.Material.Unit.ToString() })
                 .ToList();
             return vm;
         }
 
-    
+
 
         public List<WorkSheetIndexVM> GetWorkSheetViewModels()
         {
-            return ctx.Worksheets.Select(x => new WorkSheetIndexVM {
-                 WorkSheetId = x.Id,
-                 ConstructionSiteName = x.ConstructionSite.Title,
-                 IsLocked = x.IsLocked,
-                 WorkSheetDate = x.Date
+            return ctx.Worksheets.Select(x => new WorkSheetIndexVM
+            {
+                WorkSheetId = x.Id,
+                ConstructionSiteName = x.ConstructionSite.Title,
+                IsLocked = x.IsLocked,
+                WorkSheetDate = x.Date
             }).ToList();
         }
 
         public void RemoveWorkSheet(int worksheetId)
         {
             ctx.Worksheets.Remove(ctx.Worksheets.Where(x => x.Id == worksheetId).First());
+            ctx.SaveChanges();
+        }
+
+        public void CompleteWorksheet(int worksheetId)
+        {
+            ctx.Worksheets.Where(x => x.Id == worksheetId)
+                .First()
+                .IsLocked = true;
             ctx.SaveChanges();
         }
     }

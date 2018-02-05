@@ -14,5 +14,6 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Interfaces
         void AddWorkSheet(WorkSheetAddVM vm);
         WorkSheetAddVM GetWorkSheetEditViewModel(int worksheetId);
         void RemoveWorkSheet(int worksheetId);
+        void CompleteWorksheet(int worksheetId);
     }
 }

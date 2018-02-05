@@ -60,5 +60,12 @@ namespace ConstructionDiary.Controllers
             worksheetService.RemoveWorkSheet(worksheetId);
             return RedirectToAction("Index");
         }
+
+        ///Worksheets/Complete? worksheetId = @Model.WorkSheetId
+        public IActionResult Complete(int worksheetId)
+        {
+            worksheetService.CompleteWorksheet(worksheetId);
+            return RedirectToAction("Add", new { worksheetId = worksheetId });
+        }
     }
 }

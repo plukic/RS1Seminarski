@@ -10,9 +10,13 @@
         </div>
 </div>
 <button id="saveBtn" class="btn ">Spremi</button> 
-<button id="backBtn" class="btn ">Back</button>
+<button id="backBtn" class="btn red ">Nazad</button>
 
 <script>
+    if(IsWorksheetLocked)
+    {
+    $("#saveBtn").hide();
+    }
 
     $("#saveBtn").click(function myfunction() {
         var selectedId = $("#selectList").val();
