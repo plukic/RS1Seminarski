@@ -30,14 +30,7 @@ namespace ConstructionDiary.Data
                 context.City.Add(c);
             }
 
-            context.Set<ConstructionSiteManager>().Add(new ConstructionSiteManager()
-            {
-                User = new User()
-                {
-                    FirstName = "FirstName",
-                    LastName = "LastName",
-                }
-            });
+         
 
             var equipment = new Equipment[]
             {
