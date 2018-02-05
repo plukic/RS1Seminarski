@@ -1,10 +1,9 @@
-﻿using ConstructionDiary.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using ConstructionDiary.BR;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
-using ConstructionDiary.BR.UserManagment.Implementation;
+﻿using ConstructionDiary.BR.ConstructionSites.Interfaces;
 using ConstructionDiary.BR.UserManagment;
+using ConstructionDiary.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ConstructionDiary.Controllers
 {
@@ -12,15 +11,22 @@ namespace ConstructionDiary.Controllers
     public class HomeController : Controller
     {
         IUserManagment userManagment;
+        private readonly IWorkersService _workersService;
 
-        public HomeController(IUserManagment userManagment)
+        public HomeController(IUserManagment userManagment, IWorkersService workersService)
         {
             this.userManagment = userManagment;
+            _workersService = workersService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? workerId)
         {
-            return View();
+            var model = new TodaysTasksViewModel()
+            {
+                Tasks = _workersService.GetTodaysTasks(workerId),
+                SelectedWorkerId = workerId,
+            };
+            return View(model);
         }
         [Authorize(Roles = "Manager")]
         public IActionResult Contact()

@@ -6,18 +6,17 @@ var GetTasks = function () {
         tasks = [];
     return tasks;
 }
-var AddTask = function (taskId, title, description) {
-    console.log("TRAZIM TASK " + taskId);
+var AddTask = function (taskId, title, description, workers) {
     var task = FindTask(taskId);
-
     if (task == undefined) {
         --id;
         console.log("TASK NE POSTOJI ");
-        tasks.push({ "id": id, "title": title, "description": description });
+        tasks.push({ "id": id, "title": title, "description": description, workerIds: workers || []});
     } else {
         console.log(task);
         task.title = title;
         task.description = description;
+        task.workers = workers;
 
     }
 }

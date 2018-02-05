@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ConstructionDiary.DAL;
+﻿using ConstructionDiary.DAL;
 using ConstructionDiary.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 
 namespace ConstructionDiary.Controllers
 {
@@ -25,6 +23,7 @@ namespace ConstructionDiary.Controllers
         public IActionResult AddTask(int? taskId)
         {
             ViewData["taskId"] = taskId;
+            ViewData["Workers"] = ctx.Workers.Select(u => new SelectListItem {Value = u.Id.ToString(), Text = u.FullName}).ToList();
             return PartialView();
         }
         public IActionResult IndexMaterials()

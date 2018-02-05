@@ -25,7 +25,6 @@
 
     $(document).ready(function myfunction() {
         var tasks = GetTasks();
-        console.log("TASKOVAA ima");
         console.log(tasks);
         for (var i = 0; i < tasks.length; i++) {
             var title = '<td>' + tasks[i].title + '</td>';
@@ -50,7 +49,6 @@
     $(".btnEdit").click(function myfunction() {
 
         var taskId = $(this).attr("taskId");
-        console.log(taskId);
         $.get('/WorkSheetsAjax/AddTask?taskId=' + taskId, function myfunction(result) {
             $("#tasks").html(result);
         })
