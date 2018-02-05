@@ -69,12 +69,10 @@
                                     <label for='password' class="active">Lozinka</label>
                                 </div>
                             </div>
-                            <div class='row'>
-                                <div class='input-field col s12'>
-                                    <input class='validate'  type='checkbox' name='password' id='password' />
-                                    <label for='rememberMe' class="active">Zapamti me</label>
-                                </div>
-                            </div>
+                            <p>
+                                <input asp-for="RememberMe" type="checkbox" id="indeterminate-checkbox" />
+                                <label for="indeterminate-checkbox">Zapamti me</label>
+                            </p>
                             <br />
                             <center>
                                 <div class='row'>

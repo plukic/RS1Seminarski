@@ -19,5 +19,6 @@ namespace ConstructionDiary.BR
          */
         [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
+        public bool RememberMe { get; set; }
     }
 }
