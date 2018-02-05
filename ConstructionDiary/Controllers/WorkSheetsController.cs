@@ -7,9 +7,11 @@ using ConstructionDiary.ViewModels.WorkSheet;
 using ConstructionDiary.BR.WorkSheetManagement.Interfaces;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConstructionDiary.Controllers
 {
+    [Authorize(Roles = "ConstructionSiteManager")]
     public class WorkSheetsController : Controller
     {
         IWorkSheetService worksheetService;

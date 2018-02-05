@@ -1,11 +1,13 @@
 ﻿using ConstructionDiary.DAL;
 using ConstructionDiary.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 
 namespace ConstructionDiary.Controllers
 {
+    [Authorize(Roles = "ConstructionSiteManager")]
     public class WorkSheetsAjaxController : Controller
     {
         ConstructionCompanyContext ctx;
