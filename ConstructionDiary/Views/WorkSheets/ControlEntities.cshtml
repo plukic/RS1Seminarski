@@ -11,18 +11,18 @@
                 <input asp-for="WorksheetId" type="hidden" readonly />
 
                 <div class="input-field col s12">
-                    <textarea asp-for="Text" id="text" class="materialize-textarea"></textarea>
+                    <textarea asp-for="Text" id="text" class="materialize-textarea" required></textarea>
                     <label for="text">Opis</label>
                 </div>
                 <div class="input-field col s6">
-                    <input asp-for="DateTime" id="date" type="date" class="validate">
+                    <input asp-for="DateTime" id="date" type="date" class="validate" required>
                     <label for="date" class="active">Date</label>
                 </div>
 
                 <div class="file-field input-field">
                     <div class="btn">
                         <span>File</span>
-                        <input type="file" name="file">
+                        <input type="file" name="file" required>
                     </div>
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text">
