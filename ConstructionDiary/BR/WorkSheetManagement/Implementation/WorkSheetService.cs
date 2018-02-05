@@ -8,6 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConstructionDiary.ViewModels.ControlEntities;
+using Microsoft.AspNetCore.Http;
+using ConstructionDiary.BR.Documents.Interfaces;
+using ConstructionDiary.BR.ControlEntity.Intefaces;
+using System.Threading.Tasks;
 
 namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
 {
@@ -15,10 +20,12 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
     {
         ConstructionCompanyContext ctx;
         IUserManagment userManagment;
-        public WorkSheetService(ConstructionCompanyContext ctx, IUserManagment userManagment)
+        IControlEntityService controlEntityService;
+        public WorkSheetService(ConstructionCompanyContext ctx, IUserManagment userManagment, IControlEntityService controlEntityService)
         {
             this.userManagment = userManagment;
             this.ctx = ctx;
+            this.controlEntityService = controlEntityService;
         }
 
         public void AddWorkSheet(WorkSheetAddVM vm)
@@ -282,6 +289,26 @@ namespace ConstructionDiary.BR.WorkSheetManagement.Implementation
                 .First()
                 .IsLocked = true;
             ctx.SaveChanges();
+        }
+
+        public async Task<ControlEntry> AddControlEntity(ControlEntitiesAddVM vm, IFormFile file)
+        {
+           return await controlEntityService.AddControlEntity(vm, file);
+        }
+
+        public int RemoveControlEntity(int entityId)
+        {
+            int worksheetId = 0;
+            var ce= ctx.ControlEntries.Where(x => x.Id == entityId).First();
+            worksheetId = ce.WorksheetId;
+            ctx.ControlEntries.Remove(ce);
+            ctx.SaveChanges();
+            return worksheetId;
+        }
+
+        public Document GetDocument(int entryId)
+        {
+            return controlEntityService.GetDocument(entryId);
         }
     }
 }

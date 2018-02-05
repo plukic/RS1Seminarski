@@ -8,6 +8,11 @@ using ConstructionDiary.BR.WorkSheetManagement.Interfaces;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using ConstructionDiary.ViewModels.ControlEntities;
+using ConstructionDiary.DAL;
+using Microsoft.EntityFrameworkCore;
+using DataLayer.Models;
+using System.IO;
 
 namespace ConstructionDiary.Controllers
 {
@@ -15,11 +20,13 @@ namespace ConstructionDiary.Controllers
     public class WorkSheetsController : Controller
     {
         IWorkSheetService worksheetService;
+ 
 
-        public WorkSheetsController(IWorkSheetService worksheetService)
+        public WorkSheetsController(IWorkSheetService worksheetService) 
         {
             this.worksheetService = worksheetService;
         }
+
 
         public IActionResult Index()
         {
@@ -67,5 +74,38 @@ namespace ConstructionDiary.Controllers
             worksheetService.CompleteWorksheet(worksheetId);
             return RedirectToAction("Add", new { worksheetId = worksheetId });
         }
-    }
+
+        ///Worksheets/DeleteControlEntity? entityId = @item.ControleEntitiesId
+        public IActionResult DeleteControlEntity(int entityId)
+        {
+            int worksheetId = worksheetService.RemoveControlEntity(entityId);
+            return RedirectToAction("ControlEntities", new { worksheetId = worksheetId });
+        }
+
+
+        //http://localhost:52140/Worksheets/ControlEntities?worksheetId=1
+        public IActionResult ControlEntities(int worksheetId)
+        {
+            ControlEntitiesAddVM vm = new ControlEntitiesAddVM
+            {
+                DateTime = DateTime.Now,
+                Text = "",
+                WorksheetId = worksheetId
+            };
+            return View(vm);
+        }
+        public async Task<ActionResult> AddControlEntity(ControlEntitiesAddVM vm, IFormFile file)
+        {
+            await worksheetService.AddControlEntity(vm, file);
+            return RedirectToAction("ControlEntities", new { worksheetId = vm.WorksheetId });
+        }
+  
+        public FileResult DownloadEntries(int entryId)
+        {
+            Document d = worksheetService.GetDocument(entryId);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(d.Location);
+            return File(fileBytes, d.ContentType,d.FileName);
+        }
+
+}
 }

@@ -13,5 +13,8 @@ namespace DataLayer.Models
 
         public int DocumentId { get; set; }
         public Document Document { get; set; }
+
+        public int WorksheetId { get; set; }
+        public Worksheet Worksheet { get; set; }
     }
 }

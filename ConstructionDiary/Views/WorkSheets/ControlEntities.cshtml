@@ -1,0 +1,37 @@
+﻿@model ConstructionDiary.ViewModels.ControlEntities.ControlEntitiesAddVM
+@await Component.InvokeAsync("ControlEntity", new { worksheetId = @Model.WorksheetId })
+
+<div class="container">
+    <form style="margin-top:50px;display:inline" asp-action="AddControlEntity" enctype="multipart/form-data" class="col-sm-offset-2 col-sm-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Dodaj novu</h4>
+            </div>
+            <div class="panel-body">
+                <input asp-for="WorksheetId" type="hidden" readonly />
+
+                <div class="input-field col s12">
+                    <textarea asp-for="Text" id="text" class="materialize-textarea"></textarea>
+                    <label for="text">Opis</label>
+                </div>
+                <div class="input-field col s6">
+                    <input asp-for="DateTime" id="date" type="date" class="validate">
+                    <label for="date" class="active">Date</label>
+                </div>
+
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>File</span>
+                        <input type="file" name="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary" style="width:100%">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>

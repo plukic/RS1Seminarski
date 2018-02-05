@@ -23,6 +23,8 @@ using ConstructionDiary.BR.WorkersManagement.Implementation;
 using React.AspNet;
 using ConstructionDiary.BR.WorkSheetManagement.Interfaces;
 using ConstructionDiary.BR.WorkSheetManagement.Implementation;
+using ConstructionDiary.BR.ControlEntity.Implementation;
+using ConstructionDiary.BR.ControlEntity.Intefaces;
 
 namespace ConstructionDiary
 {
@@ -74,8 +76,10 @@ namespace ConstructionDiary
             services.AddTransient<IDocumentsService, DocumentsService>();
             services.AddTransient<IEquipmentService, EquipmentService>();
             services.AddTransient<IMaterialsService, MaterialsService>();
+            services.AddTransient<IControlEntityService, ControlEntityService>();
             services.AddTransient<IWorkSheetService, WorkSheetService>();
             services.AddTransient<IWorkersService, WorkersService>();
+
 
             services.AddReact();
 

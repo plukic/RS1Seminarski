@@ -44,14 +44,16 @@ namespace ConstructionDiary.BR.Documents.Implementation
                       + Guid.NewGuid().ToString().Substring(0, 4)
                       + Path.GetExtension(fileName);
         }
-        public async Task<Document> Store(IFormFile file, string type)
+        public async Task<Document> Store(IFormFile file, string description)
         {
             string filePath = await _storeFileToFS(file);
             Document document = new Document()
             {
                 Location = filePath,
                 Date = DateTime.Now,
-                Type = type
+                ContentType =file.ContentType,
+                DocumentDescription = description,
+                FileName=file.FileName
             };
             _documentsRepository.Add(document);
             return document;
