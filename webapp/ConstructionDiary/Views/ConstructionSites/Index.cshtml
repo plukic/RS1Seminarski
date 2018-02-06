@@ -1,0 +1,112 @@
+﻿@using DataLayer.Models
+@using ConstructionDiary.ViewModels;
+@using Task = System.Threading.Tasks.Task
+@model ConstructionDiary.ViewModels.ConstructionSitesListViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    var citiesSelectList = Model.Cities.Select(c => new SelectListItem() { Text = c.Name, Value = c.Id.ToString() }).ToList();
+}
+
+<div class="row construction-sites-list">
+    <div class="col-sm-5 col-md-4 col-lg-3">
+        <h2>Gradilišta</h2>
+        <p>
+            <a asp-action="Create">Dodaj novo</a>
+        </p>
+    </div>
+    <div class="col-sm-7 col-md-8 col-lg-9">
+        <form asp-action="" method="get" class="filters">
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label asp-for="@Model.SelectedCity" class="control-label">Grad</label>
+                        <select asp-for="@Model.SelectedCity.Id" asp-items="@citiesSelectList" class="form-control" name="SelectedCity.Id">
+                            <option>Filtriraj prema gradu</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label asp-for="@Model.OpenStatus" class="control-label">Status</label>
+                        <select asp-for="@Model.OpenStatus" asp-items="Html.GetEnumSelectList<OpenStatus>()" class="form-control">
+                            <option>Filtriraj prema statusu</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <input type="submit" value="Filtriraj" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].ProjectWorth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].DateStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].DateFinish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].Contract)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConstructionSites[0].Location)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ConstructionSites)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectWorth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateFinish)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contract.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.Position)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalji</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

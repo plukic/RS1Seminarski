@@ -1,0 +1,78 @@
+﻿<nav style="margin-top:-50px;">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            <li class="navigation-element"><a asp-area="" asp-controller="Home" asp-action="Index">Aktivni zadaci</a></li>
+            @if (Context.User.Identity.IsAuthenticated)
+            {
+                @if (Context.User.IsInRole("Manager"))
+                {
+
+                    <li class="navigation-element"><a asp-area="" asp-controller="UserAccounts" asp-action="Index">Korisnički nalozi</a></li>
+                    <li class="navigation-element"><a asp-area="" asp-controller="Workers" asp-action="Index">Radnici</a></li>
+                    <li class="navigation-element"><a asp-area="" asp-controller="ConstructionSites" asp-action="Index">Gradilišta</a></li>
+                    <li class="navigation-element"><a asp-area="" asp-controller="Materials" asp-action="Index">Materijali</a></li>
+                }
+                <li class="navigation-element"><a asp-area="" asp-controller="Equipment" asp-action="Index">Alati i mašine</a></li>
+                @if (Context.User.IsInRole("ConstructionSiteManager"))
+                {
+                    <li class="navigation-element"><a asp-area="" asp-controller="WorkSheets" asp-action="Index">Radni listovi</a></li>
+                }
+
+                <li  class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">@Context.User.Identity.Name <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/UserAccounts/Profile">Profil</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Login/Logout">Odjavi se</a></li>
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li><a href="/Login" class="dropdown-toggle">Logiraj se </a></li>
+            }
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Aktivni zadaci</a></li>
+            @if (Context.User.Identity.IsAuthenticated && Context.User.IsInRole("Manager"))
+            {
+            }
+            @if (Context.User.Identity.IsAuthenticated)
+            {
+                @if (Context.User.IsInRole("Manager"))
+                {
+
+                    <li><a asp-area="" asp-controller="UserAccounts" asp-action="Index">Korisnički nalozi</a></li>
+                    <li><a asp-area="" asp-controller="Workers" asp-action="Index">Radnici</a></li>
+                    <li><a asp-area="" asp-controller="ConstructionSites" asp-action="Index">Gradilišta</a></li>
+                    <li><a asp-area="" asp-controller="Materials" asp-action="Index">Materijali</a></li>
+                }
+                <li><a asp-area="" asp-controller="Equipment" asp-action="Index">Alati i mašine</a></li>
+                @if (Context.User.IsInRole("ConstructionSiteManager"))
+                {
+                    <li><a asp-area="" asp-controller="WorkSheets" asp-action="Index">Radni listovi</a></li>
+                }
+
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">@Context.User.Identity.Name <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/UserAccounts/Profile">Profil</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Login/Logout">Odjavi se</a></li>
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li><a href="/Login" class="dropdown-toggle">Logiraj se </a></li>
+            }
+        </ul>
+    </div>
+</nav>
+<script type="text/javascript">
+    $(".navigation-element").click(function(){
+        $(".navigation-element").removeClass("active");
+        $(this).addClass("active");
+    })
+</script>
